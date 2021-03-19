@@ -4,8 +4,8 @@ block content
   p Welcome to #{title}
   div(id='Notice', class='sign_up_notice') 소켓이 작동하면 여기가 바뀌어야함
   input(type="text", name="name", placeholder="닉네임을 입력해 주세요.", id="inputed")
-
-
+  p
+  button(type="button" class="btn btn-sm btn-success") Test Bootstrap
   script.
     const socket = io();
     // socket.io를 이용한 서버 전송
