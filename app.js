@@ -4,6 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Session 모듈 및 세션 세팅파일 로드
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session');
+const sessionconfig  = require('./config/sessionset.json');
+
 // Socket.io 서버를 위한 모듈
 const http = require("http");
 const socketio = require("socket.io");
@@ -30,6 +35,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 세션과 Mysql DB 연결
+app.use(session({
+  secret: sessionconfig.secret,
+  store: new MySQLStore(sessionconfig.storeset),
+  resave: false,
+  saveUninitialized: true,
+  cookie: sessionconfig.cookieset
+}))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
