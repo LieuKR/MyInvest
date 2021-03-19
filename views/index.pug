@@ -1,5 +1,20 @@
 extends layout
-
 block content
   h1= title
   p Welcome to #{title}
+  div(id='Notice', class='sign_up_notice') 소켓이 작동하면 여기가 바뀌어야함
+  input(type="text", name="name", placeholder="닉네임을 입력해 주세요.", id="inputed")
+
+
+  script.
+    const socket = io();
+    // socket.io를 이용한 서버 전송
+    inputed.oninput = function() {
+      socket.emit('Enter', {socket_id : socket.id});
+    };
+
+    // socket.io로 서버 데이터 수신
+    socket.on('Enter_reaction', function (data) {
+      document.getElementById("Notice").innerHTML = data.innertext
+      console.log(data.innertext)
+    });

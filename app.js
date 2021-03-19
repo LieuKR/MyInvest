@@ -4,10 +4,22 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Socket.io 서버를 위한 모듈
+const http = require("http");
+const socketio = require("socket.io");
+
+// Routers
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+// HTTP 서버 생성
+const server = require('http').createServer(app); 
+
+// Socket.io 서버 생성
+const io = socketio(server);
+const socketIOHandler = require('./serverside_functions/socketIOHandler.js')(io);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -38,4 +50,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app:app, server:server}; 
