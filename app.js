@@ -14,7 +14,6 @@ const http = require("http");
 const socketio = require("socket.io");
 
 // Routers
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
@@ -45,8 +44,7 @@ app.use(session({
   cookie: sessionconfig.cookieset
 }))
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

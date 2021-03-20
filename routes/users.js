@@ -6,9 +6,16 @@ const crypto = require('crypto');
 const cryptoconfig  = require('../config/pwcryptset.json');
 const MySqlHandler = require('../serverside_functions/MySqlHandler.js');
 
-// 로그인 폼 작성 페이지. 메인 페이지가 될 예정
+// 메인 페이지. 로그인이 필요하면 로그인 페이지, 로그인이 되어 있으면 다른 페이지로 리다이렉트
 router.get('/', function(req, res) {
-  res.render('login_form', {pageinfo: 'Login'});
+  if(req.session.loginid){
+    // 로그인이 되어 있으면, 메인 페이지로 리다이렉트
+    console.log('not yet');
+    res.redirect('/');
+  } else {
+    // 로그인 페이지 출력
+    res.render('login_form', {pageinfo: 'Login'});
+  }
 });
 
 // 회원가입 폼 작성 페이지
@@ -33,6 +40,12 @@ router.post('/sign_up', function(req, res) {
           };
         });
     });
+});
+
+// 로그인 post 데이터 처리 페이지
+router.get('/login', function(req, res) {
+  console.log('not yet');
+  res.redirect('/');
 });
 
 module.exports = router;

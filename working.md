@@ -7,6 +7,13 @@
     - myinvest 스키마는 db_main으로 표현됨
     - no : int AI PK, id : 아이디. varchar(30), password : 암호화된 비밀번호. char(128) , email : 이메일 주소. varchar(50), name : 닉네임용. varchar(30)
 
-### 
+### 회원가입 form 기능 작성
 - 회원가입 form 기능 작성
 - id, pw, email이 입력되면 db에 저장됨
+
+### 쓸모없는 라우터 제거 및 users 라우터 경로 '/'로 수정
+- index 라우터 제거
+- users 라우터 경로 '/'로 수정
+- pug 파일의 여러가지 링크 경로 알맞게 수정
+- 메인 페이지 : 로그인 세션이 존재하지 않을 경우 로그인 페이지 출력되게. 그 외의 경로는 나중에
+- 로그인 폼 데이터 처리 페이지 경로만 입력

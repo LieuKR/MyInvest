@@ -2,7 +2,7 @@ extends layout
 block content
     link(href="/stylesheets/signin.css" rel="stylesheet")
     body(class="text-center", style="font-size:14px")
-        form.form-signin
+        form.form-signin(action='/login')
             img.mb-4(src='/images/logo/logo_200px.png' alt='' width='200' height='200')
             label.sr-only(for='inputEmail') 아이디
             input#inputEmail.form-control(style="font-size:13px" type='email' placeholder='아이디' required='' autofocus='')
@@ -15,4 +15,5 @@ block content
             button.btn.btn-lg.btn-primary.btn-block(type='submit' style="font-size:17px") 로그인
             p 
             p
-                a(href='/users/sign_up', style="margin : 10px") 회원가입
+                a(href='/sign_up', style="margin : 10px") 회원가입
+    <!-- This templates was came from (https://getbootstrap.com/docs/5.0/examples/sign-in/) -->
