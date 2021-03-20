@@ -590,3 +590,18 @@ label.valid {
     margin-bottom: 10px; } }
 
 /*# sourceMappingURL=style.css.map */
+
+
+/* 직접 추가한 내용들 */
+
+.textbox_input{
+  width:90%;
+}
+
+.textbox_icon{
+  font-size:10px; left:5px; position:relative
+}
+
+.textbox_alert{
+  right:0; bottom:0; position: absolute
+}
