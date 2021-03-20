@@ -2,12 +2,10 @@ extends layout
 block content
     link(href="/stylesheets/signin.css" rel="stylesheet")
     body(class="text-center", style="font-size:14px")
-        form.form-signin(action='/login')
+        form.form-signin(action='/login' method='POST')
             img.mb-4(src='/images/logo/logo_200px.png' alt='' width='200' height='200')
-            label.sr-only(for='inputEmail') 아이디
-            input#inputEmail.form-control(style="font-size:13px" type='email' placeholder='아이디' required='' autofocus='')
-            label.sr-only(for='inputPassword') 비밀번호
-            input#inputPassword.form-control(style="font-size:13px" type='password' placeholder='비밀번호' required='')
+            input#id.form-control(style="font-size:13px" name="id" type='text' placeholder='아이디' required='' autofocus='')
+            input#pass.form-control(style="font-size:13px" name="pass" type='password' placeholder='비밀번호' required='')
             .checkbox.mb-3
                 label
                 input(type='checkbox' value='remember-me')

@@ -10,8 +10,8 @@ const MySqlHandler = require('../serverside_functions/MySqlHandler.js');
 router.get('/', function(req, res) {
   if(req.session.loginid){
     // 로그인이 되어 있으면, 메인 페이지로 리다이렉트
-    console.log('not yet');
-    res.redirect('/');
+    console.log('로그인된 상태임');
+    res.render('login_form', {pageinfo: 'Login'});
   } else {
     // 로그인 페이지 출력
     res.render('login_form', {pageinfo: 'Login'});
@@ -43,9 +43,21 @@ router.post('/sign_up', function(req, res) {
 });
 
 // 로그인 post 데이터 처리 페이지
-router.get('/login', function(req, res) {
-  console.log('not yet');
-  res.redirect('/');
+router.post('/login', function(req, res) {
+  crypto.pbkdf2(req.body.pass, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
+    cryptoconfig.method, (err, derivedKey) => {
+      MySqlHandler.myinvest_mainDB.query(`SELECT * FROM users WHERE id='${req.body.id}' and password='${derivedKey.toString('hex')}'`, 
+        (err, rows) => {
+          if (rows[0] == null) {
+            console.log('아이디, 비밀번호가 잘못되었습니다.');
+            res.redirect('/');
+          } else {
+            console.log('로그인 되었습니다.');
+            req.session.loginid = rows[0];
+            res.redirect('/');
+          };
+        });
+    });
 });
 
 module.exports = router;
