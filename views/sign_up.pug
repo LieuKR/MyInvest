@@ -1,18 +1,35 @@
 extends layout
 block content
-    link(href="/stylesheets/signin.css" rel="stylesheet")
-    body(class="text-center")
-        form.form-signin
-            img.mb-4(src='/images/logo/logo_200px.png' alt='' width='200' height='200')
-            label.sr-only(for='inputEmail') 아이디
-            input#inputEmail.form-control(type='email' placeholder='아이디' required='' autofocus='')
-            label.sr-only(for='inputPassword') 비밀번호
-            input#inputPassword.form-control(type='password' placeholder='비밀번호' required='')
-            .checkbox.mb-3
-                label
-                input(type='checkbox' value='remember-me')
-                |  로그인 상태 유지
-            button.btn.btn-lg.btn-primary.btn-block(type='submit') 로그인
-            p 
-            p
-                a(href='/users/sign_up', style="margin : 10px") 회원가입
+    link(href="/stylesheets/sign_up.css" rel="stylesheet")
+    link(href="/stylesheets/sign_up_icon_font.css" rel="stylesheet")
+    div
+        section.signup
+            .container
+                .signup-content
+                    .signup-form
+                        h2.form-title 회원가입
+                        form#register-form.register-form(method='POST')
+                            .form-group
+                                label(for='name')
+                                    i.zmdi.zmdi-account.material-icons-name
+                                input#name(type='text' name='id' placeholder='ID')
+                            .form-group
+                                label(for='email')
+                                    i.zmdi.zmdi-email
+                                input#email(type='email' name='email' placeholder='Email')
+                            .form-group
+                                label(for='pass')
+                                    i.zmdi.zmdi-lock
+                                input#pass(type='password' name='pass' placeholder='Password')
+                            .form-group
+                                label(for='re-pass')
+                                    i.zmdi.zmdi-lock-outline
+                                input#re_pass(type='password' name='re_pass' placeholder='Repeat password')
+                            .form-group.form-button
+                                input#signup.form-submit(type='submit' name='signup' value='회원가입')
+                    .signup-image
+                        figure
+                            img(src='/images/logo/logo_300px.png' alt='sing up image')
+                        a.signup-image-link(href='#' style="font-size : 13px") 저는 이미 MyInvest의 회원입니다
+    <!-- This templates was made by Colorlib (https://colorlib.com) -->
+                            
