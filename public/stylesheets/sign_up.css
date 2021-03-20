@@ -595,7 +595,7 @@ label.valid {
 /* 직접 추가한 내용들 */
 
 .textbox_input{
-  width:90%;
+  width:92%;
 }
 
 .textbox_icon{
@@ -603,5 +603,5 @@ label.valid {
 }
 
 .textbox_alert{
-  right:0; bottom:0; position: absolute
+  right:0; bottom:3px; position: absolute; font-size: 13px;
 }
