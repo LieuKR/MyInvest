@@ -1,5 +1,8 @@
 # source
-여러 소스 코드의 출처를 기록하는 파일입니다.
+여러 소스의 출처를 기록하는 파일입니다.
+
+### 로고 출처
+https://hatchful.shopify.com/
 
 ### 로그인 페이지
 https://getbootstrap.com/docs/5.0/examples/sign-in/
