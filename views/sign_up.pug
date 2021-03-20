@@ -13,30 +13,30 @@ block content
                                 div.textbox_input
                                     label(for='name')
                                         i.textbox_icon.bi.bi-person-plus-fill
-                                    input#name(type='text' name='id' placeholder='ID')
+                                    input#id(type='text' name='id' placeholder='ID')
                                 div.textbox_alert
-                                    i.bi.bi-check-circle-fill(style="color:red")
+                                    i#IDchecknotice.bi.bi-check-circle-fill(style="color:gray")
                             .form-group
                                 div.textbox_input
                                     label(for='email')
                                         i.textbox_icon.bi.bi-mailbox2
                                     input#email(type='email' name='email' placeholder='Email')
                                 div.textbox_alert
-                                    i.bi.bi-check-circle-fill(style="color:blue")
+                                    i#Mailchecknotice.bi.bi-check-circle-fill(style="color:gray")
                             .form-group
                                 div.textbox_input
                                     label(for='pass')
                                         i.textbox_icon.bi.bi-lock-fill
                                     input#pass(type='password' name='pass' placeholder='Password')
                                 div.textbox_alert
-                                    i.bi.bi-check-circle-fill(style="color:blue")
+                                    i.bi.bi-check-circle-fill(style="color:gray")
                             .form-group
                                 div.textbox_input
                                     label(for='re-pass')
                                         i.textbox_icon.bi.bi-lock
                                     input#re_pass(type='password' name='re_pass' placeholder='Repeat password')
                                 div.textbox_alert
-                                    i.bi.bi-check-circle-fill(style="color:blue")
+                                    i.bi.bi-check-circle-fill(style="color:gray")
                             .form-group.form-button
                                 input#signup.form-submit(type='submit' name='signup' value='회원가입')
                     .signup-image(style="margin:20px")
@@ -45,3 +45,61 @@ block content
                         a.signup-image-link(href='/' style="font-size : 13px") 저는 이미 MyInvest의 회원입니다
     <!-- This templates was made by Colorlib (https://colorlib.com) -->
                             
+    script.
+        const socket = io();
+        test = [0,0,0,0]; // test == [1,1,1,1]일때 회원가입 가능한 상태
+
+        // 입력 발생시 socket.io로 데이터 서버 전송
+        id.oninput = function() {
+            socket.emit('checkID', {postdata: id.value, socket_id : socket.id});
+        };
+
+        email.oninput = function() {
+            socket.emit('checkEmail', {postdata: email.value, socket_id : socket.id});
+        };
+
+        // socket.io로 서버 데이터 수신
+        socket.on('idcheck', function (data) {
+            console.log(data.checkvalue)
+            if(data.checkvalue == 1){
+                //document.getElementById("IDchecknotice").innerHTML = '중복되는 아이디가 존재합니다.'
+                document.getElementById("IDchecknotice").style = 'color:red'
+                document.getElementById('signup').disabled = true;
+                test[0] = 0;
+            } else if(data.checkvalue == 2) {
+                //document.getElementById("IDchecknotice").innerHTML = 'ID는 영문과 숫자로 구성된 8~20자리여야 합니다.'
+                document.getElementById("IDchecknotice").style = 'color:red'
+                document.getElementById('signup').disabled = true;
+                test[0] = 0;
+            } else if(data.checkvalue == 0) {
+                //document.getElementById("IDchecknotice").innerHTML = '사용 가능한 아이디입니다!'
+                document.getElementById("IDchecknotice").style = 'color:blue'
+                test[0] = 1;
+            if(test.reduce((a, b) => a + b, 0) == 4){
+                document.getElementById('signup').disabled = false;
+                }
+            }
+        });
+
+        socket.on('mailcheck', function (data) {
+            console.log(data.checkvalue)
+            if(data.checkvalue == 1){
+                // document.getElementById("Mailchecknotice").innerHTML = '중복되는 이메일 주소가 존재합니다.'
+                document.getElementById("Mailchecknotice").style = 'color:red'
+                document.getElementById('signup').disabled = true;
+                test[1] = 0;
+            } else if(data.checkvalue == 0) {
+                // document.getElementById("Mailchecknotice").innerHTML = '사용 가능한 이메일입니다!'
+                document.getElementById("Mailchecknotice").style = 'color:blue'
+                document.getElementById('signup').disabled = true;
+                test[1] = 1;
+                if(test.reduce((a, b) => a + b, 0) == 4){
+                    document.getElementById('signup').disabled = false;
+                }
+            } else if(data.checkvalue == 2) {
+                // document.getElementById("Mailchecknotice").innerHTML = '올바른 이메일 양식이 아닙니다.'
+                document.getElementById("Mailchecknotice").style = 'color:red'
+                document.getElementById('signup').disabled = true;
+                test[1] = 0;
+            }
+        });
