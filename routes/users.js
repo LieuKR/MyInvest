@@ -10,8 +10,7 @@ const MySqlHandler = require('../serverside_functions/MySqlHandler.js');
 router.get('/', function(req, res) {
   if(req.session.loginid){
     // 로그인이 되어 있으면, 메인 페이지로 리다이렉트
-    console.log('로그인된 상태임');
-    res.render('login_form', {pageinfo: 'Login'});
+    res.redirect('/asset');
   } else {
     // 로그인 페이지 출력
     res.render('login_form', {pageinfo: 'Login'});
