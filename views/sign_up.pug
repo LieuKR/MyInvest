@@ -29,14 +29,14 @@ block content
                                         i.textbox_icon.bi.bi-lock-fill
                                     input#pass(type='password' name='pass' placeholder='Password')
                                 div.textbox_alert
-                                    i.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top")
+                                    i#PWchecknotice1.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
                             .form-group
                                 div.textbox_input
                                     label(for='re-pass')
                                         i.textbox_icon.bi.bi-lock
                                     input#re_pass(type='password' name='re_pass' placeholder='Repeat password')
                                 div.textbox_alert
-                                    i.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top" title="Tooltip on top")
+                                    i#PWchecknotice2.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
                             .form-group.form-button
                                 input#signup.form-submit(type='submit' name='signup' value='회원가입')
                     .signup-image(style="margin:20px")
@@ -108,3 +108,55 @@ block content
                 test[1] = 0;
             }
         });
+
+        // 입력된 PW 유효성 검사. 보안상의 문제로 클라이언트에서 검사 후 사용.
+        // PW 양식 확인
+        pass.oninput = function() {
+            if(pass.value.length > 20 || pass.value.length < 8){
+                $('#PWchecknotice1').attr('data-original-title', '비밀번호는 8자리 이상, 20자리 이하이어야 합니다.');
+                document.getElementById('signup').disabled = true;
+                document.getElementById("PWchecknotice1").style = 'color:red'
+                test[2] = 0;
+            } else if(!/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/.test(pass.value)){
+                $('#PWchecknotice1').attr('data-original-title', '비밀번호는 숫자나, 특수문자를 포함해야 합니다.');
+                document.getElementById('signup').disabled = true;
+                document.getElementById("PWchecknotice1").style = 'color:red'
+                test[2] = 0;
+            } else {
+                $('#PWchecknotice1').attr('data-original-title', '사용 가능한 비밀번호입니다.');
+                document.getElementById("PWchecknotice1").style = 'color:blue'
+                test[2] = 1;
+                if(test.reduce((a, b) => a + b, 0) == 4){
+                    document.getElementById('signup').disabled = false;
+                }
+            }
+            if(pass.value !== re_pass.value){
+                $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
+                document.getElementById("PWchecknotice2").style = 'color:red'
+                document.getElementById('signup').disabled = true;
+                test[3] = 0;
+            } else {
+                $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
+                document.getElementById("PWchecknotice2").style = 'color:blue'
+                test[3] = 1;
+                if(test.reduce((a, b) => a + b, 0) == 4){
+                    document.getElementById('signup').disabled = false;
+                }
+            }
+        };
+        // 같은 PW 입력 확인
+        re_pass.oninput = function() {
+            if(pass.value !== re_pass.value){
+                $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
+                document.getElementById("PWchecknotice2").style = 'color:red'
+                document.getElementById('signup').disabled = true;
+                test[3] = 0;
+            } else {
+                $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
+                document.getElementById("PWchecknotice2").style = 'color:blue'
+                test[3] = 1;
+                if(test.reduce((a, b) => a + b, 0) == 4){
+                    document.getElementById('signup').disabled = false;
+                }
+            }
+        };
