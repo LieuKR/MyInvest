@@ -38,11 +38,11 @@ block content
                                 div.textbox_alert
                                     i#PWchecknotice2.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
                             .form-group.form-button
-                                input#signup.form-submit(type='submit' name='signup' value='회원가입')
+                                input#signup.form-submit(type='submit' name='signup' value='회원가입' style="background-color:gray; cursor:auto" disabled=true)
                     .signup-image(style="margin:20px")
                         figure
                             img(src='/images/logo/logo_300px.png' alt='sing up image')
-                        a.signup-image-link(href='/' style="font-size : 13px") 저는 이미 MyInvest의 회원입니다
+                        a.signup-image-link(href='/' style="font-size : 14px") 저는 이미 MyInvest의 회원입니다
     <!-- This templates was made by Colorlib (https://colorlib.com) -->
 
     script.
@@ -69,11 +69,13 @@ block content
             if(data.checkvalue == 1){
                 $('#IDchecknotice').attr('data-original-title', '중복 아이디가 존재합니다.');
                 document.getElementById("IDchecknotice").style = 'color:red';
+                document.getElementById('signup').style = "background-color:gray"
                 document.getElementById('signup').disabled = true;
                 test[0] = 0;
             } else if(data.checkvalue == 2) {
                 $('#IDchecknotice').attr('data-original-title', '8~20자리의 영문과 숫자로 구성되어야 합니다.');
                 document.getElementById("IDchecknotice").style = 'color:red';
+                document.getElementById('signup').style = "background-color:gray"
                 document.getElementById('signup').disabled = true;
                 test[0] = 0;
             } else if(data.checkvalue == 0) {
@@ -82,6 +84,7 @@ block content
                 test[0] = 1;
             if(test.reduce((a, b) => a + b, 0) == 4){
                 document.getElementById('signup').disabled = false;
+                document.getElementById('signup').style = "background-color:blue"
                 }
             }
         });
@@ -91,6 +94,7 @@ block content
             if(data.checkvalue == 1){
                 $('#Mailchecknotice').attr('data-original-title', '중복 이메일이 존재합니다.');
                 document.getElementById("Mailchecknotice").style = 'color:red'
+                document.getElementById('signup').style = "background-color:gray"
                 document.getElementById('signup').disabled = true;
                 test[1] = 0;
             } else if(data.checkvalue == 0) {
@@ -100,10 +104,12 @@ block content
                 test[1] = 1;
                 if(test.reduce((a, b) => a + b, 0) == 4){
                     document.getElementById('signup').disabled = false;
+                    document.getElementById('signup').style = "background-color:blue"
                 }
             } else if(data.checkvalue == 2) {
                 $('#Mailchecknotice').attr('data-original-title', '올바른 이메일 양식이 아닙니다.');
                 document.getElementById("Mailchecknotice").style = 'color:red'
+                document.getElementById('signup').style = "background-color:gray"
                 document.getElementById('signup').disabled = true;
                 test[1] = 0;
             }
@@ -116,11 +122,13 @@ block content
                 $('#PWchecknotice1').attr('data-original-title', '비밀번호는 8자리 이상, 20자리 이하이어야 합니다.');
                 document.getElementById('signup').disabled = true;
                 document.getElementById("PWchecknotice1").style = 'color:red'
+                document.getElementById('signup').style = "background-color:gray"
                 test[2] = 0;
             } else if(!/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/.test(pass.value)){
                 $('#PWchecknotice1').attr('data-original-title', '비밀번호는 숫자나, 특수문자를 포함해야 합니다.');
                 document.getElementById('signup').disabled = true;
                 document.getElementById("PWchecknotice1").style = 'color:red'
+                document.getElementById('signup').style = "background-color:gray"
                 test[2] = 0;
             } else {
                 $('#PWchecknotice1').attr('data-original-title', '사용 가능한 비밀번호입니다.');
@@ -128,11 +136,13 @@ block content
                 test[2] = 1;
                 if(test.reduce((a, b) => a + b, 0) == 4){
                     document.getElementById('signup').disabled = false;
+                    document.getElementById('signup').style = "background-color:blue"
                 }
             }
             if(pass.value !== re_pass.value){
                 $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
                 document.getElementById("PWchecknotice2").style = 'color:red'
+                document.getElementById('signup').style = "background-color:gray"
                 document.getElementById('signup').disabled = true;
                 test[3] = 0;
             } else {
@@ -141,6 +151,7 @@ block content
                 test[3] = 1;
                 if(test.reduce((a, b) => a + b, 0) == 4){
                     document.getElementById('signup').disabled = false;
+                    document.getElementById('signup').style = "background-color:blue"
                 }
             }
         };
@@ -149,6 +160,7 @@ block content
             if(pass.value !== re_pass.value){
                 $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
                 document.getElementById("PWchecknotice2").style = 'color:red'
+                document.getElementById('signup').style = "background-color:gray"
                 document.getElementById('signup').disabled = true;
                 test[3] = 0;
             } else {
@@ -157,6 +169,7 @@ block content
                 test[3] = 1;
                 if(test.reduce((a, b) => a + b, 0) == 4){
                     document.getElementById('signup').disabled = false;
+                    document.getElementById('signup').style = "background-color:blue"
                 }
             }
         };
