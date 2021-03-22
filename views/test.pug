@@ -1,3 +1,22 @@
 extends scroll_nav
 block content
     body
+    div(class="btn-group")
+        i.textbox_icon.bi.bi-person-circle(type='button' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+        div(class="dropdown-menu dropdown-menu-right")
+            a(class="dropdown-item" href="#") Action
+            a(class="dropdown-item" href="#") Another action
+            div(class="dropdown-divider")
+            a(class="dropdown-item" href="#") Separated link
+    <!-- Model for login info -->
+    #login_info.modal.fade(role='dialog')
+      .modal-dialog.modal-sm(style="position:absolute; right:25px; top:35px;")
+        .modal-content
+          .modal-header
+            h4.modal-title 로그인한 아이디
+          .modal-body
+            p 자산 총액 : 12456146 원
+            p 보유 자산 종류 : 12종
+          .modal-footer
+            .form-group.form-button
+              a(href="/logout" type="button" class="btn btn-outline-secondary btn-sm") 로그아웃
