@@ -59,4 +59,11 @@ router.post('/login', function(req, res) {
     });
 });
 
+/* 로그아웃 기능 페이지*/
+router.get('/logout', function(req, res) {
+  req.session.destroy();
+  res.redirect('/');
+});
+
+
 module.exports = router;
