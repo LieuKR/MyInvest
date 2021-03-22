@@ -14,3 +14,6 @@ https://colorlib.com/thank-you-for-downloading/?dlm-dp-dl=1961 : Download Page
 this template is licensed under CC BY 3.0.
 not allowed to remove footer credits for that you must purchase a License.
 
+### 리스트 페이지
+
+https://colorlib.com/wp/template/fixed-header-table/
