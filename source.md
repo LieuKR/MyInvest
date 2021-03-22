@@ -17,3 +17,14 @@ not allowed to remove footer credits for that you must purchase a License.
 ### 리스트 페이지
 
 https://colorlib.com/wp/template/fixed-header-table/
+
+### 스크롤 되는 네비게이션 바
+
+https://startbootstrap.com/template/scrolling-nav
+
+- Licence : MIT License
+    - https://github.com/startbootstrap/startbootstrap-scrolling-nav/blob/master/LICENSE
+
+### 아이콘들 : bootstrap-icons
+
+https://icons.getbootstrap.com/

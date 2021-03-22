@@ -1,4 +1,4 @@
-extends layout
+extends scroll_nav
 block content
     link(rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css")
     link(rel="stylesheet" type="text/css" href="/javascripts/animate/animate.css")
@@ -8,7 +8,7 @@ block content
     link(rel="stylesheet" type="text/css" href="/stylesheets/list_util.css")
 
     body
-        div(class="table100 ver5 m-b-110")
+        div(class="table100 ver5 m-b-110" style="margin-top: 10px")
             div(class="table100-head")
                 table
                     thead
@@ -17,11 +17,11 @@ block content
                             th(class="cell100 column2") 최근 가격
                             th(class="cell100 column3") 보유 개수
                             th(class="cell100 column4") 총 평가금액
-                            th(class="cell100 column5") 평가수익
+                            th(class="cell100 column5") 평가손익
             div(class="table100-body js-pscroll")
                 table
                     tbody
-                        -for (let i = 0; i < 3; i++)
+                        -for (let i = 0; i < 30; i++)
                             tr(class="row100 body")
                                 td(class="cell100 column1") 삼성전자
                                 td(class="cell100 column2")=82000 +' 원'
