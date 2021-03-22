@@ -21,30 +21,45 @@ html
     <!-- Custom JavaScript for this theme -->
     script(src="/javascripts/scrolling-nav.js")
   body
+    <!-- Model for login info -->
+    #login_info.modal.fade(role='dialog')
+      .modal-dialog.modal-sm(style="position:absolute; right:25px; top:35px;")
+        .modal-content
+          .modal-header
+            h4.modal-title Modal Header
+          .modal-body
+            p This is a small modal.
+          .modal-footer
+            .form-group.form-button
+              a(href="/" type="button" class="btn btn-outline-secondary btn-sm") 로그아웃
     <!-- Navigation -->
     nav(class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav")
-        div(class="container")
-          a(class="navbar-brand js-scroll-trigger" href="/") MyInvest
-          button(class="navbar-toggler" style="position:absolute; right:65px; top:8px;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation")
-            span(class="navbar-toggler-icon")
-          div(class="nav-item" style="position:absolute; color:white; right:15px; top:7px; font-size:30px")
-                i.textbox_icon.bi.bi-person-circle
-          div(class="collapse navbar-collapse" id="navbarResponsive" style="margin-right:20px")
-            ul(class="navbar-nav ml-auto")
-              li(class="nav-item")
-                -if(pagestatus == 1)
-                  a(class="nav-link js-scroll-trigger" href="/asset" style="color:white") 보유 자산
-                -else
-                  a(class="nav-link js-scroll-trigger" href="/asset") 보유 자산
-              li(class="nav-item")
-                -if(pagestatus == 2)
-                  a(class="nav-link js-scroll-trigger" href="#services" style="color:white") 관심 자산
-                -else 
-                  a(class="nav-link js-scroll-trigger" href="#services") 관심 자산
-              li(class="nav-item")
-                -if(pagestatus == 2)
-                  a(class="nav-link js-scroll-trigger" href="#contact" style="color:white") 환율
-                -else
-                  a(class="nav-link js-scroll-trigger" href="#contact") 환율
-
+      div(class="container")
+        a(class="navbar-brand js-scroll-trigger" href="/") MyInvest
+        button(class="navbar-toggler" style="position:absolute; right:65px; top:8px;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation")
+          span(class="navbar-toggler-icon")
+        div(class="nav-item" style="position:absolute; color:white; right:15px; top:7px; font-size:30px")
+              i.textbox_icon.bi.bi-person-circle(id="login_info_btn" type='button' data-toggle='modal' data-target='#login_info')
+        div(class="collapse navbar-collapse" id="navbarResponsive" style="margin-right:20px")
+          ul(class="navbar-nav ml-auto")
+            li(class="nav-item")
+              -if(pagestatus == 1)
+                a(class="nav-link js-scroll-trigger" href="/asset" style="color:white") 보유 자산
+              -else
+                a(class="nav-link js-scroll-trigger" href="/asset") 보유 자산
+            li(class="nav-item")
+              -if(pagestatus == 2)
+                a(class="nav-link js-scroll-trigger" href="#services" style="color:white") 관심 자산
+              -else 
+                a(class="nav-link js-scroll-trigger" href="#services") 관심 자산
+            li(class="nav-item")
+              -if(pagestatus == 2)
+                a(class="nav-link js-scroll-trigger" href="#contact" style="color:white") 환율
+              -else
+                a(class="nav-link js-scroll-trigger" href="#contact") 환율
+    script.
+      $("#login_info_btn").click(function(){
+        $("#login_info").modal({backdrop: true});
+      });
     block content
+

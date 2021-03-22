@@ -15,4 +15,8 @@ router.get('/', function(req, res) {
   }
 });
 
+router.get('/test', function(req, res) {
+  res.render('test', {pageinfo: 'Test', pagestatus : '1'});
+});
+
 module.exports = router;
