@@ -8,7 +8,7 @@ block content
     link(rel="stylesheet" type="text/css" href="/stylesheets/list_util.css")
 
     body
-        div(class="table100 ver5 m-b-110")
+        div(class="table100 ver2 m-b-110")
             div(class="table100-head")
                 table
                     thead
@@ -22,12 +22,30 @@ block content
                 table
                     tbody
                         -for (let i = 0; i < table_data.length; i++)
-                            tr(class="row100 body")
+                            tr(class="row100 body" data-toggle="collapse" data-target=`#collapse_${i}`)
                                 td(class="cell100 column1")=table_data[i].name
                                 td(class="cell100 column2")=table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
                                 td(class="cell100 column3")=table_data[i].count
                                 td(class="cell100 column4")=(table_data[i].count * table_data[i].price).toLocaleString('ko-KR') + table_data[i].unit
                                 td(class="cell100 column5")=((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count)).toLocaleString('ko-KR') + table_data[i].unit
+                            tr.p
+                                td.hiddenRow(colspan="6")
+                                    div(id=`collapse_${i}` class="accordian-body collapse p-3")
+                                        table
+                                            thead
+                                                tr 
+                                                    th 구분
+                                                    th 가격
+                                                    th 수량
+                                                    th 시간
+                                                    th
+                                            tbody
+                                                tr 
+                                                    td 구매
+                                                    td 40220원
+                                                    td 204개
+                                                    td 2012-12-12 13:22
+                                                    td x
 
             form(action='/asset/update_data', method='post' style='border-style: solid;')
                 h3 업데이트 테스트
@@ -54,6 +72,12 @@ block content
                     input(type="text", name="count", placeholder="insert count", required)
                 span(class="input-group-btn")
                     button(class="btn btn-default", type="submit") Post
+
+        script.
+            $('.accordion-toggle').click(function(){
+                $('.hiddenRow').hide();
+                $(this).next('tr').find('.hiddenRow').show();
+            });
 
 
         script(src="/javascripts/select2/select2.min.js")

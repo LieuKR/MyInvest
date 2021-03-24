@@ -11,3 +11,12 @@ a {
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);  
 html,body {font-family:nanumgothic !important;}
 
+.hiddenRow {
+  padding: 0 4px !important;
+  background-color: #eeeeee;
+  font-size: 13px;
+}
+
+.accordian-body span{
+	color:#a2a2a2 !important;
+}
