@@ -21,13 +21,13 @@ block content
             div(class="table100-body js-pscroll")
                 table
                     tbody
-                        -for (let i = 0; i < 2; i++)
+                        -for (let i = 0; i < table_data.length; i++)
                             tr(class="row100 body")
-                                td(class="cell100 column1") 삼성전자
-                                td(class="cell100 column2")=82000 +' 원'
-                                td(class="cell100 column3") 20
-                                td(class="cell100 column4")=82000 * 20 +' 원'
-                                td(class="cell100 column5")=100000 +' 원'
+                                td(class="cell100 column1")=table_data[i].name
+                                td(class="cell100 column2")=table_data[i].price + table_data[i].unit
+                                td(class="cell100 column3")=table_data[i].count
+                                td(class="cell100 column4")=table_data[i].count * table_data[i].price + table_data[i].unit
+                                td(class="cell100 column5")=(table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count) + table_data[i].unit
 
             form(action='/asset/update_data', method='post' style='border-style: solid;')
                 h3 업데이트 테스트
