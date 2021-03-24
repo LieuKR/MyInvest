@@ -8,6 +8,31 @@ block content
     link(rel="stylesheet" type="text/css" href="/stylesheets/list_util.css")
 
     body
+        div(class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
+            .modal-dialog(role='document' style="top:100px;")
+                .modal-content
+                    .modal-header
+                        h4 새 종목 추가
+                    form(action='/asset/create_data', method='post')
+                        .modal-body
+                            .form-group.row
+                                label.col-sm-2.col-form-label(for='input_name') 종목명
+                                .col-sm-10
+                                    input#input_name.form-control(type='text' name="name" placeholder="Asset name")
+                            .form-group.row
+                                label.col-sm-2.col-form-label(for='input_unit') 단위
+                                .col-sm-10
+                                    input#input_unit.form-control(type='text' name="unit" placeholder="Unit")
+                            .form-group.row
+                                label.col-sm-2.col-form-label(for='input_unit') 현가
+                                .col-sm-10
+                                    input#input_unit.form-control(type='text' name="price" placeholder="Insert current price")
+                            .form-group.row
+                                label.col-sm-2.col-form-label(for='input_unit') 개수
+                                .col-sm-10
+                                    input#input_unit.form-control(type='text' name="count" placeholder="Bought number")
+                        .modal-footer
+                            button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit
         div(class="table100 ver2 m-b-110 no-drag")
             div(class="table100-head")
                 table
@@ -18,6 +43,7 @@ block content
                             th(class="cell100 column3") 보유량
                             th(class="cell100 column4") 총 평가액
                             th(class="cell100 column5") 평가 손익
+                        i(type='button' data-toggle="modal" data-target="#exampleModalLong" class="bi bi-plus" style="position:absolute; color:red; font-size : 25px; top:1px; right:5px; cursor: pointer;")
             div(class="table100-body js-pscroll")
                 table
                     tbody

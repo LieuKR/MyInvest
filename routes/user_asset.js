@@ -67,7 +67,13 @@ router.post('/create_data', function(req, res) {
 
 // 테스트를 위한 주소
 router.get('/test', function(req, res) {
-  res.render('test', {pageinfo: 'Test', pagestatus : '1'});
+  if(req.session.loginid){
+    MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` ORDER BY \`time\` DESC`, (err, rows) => {
+      res.render('test', {pageinfo: 'Test', pagestatus : '1', loginid : req.session.loginid, table_data : rows});
+    })
+  } else {
+    res.redirect('/')
+  }
 });
 
 
