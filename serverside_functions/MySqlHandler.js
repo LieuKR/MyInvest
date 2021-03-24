@@ -14,3 +14,16 @@ exports.myinvest_mainDB = mysql.createConnection({
       password: DBconfig.password,
       database: DBconfig.myinvest
 });
+
+exports.myinvest_personal_DB = mysql.createConnection({
+      host: DBconfig.host,
+      port: DBconfig.port,
+      user: DBconfig.user,
+      password: DBconfig.password,
+      database: DBconfig.myinvest_personal_data
+});
+
+
+
+
+

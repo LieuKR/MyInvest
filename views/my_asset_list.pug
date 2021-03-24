@@ -21,13 +21,27 @@ block content
             div(class="table100-body js-pscroll")
                 table
                     tbody
-                        -for (let i = 0; i < 30; i++)
+                        -for (let i = 0; i < 2; i++)
                             tr(class="row100 body")
                                 td(class="cell100 column1") 삼성전자
                                 td(class="cell100 column2")=82000 +' 원'
                                 td(class="cell100 column3") 20
                                 td(class="cell100 column4")=82000 * 20 +' 원'
                                 td(class="cell100 column5")=100000 +' 원'
+
+            form(action='/asset/insert', method='post')
+                h3 post test
+                div(class="")
+                    input(type="hidden" name="name" value="삼성전자")
+                div(class="")
+                    label Price
+                    input(type="text", name="price", placeholder="Price insert", required)
+                div(class="")
+                    label count
+                    input(type="text", name="count", placeholder="insert count", required)
+                span(class="input-group-btn")
+                    button(class="btn btn-default", type="submit") Post
+
 
         script(src="/javascripts/select2/select2.min.js")
 
