@@ -11,12 +11,15 @@ a {
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);  
 html,body {font-family:nanumgothic !important;}
 
+/* Table 밑에 들어가는 collapse 기능들을 위한 css*/
 .hiddenRow {
   padding: 0 4px !important;
   background-color: #eeeeee;
   font-size: 13px;
 }
-
 .accordian-body span{
 	color:#a2a2a2 !important;
 }
+
+/* 드래그가 안되게 하는 클래스*/
+.no-drag {-ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none;}

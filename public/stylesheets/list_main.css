@@ -180,6 +180,13 @@ th, td {
   padding-left: 20px;
 }
 
+/* 가로크기가 700px 이하일 경우, column 4,5가 보이지 않게 하는 반응형 css
+*/
+@media screen and (max-width: 700px) {
+  .column4 {display:none;}
+  .column5 {display:none;}
+}
+
 .column2 {
   width: 18%;
 }
@@ -194,6 +201,7 @@ th, td {
 
 .column5 {
   width: 25%;
+  padding-right: 30px;
 }
 
 .table100-head th {
