@@ -14,6 +14,7 @@ const time_functions = require('../serverside_functions/time_functions.js');
 // 메인 페이지. 로그인이 필요하면 로그인 페이지, 로그인이 되어 있으면 다른 페이지로 리다이렉트
 router.get('/', function(req, res) {
   if(req.session.loginid){
+    console.log(req.session.loginid.id)
     res.render('my_asset_list', {pageinfo: 'Test', pagestatus : '1'});
   } else {
     res.redirect('/')
@@ -22,21 +23,45 @@ router.get('/', function(req, res) {
 
 
 
-// post데이터 처리. DB상에 데이터 삽입.
+// post데이터 처리. 업데이트 데이터. asset_recode 테이블에 데이터 삽입. + 그 외 작업 필요함
 
-// req.body.name, req.body.price, req.body.count , date값까지 4개값 삽입한다.
-router.post('/insert', function(req, res) {
+router.post('/update_data', function(req, res) {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
-  MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`shck1010_asset_recode\` (\`name\`, \`price\`, \`count\`, \`time\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${date}');`, (err, rows) => {
+  MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`time\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${date}');`, (err, rows1) => {
+    // count가 양수인 경우. "구매"한 경우. average_bought_price값이 변동
+    if(req.body.count > 0) {
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', average_bought_price = ((average_bought_price * count) + (${req.body.price} * ${req.body.count})) / (count + ${req.body.count}) , count = count + '${req.body.count}' , \`time\` = '${date}'
+      WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
+        if(err) {throw err}
+        else {
+          res.redirect('/')
+        }
+      })
+      // count가 양수가 아님. 즉 "갱신"만 했거나, "판매"했을 경우. average_bought_price값이 유지
+    } else {
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count + '${req.body.count}' , \`time\` = '${date}'
+      WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
+        if(err) {throw err}
+        else {
+          res.redirect('/')
+        }
+      })
+    }
+  })
+
+});
+
+// 새로운 종목 생성 탭
+router.post('/create_data', function(req, res) {
+  let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+
+  MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_status\` (\`name\`, \`price\`, \`count\`, \`unit\`, \`time\`, \`average_bought_price\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${date}', '${req.body.price}');`, (err, rows) => {
     res.redirect('/')
   })
 
 
 });
-
-
-
 
 
 // 테스트를 위한 주소

@@ -29,15 +29,28 @@ block content
                                 td(class="cell100 column4")=82000 * 20 +' 원'
                                 td(class="cell100 column5")=100000 +' 원'
 
-            form(action='/asset/insert', method='post')
-                h3 post test
+            form(action='/asset/update_data', method='post' style='border-style: solid;')
+                h3 업데이트 테스트
+                div(class="") 종목 이름
+                    input(type="text" name="name" placeholder="삼성전자")
                 div(class="")
-                    input(type="hidden" name="name" value="삼성전자")
-                div(class="")
-                    label Price
+                    label 가격
                     input(type="text", name="price", placeholder="Price insert", required)
                 div(class="")
-                    label count
+                    label 개수
+                    input(type="text", name="count", placeholder="insert count", required)
+                span(class="input-group-btn")
+                    button(class="btn btn-default", type="submit") Post
+            
+            form(action='/asset/create_data', method='post' style='border-style: solid;')
+                h3 생성 테스트
+                div(class="") 종목 이름
+                    input(type="text" name="name" placeholder="종목 이름", required)
+                div(class="") 단위
+                    input(type="text" name="unit" placeholder="단위", required)
+                div(class="") 가격
+                    input(type="text", name="price", placeholder="Price insert", required)
+                div(class="") 개수
                     input(type="text", name="count", placeholder="insert count", required)
                 span(class="input-group-btn")
                     button(class="btn btn-default", type="submit") Post
