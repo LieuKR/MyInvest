@@ -11,25 +11,33 @@ const time_functions = require('../serverside_functions/time_functions.js');
 
 // let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); : 시간값 입력할때 쓰자
 
-// 메인 페이지. 로그인이 필요하면 로그인 페이지, 로그인이 되어 있으면 다른 페이지로 리다이렉트
+// 보유 자산 메인 페이지
 router.get('/', function(req, res) {
   if(req.session.loginid){
-    MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` ORDER BY \`time\` DESC`, (err, rows) => {
-      res.render('my_asset_list', {pageinfo: 'Test', pagestatus : '1', loginid : req.session.loginid, table_data : rows});
+    MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` ORDER BY \`time\` DESC`, (err, rows1) => {
+      MySqlHandler.myinvest_personal_DB.query(`SELECT no, code, name, price, count, time, after_count FROM
+          (SELECT no, code, name, price, count, time, after_count,
+                  @code_rank := IF(@current_code = code, @code_rank + 1, 1) AS code_rank,
+                  @current_code := code 
+            FROM \`${req.session.loginid.id}_asset_recode\`
+            ORDER BY time DESC
+          ) ranked WHERE code_rank <= 10;`
+        , (err, rows2) => {
+        if(err) {throw err}
+        rows2.map(x => time_functions.dateform_time(x));
+        res.render('my_asset_list', {pageinfo: 'Test', pagestatus : '1', loginid : req.session.loginid, table_data : rows1, recode_data : rows2});
+      })
     })
   } else {
     res.redirect('/')
   }
 });
 
-
-
 // post데이터 처리. 업데이트 데이터. asset_recode 테이블에 데이터 삽입. + 그 외 작업 필요함
-
 router.post('/update_data', function(req, res) {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
-  MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`time\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${date}');`, (err, rows1) => {
+  MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.code}', '${date}', ${req.body.before_count} + '${req.body.count}');`, (err, rows1) => {
     // count가 양수인 경우. "구매"한 경우. average_bought_price값이 변동
     if(req.body.count > 0) {
       MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', average_bought_price = ((average_bought_price * count) + (${req.body.price} * ${req.body.count})) / (count + ${req.body.count}) , count = count + '${req.body.count}' , \`time\` = '${date}'
@@ -57,11 +65,15 @@ router.post('/update_data', function(req, res) {
 router.post('/create_data', function(req, res) {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
-  MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_status\` (\`name\`, \`price\`, \`count\`, \`unit\`, \`time\`, \`average_bought_price\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${date}', '${req.body.price}');`, (err, rows) => {
-    res.redirect('/')
+  MySqlHandler.myinvest_personal_DB.query(`
+      INSERT INTO \`${req.session.loginid.id}_asset_status\` (name, price, count, unit, time, average_bought_price) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${date}', '${req.body.price}');
+      INSERT INTO \`${req.session.loginid.id}_asset_recode\` (name, price, count, code, time, after_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${date}', '${req.body.count}');
+    `, (err, rows) => {
+        if(err) {throw err}
+        else {  
+        res.redirect('/');
+        }
   })
-
-
 });
 
 

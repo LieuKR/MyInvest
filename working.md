@@ -113,3 +113,9 @@
 - 더 해야하는 것들
 1. 모양 다듬는건 나중에. 기능 작동 이상무
 2. 종목명 : 문자열만, 현가, 개수 : 숫자만 등 처리해줘야함
+
+### 여러가지 정보 서버단에 출력되게 처리 및 그외 작업
+- DB asset_recode 테이블 구조 변경. code : 종목 코드를 나타내는 값, after_count : 구매,판매 후 남은 잔고 개수
+- asset_recode에 post 처리하는 서버단 코드 수정 : after_count, code값도 삽입하게끔
+-   -   다중쿼리 사용 가능하도록 MysqlHandler에 다중쿼리 허용 속성 추가
+- 프론트단 post 양식 틀 생성 : bootstrap - model 활용

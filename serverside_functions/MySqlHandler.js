@@ -20,7 +20,8 @@ exports.myinvest_personal_DB = mysql.createConnection({
       port: DBconfig.port,
       user: DBconfig.user,
       password: DBconfig.password,
-      database: DBconfig.myinvest_personal_data
+      database: DBconfig.myinvest_personal_data,
+      multipleStatements: true  // 다중쿼리 설정
 });
 
 
