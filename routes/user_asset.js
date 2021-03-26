@@ -77,11 +77,29 @@ router.post('/create_data', function(req, res) {
 });
 
 // 입력 기록 삭제 탭
+// 아직 average_bought 처리 X
 router.post('/delete_data', function(req, res) {
-  console.log(req.body.no)
-  MySqlHandler.myinvest_personal_DB.query(` `, (err, rows) => {
-    res.redirect('/');
-  })
+  let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+  // delete_all이 존재할 경우 : 그냥 전부 삭제
+  if(req.body.delete_all == 1){
+    MySqlHandler.myinvest_personal_DB.query(`DELETE FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`code\`= ${req.body.code}; DELETE FROM \`${req.session.loginid.id}_asset_status\` WHERE \`code\`= ${req.body.code};`, (err, rows) => {
+      res.redirect('/');
+    });
+  // 그 외의 경우 : asset_status값을 역으로 수정해주어야함.
+  } else {
+    if(req.body.count > 0){
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET average_bought_price = ((average_bought_price * count) - (price * ${req.body.count})) / (count - ${req.body.count}), \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${date}' WHERE \`code\`= '${req.body.code}';
+      DELETE FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
+        res.redirect('/');
+      })
+    } else {
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${date}' WHERE \`code\`= '${req.body.code}';
+      DELETE FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
+        res.redirect('/');
+      })
+    }
+  }
+
 });
 
 

@@ -18,19 +18,19 @@ block content
                             .form-group.row
                                 label.col-sm-2.col-form-label(for='input_name') 종목명
                                 .col-sm-10
-                                    input#input_name.form-control(type='text' name="name" placeholder="Asset name")
+                                    input#input_name.form-control(type='text' name="name" autocomplete="off" placeholder="Asset name" )
                             .form-group.row
                                 label.col-sm-2.col-form-label(for='input_unit') 단위
                                 .col-sm-10
-                                    input#input_unit.form-control(type='text' name="unit" placeholder="Unit")
+                                    input#input_unit.form-control(type='text' name="unit" autocomplete="off" placeholder="Unit")
                             .form-group.row
                                 label.col-sm-2.col-form-label(for='input_unit') 현가
                                 .col-sm-10
-                                    input#input_unit.form-control(type='text' name="price" placeholder="Insert current price")
+                                    input#input_unit.form-control(type='text' name="price" autocomplete="off" placeholder="Insert current price")
                             .form-group.row
                                 label.col-sm-2.col-form-label(for='input_unit') 개수
                                 .col-sm-10
-                                    input#input_unit.form-control(type='text' name="count" placeholder="Bought number")
+                                    input#input_unit.form-control(type='text' name="count" autocomplete="off" placeholder="Bought number")
                         .modal-footer
                             button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit
         div(class="table100 ver4 m-b-110 no-drag")
@@ -52,20 +52,24 @@ block content
                                 .modal-dialog(role='document' style="top:100px;")
                                     .modal-content
                                         .modal-header
-                                            h4 종목 데이터 추가
+                                            h4=table_data[i].name + ' 데이터 추가'
                                         form(action='/asset/update_data', method='post')
                                             .modal-body
                                                 input(type='hidden' name="code" value=`${table_data[i].code}`)
                                                 input(type='hidden' name="name" value=`${table_data[i].name}`)
                                                 input(type='hidden' name="before_count" value=`${table_data[i].count}`)
                                                 .form-group.row
+                                                    label.col-sm-2.col-form-label(for='input_unit') 구분
+                                                    .col-sm-10
+                                                        input#input_unit.form-control(type='text' name="type" autocomplete="off" placeholder='구매, 판매, 갱신')
+                                                .form-group.row
                                                     label.col-sm-2.col-form-label(for='input_unit') 가격
                                                     .col-sm-10
-                                                        input#input_unit.form-control(type='text' name="price" placeholder="Insert current price")
+                                                        input#input_unit.form-control(type='text' name="price" autocomplete="off" placeholder=`${table_data[i].price.toLocaleString('ko-KR')}`)
                                                 .form-group.row
                                                     label.col-sm-2.col-form-label(for='input_unit') 개수
                                                     .col-sm-10
-                                                        input#input_unit.form-control(type='text' name="count" placeholder="Bought number")
+                                                        input#input_unit.form-control(type='text' name="count" autocomplete="off" placeholder=`${table_data[i].count}개`)
                                             .modal-footer
                                                 button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit
                             tr(class="row100 body" data-toggle="collapse" data-target=`#collapse_${i}` style="cursor: pointer")
@@ -83,7 +87,7 @@ block content
                                                     tr
                                                         th(style="color:black") 구분
                                                         th(style="color:black") 가격
-                                                        th(style="color:black") 수량
+                                                        th(style="color:black") 거래량
                                                         th(style="color:black") 보유량
                                                         th(style="color:black") 시간
                                                         th
@@ -107,12 +111,17 @@ block content
                                                             td
                                                                 -if(j == 0)
                                                                     form(action='/asset/delete_data', method='post')
-                                                                        input(type='hidden' name="no" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].no}`)
                                                                         input(type='hidden' name="code" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].code}`)
-                                                                        input(type='hidden' name="price" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].price}`)
-                                                                        input(type='hidden' name="count" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].count}`)
-                                                                        input(type='hidden' name="count" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].after_count}`)
+                                                                        input(type='hidden' name="no" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].no}`)
+                                                                        -if(recode_data.filter(x => x.code == table_data[i].code)[j+1])
+                                                                            input(type='hidden' name="price" value=`${recode_data.filter(x => x.code == table_data[i].code)[j+1].price}`)
+                                                                            input(type='hidden' name="old_price" value=`${recode_data.filter(x => x.code == table_data[i].code)[j+1].price}`)
+                                                                            input(type='hidden' name="count" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].count}`)
+                                                                            input(type='hidden' name="after_count" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].after_count}`)
+                                                                        -else
+                                                                            input(type='hidden' name="delete_all" value=1)
                                                                         button(type='submit' class="bi bi-file-minus" style="color:black; font-size : 25px; right:30px; cursor: pointer;")
+                                                                        
         script.
             $('.accordion-toggle').click(function(){
                 $('.hiddenRow').hide();
