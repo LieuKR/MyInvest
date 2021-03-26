@@ -43,7 +43,7 @@ block content
                             th(class="cell100 column3") 보유량
                             th(class="cell100 column4") 총 평가액
                             th(class="cell100 column5") 평가 손익
-                        i(type='button' data-toggle="modal" data-target="#exampleModalLong" class="bi bi-plus" style="position:absolute; color:blue; font-size : 25px; top:10px; right:30px; cursor: pointer;")
+                        i(type='button' data-toggle="modal" data-target="#exampleModalLong" class="bi bi-patch-plus" style="position:absolute; color:blue; font-size : 25px; top:10px; right:30px; cursor: pointer;")
             div(class="table100-body js-pscroll")
                 table
                     tbody
@@ -74,7 +74,6 @@ block content
                                 td(class="cell100 column3")=table_data[i].count
                                 td(class="cell100 column4")=(table_data[i].count * table_data[i].price).toLocaleString('ko-KR') + table_data[i].unit
                                 td(class="cell100 column5")=((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count)).toLocaleString('ko-KR') + table_data[i].unit
-                                    i(type='button' data-toggle="modal" data-target=`#Test_${i}` class="bi bi-plus" style="position:absolute; color:black; font-size : 25px; right:30px; cursor: pointer;")
                             -if(recode_data.find(x => x.code == table_data[i].code))
                                 tr.p
                                     td.hiddenRow(colspan="6")
@@ -87,6 +86,8 @@ block content
                                                         th(style="color:black") 수량
                                                         th(style="color:black") 보유량
                                                         th(style="color:black") 시간
+                                                        th
+                                                            i(type='button' data-toggle="modal" data-target=`#Test_${i}` class="bi bi-file-plus" style="color:black; font-size : 25px; right:30px; cursor: pointer;")
                                                 -for(let j = 0; j < recode_data.filter(x => x.code == table_data[i].code).length; j++)
                                                     tbody
                                                         tr
@@ -103,6 +104,15 @@ block content
                                                                 td=Math.abs(recode_data.filter(x => x.code == table_data[i].code)[j].count)
                                                             td=recode_data.filter(x => x.code == table_data[i].code)[j].after_count
                                                             td=recode_data.filter(x => x.code == table_data[i].code)[j].time
+                                                            td
+                                                                -if(j == 0)
+                                                                    form(action='/asset/delete_data', method='post')
+                                                                        input(type='hidden' name="no" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].no}`)
+                                                                        input(type='hidden' name="code" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].code}`)
+                                                                        input(type='hidden' name="price" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].price}`)
+                                                                        input(type='hidden' name="count" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].count}`)
+                                                                        input(type='hidden' name="count" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].after_count}`)
+                                                                        button(type='submit' class="bi bi-file-minus" style="color:black; font-size : 25px; right:30px; cursor: pointer;")
         script.
             $('.accordion-toggle').click(function(){
                 $('.hiddenRow').hide();

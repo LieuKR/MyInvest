@@ -21,7 +21,7 @@ router.get('/', function(req, res) {
                   @current_code := code 
             FROM \`${req.session.loginid.id}_asset_recode\`
             ORDER BY time DESC
-          ) ranked WHERE code_rank <= 10;`
+          ) ranked WHERE code_rank <= 5;`
         , (err, rows2) => {
         if(err) {throw err}
         rows2.map(x => time_functions.dateform_time(x));
@@ -73,6 +73,14 @@ router.post('/create_data', function(req, res) {
         else {  
         res.redirect('/');
         }
+  })
+});
+
+// 입력 기록 삭제 탭
+router.post('/delete_data', function(req, res) {
+  console.log(req.body.no)
+  MySqlHandler.myinvest_personal_DB.query(` `, (err, rows) => {
+    res.redirect('/');
   })
 });
 
