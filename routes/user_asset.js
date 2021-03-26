@@ -15,13 +15,11 @@ const time_functions = require('../serverside_functions/time_functions.js');
 router.get('/', function(req, res) {
   if(req.session.loginid){
     MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` ORDER BY \`time\` DESC`, (err, rows1) => {
-      MySqlHandler.myinvest_personal_DB.query(`SELECT no, code, name, price, count, time, after_count FROM
-          (SELECT no, code, name, price, count, time, after_count,
-                  @code_rank := IF(@current_code = code, @code_rank + 1, 1) AS code_rank,
-                  @current_code := code 
-            FROM \`${req.session.loginid.id}_asset_recode\`
-            ORDER BY time DESC
-          ) ranked WHERE code_rank <= 5;`
+      MySqlHandler.myinvest_personal_DB.query(`select no, code, name, price, count, time, after_count from  (
+            select  no, code, name, price, count, time, after_count,
+            row_number() over (partition by code order by time desc) as code_rank 
+            from  \`${req.session.loginid.id}_asset_recode\`) ranks
+            where code_rank <= 5;`
         , (err, rows2) => {
         if(err) {throw err}
         rows2.map(x => time_functions.dateform_time(x));
