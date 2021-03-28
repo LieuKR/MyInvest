@@ -15,6 +15,7 @@ const time_functions = require('../serverside_functions/time_functions.js');
 router.get('/', function(req, res) {
   if(req.session.loginid){
     MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` ORDER BY \`time\` DESC`, (err, rows1) => {
+      /* 당분간 사용되지 않을 부분
       MySqlHandler.myinvest_personal_DB.query(`select no, code, name, price, count, time, after_count from  (
             select  no, code, name, price, count, time, after_count,
             row_number() over (partition by code order by time desc) as code_rank 
@@ -23,8 +24,8 @@ router.get('/', function(req, res) {
         , (err, rows2) => {
         if(err) {throw err}
         rows2.map(x => time_functions.dateform_time(x));
-        res.render('my_asset_list', {pageinfo: 'Test', pagestatus : '1', loginid : req.session.loginid, table_data : rows1, recode_data : rows2});
-      })
+        */ 
+        res.render('my_asset_list', {pageinfo: 'Test', pagestatus : '1', loginid : req.session.loginid, table_data : rows1});
     })
   } else {
     res.redirect('/')
