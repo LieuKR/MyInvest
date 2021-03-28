@@ -1,153 +1,102 @@
 extends scroll_nav
 block content
-    link(rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css")
-    link(rel="stylesheet" type="text/css" href="/javascripts/animate/animate.css")
-    link(rel="stylesheet" type="text/css" href="/javascripts/select2/select2.min.css")
-    link(rel="stylesheet" type="text/css" href="/javascripts/perfect-scrollbar/perfect-scrollbar.css")
-    link(rel="stylesheet" type="text/css" href="/stylesheets/list_main.css")
-    link(rel="stylesheet" type="text/css" href="/stylesheets/list_util.css")
-
-    body
-        div(class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
-            .modal-dialog(role='document' style="top:100px;")
+  head
+  body
+    h4(style="position: absolute; top:54px; margin-left:10px; font-weight: bold;") 보유 자산
+    div(class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
+      .modal-dialog(role='document' style="top:100px;")
+        .modal-content
+          .modal-header
+              h4 새 종목 추가
+          form(action='/asset/create_data', method='post')
+              .modal-body
+                .form-group.row
+                  label.col-sm-2.col-form-label(for='input_name') 종목명
+                  .col-sm-10
+                      input#input_name.form-control(type='text' name="name" autocomplete="off" placeholder="Asset name" )
+                .form-group.row
+                  label.col-sm-2.col-form-label 단위
+                  .col-sm-10
+                      input.form-control(type='text' name="unit" autocomplete="off" placeholder="Unit")
+                .form-group.row
+                  label.col-sm-2.col-form-label 현가
+                  .col-sm-10
+                      input.form-control(type='text' name="price" autocomplete="off" placeholder="Insert current price")
+                .form-group.row
+                  label.col-sm-2.col-form-label 개수
+                  .col-sm-10
+                      input.form-control(type='text' name="count" autocomplete="off" placeholder="Bought number")
+              .modal-footer
+                  button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit
+    div(class="fresh-table toolbar-color-azure")
+      div(class="toolbar")
+      table(id="fresh-table" class="table")
+        thead
+          tr
+            th
+              i(type='button' data-toggle="modal" data-target="#exampleModalLong" class="bi bi-plus" style="position:relative; left:7px; font-size : 15px; cursor: pointer;")
+            th(data-sortable="true") 종목명 
+            th 최근 가격
+            th(data-sortable="true") 보유량
+            th 총 평가액
+            th 평가 손익
+        tbody(style="font-size : 13px;")
+          -for (let i = 0; i < table_data.length; i++)
+            div(class="modal fade" id=`insert_data_${i}` tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
+              .modal-dialog(role='document' style="top:100px;")
                 .modal-content
-                    .modal-header
-                        h4 새 종목 추가
-                    form(action='/asset/create_data', method='post')
-                        .modal-body
-                            .form-group.row
-                                label.col-sm-2.col-form-label(for='input_name') 종목명
-                                .col-sm-10
-                                    input#input_name.form-control(type='text' name="name" autocomplete="off" placeholder="Asset name" )
-                            .form-group.row
-                                label.col-sm-2.col-form-label(for='input_unit') 단위
-                                .col-sm-10
-                                    input#input_unit.form-control(type='text' name="unit" autocomplete="off" placeholder="Unit")
-                            .form-group.row
-                                label.col-sm-2.col-form-label(for='input_unit') 현가
-                                .col-sm-10
-                                    input#input_unit.form-control(type='text' name="price" autocomplete="off" placeholder="Insert current price")
-                            .form-group.row
-                                label.col-sm-2.col-form-label(for='input_unit') 개수
-                                .col-sm-10
-                                    input#input_unit.form-control(type='text' name="count" autocomplete="off" placeholder="Bought number")
-                        .modal-footer
-                            button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit
-        div(class="table100 ver4 m-b-110 no-drag")
-            div(class="table100-head")
-                table
-                    thead
-                        tr(class="row100 head" style="font-weight: bold")
-                            th(class="cell100 column1") 종목명 
-                            th(class="cell100 column2") 최근 가격
-                            th(class="cell100 column3") 보유량
-                            th(class="cell100 column4") 총 평가액
-                            th(class="cell100 column5") 평가 손익
-                        i(type='button' data-toggle="modal" data-target="#exampleModalLong" class="bi bi-patch-plus" style="position:absolute; color:blue; font-size : 25px; top:10px; right:30px; cursor: pointer;")
-            div(class="table100-body js-pscroll")
-                table
-                    tbody
-                        -for (let i = 0; i < table_data.length; i++)
-                            div(class="modal fade" id=`Test_${i}` tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
-                                .modal-dialog(role='document' style="top:100px;")
-                                    .modal-content
-                                        .modal-header
-                                            h4=table_data[i].name + ' 데이터 추가'
-                                        form(action='/asset/update_data', method='post')
-                                            .modal-body
-                                                input(type='hidden' name="code" value=`${table_data[i].code}`)
-                                                input(type='hidden' name="name" value=`${table_data[i].name}`)
-                                                input(type='hidden' name="before_count" value=`${table_data[i].count}`)
-                                                .form-group.row
-                                                    label.col-sm-2.col-form-label(for='input_unit') 구분
-                                                    .col-sm-10
-                                                        input#input_unit.form-control(type='text' name="type" autocomplete="off" placeholder='구매, 판매, 갱신')
-                                                .form-group.row
-                                                    label.col-sm-2.col-form-label(for='input_unit') 가격
-                                                    .col-sm-10
-                                                        input#input_unit.form-control(type='text' name="price" autocomplete="off" placeholder=`${table_data[i].price.toLocaleString('ko-KR')}`)
-                                                .form-group.row
-                                                    label.col-sm-2.col-form-label(for='input_unit') 개수
-                                                    .col-sm-10
-                                                        input#input_unit.form-control(type='text' name="count" autocomplete="off" placeholder=`${table_data[i].count}개`)
-                                            .modal-footer
-                                                button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit
-                            tr(class="row100 body" data-toggle="collapse" data-target=`#collapse_${i}` style="cursor: pointer")
-                                td(class="cell100 column1")=table_data[i].name
-                                td(class="cell100 column2")=table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
-                                td(class="cell100 column3")=table_data[i].count
-                                td(class="cell100 column4")=(table_data[i].count * table_data[i].price).toLocaleString('ko-KR') + table_data[i].unit
-                                td(class="cell100 column5")=((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count)).toLocaleString('ko-KR') + table_data[i].unit
-                            -if(recode_data.find(x => x.code == table_data[i].code))
-                                tr.p
-                                    td.hiddenRow(colspan="6")
-                                        div(id=`collapse_${i}` class="accordian-body collapse p-3")
-                                            table
-                                                thead
-                                                    tr
-                                                        th(style="color:black") 구분
-                                                        th(style="color:black") 가격
-                                                        th(style="color:black") 거래량
-                                                        th(style="color:black") 보유량
-                                                        th(style="color:black") 시간
-                                                        th
-                                                            i(type='button' data-toggle="modal" data-target=`#Test_${i}` class="bi bi-file-plus" style="color:black; font-size : 25px; right:30px; cursor: pointer;")
-                                                -for(let j = 0; j < recode_data.filter(x => x.code == table_data[i].code).length; j++)
-                                                    tbody
-                                                        tr
-                                                            -if(recode_data.filter(x => x.code == table_data[i].code)[j].count > 0)
-                                                                td(style="color:red") 구매
-                                                            -else if(recode_data.filter(x => x.code == table_data[i].code)[j].count == 0)
-                                                                td 갱신
-                                                            -else
-                                                                td(style="color:blue") 판매
-                                                            td=recode_data.filter(x => x.code == table_data[i].code)[j].price
-                                                            -if(recode_data.filter(x => x.code == table_data[i].code)[j].count == 0)
-                                                                td -
-                                                            -else
-                                                                td=Math.abs(recode_data.filter(x => x.code == table_data[i].code)[j].count)
-                                                            td=recode_data.filter(x => x.code == table_data[i].code)[j].after_count
-                                                            td=recode_data.filter(x => x.code == table_data[i].code)[j].time
-                                                            td
-                                                                -if(j == 0)
-                                                                    form(action='/asset/delete_data', method='post')
-                                                                        input(type='hidden' name="code" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].code}`)
-                                                                        input(type='hidden' name="no" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].no}`)
-                                                                        -if(recode_data.filter(x => x.code == table_data[i].code)[j+1])
-                                                                            input(type='hidden' name="price" value=`${recode_data.filter(x => x.code == table_data[i].code)[j+1].price}`)
-                                                                            input(type='hidden' name="old_price" value=`${recode_data.filter(x => x.code == table_data[i].code)[j+1].price}`)
-                                                                            input(type='hidden' name="count" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].count}`)
-                                                                            input(type='hidden' name="after_count" value=`${recode_data.filter(x => x.code == table_data[i].code)[j].after_count}`)
-                                                                        -else
-                                                                            input(type='hidden' name="delete_all" value=1)
-                                                                        button(type='submit' class="bi bi-file-minus" style="color:black; font-size : 25px; right:30px; cursor: pointer;")
-                                                                        
-        script.
-            $('.accordion-toggle').click(function(){
-                $('.hiddenRow').hide();
-                $(this).next('tr').find('.hiddenRow').show();
-            });
+                  .modal-header
+                    h4=table_data[i].name + ' 데이터 추가'
+                  form(action='/asset/update_data', method='post')
+                    .modal-body
+                      input(type='hidden' name="code" value=`${table_data[i].code}`)
+                      input(type='hidden' name="name" value=`${table_data[i].name}`)
+                      input(type='hidden' name="before_count" value=`${table_data[i].count}`)
+                      .form-group.row
+                        .col-sm-10 종류
+                          input.form-control(type='text' name="type" autocomplete="off" placeholder='구매, 판매, 갱신')
+                      .form-group.row
+                        label.col-sm-2.col-form-label 가격
+                        .col-sm-10
+                          input.form-control(type='text' name="price" autocomplete="off" placeholder=`${table_data[i].price.toLocaleString('ko-KR')}`)
+                      .form-group.row
+                        label.col-sm-2.col-form-label 개수
+                        .col-sm-10
+                          input.form-control(type='text' name="count" autocomplete="off" placeholder=`${table_data[i].count}개`)
+                    .modal-footer
+                        button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit          
+            tr
+              th 
+                i(type='button' data-toggle="modal" data-target=`#insert_data_${i}` class="bi bi-plus" style="position:relative; left:10px; font-size : 15px; cursor: pointer;")
+              td=table_data[i].name
+              td=table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
+              td=table_data[i].count
+              td=(table_data[i].count * table_data[i].price).toLocaleString('ko-KR') + table_data[i].unit
+              td=((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count)).toLocaleString('ko-KR') + table_data[i].unit                 
+      script.
+        var $table = $('#fresh-table')
+        $(function () {
+          $table.bootstrapTable({
+            classes: 'table table-hover table-striped',
+            toolbar: '.toolbar',
+            search: true,
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            pagination: true,
+            striped: true,
+            sortable: true,
+            pageSize: 10,
 
+            formatNoMatches : function(undefined) {
+              return '검색결과가 존재하지 않습니다'
+            },
 
-        script(src="/javascripts/select2/select2.min.js")
-
-        script(src="/javascripts/perfect-scrollbar/perfect-scrollbar.min.js")
-        script.
-            $('.js-pscroll').each(function(){
-                var ps = new PerfectScrollbar(this);
-
-                $(window).on('resize', function(){
-                    ps.update();
-                })
-            });
-
-        script(async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13")
-        script.
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'UA-23581568-13');
-
-        script(src="/javascripts/list_page.js")
-        script(defer='' src='https://static.cloudflareinsights.com/beacon.min.js')
+            formatShowingRows: function (pageFrom, pageTo, totalRows) {
+              return ''
+            },
+            formatRecordsPerPage: function (pageNumber) {
+              return pageNumber
+            }
+          })
+        })

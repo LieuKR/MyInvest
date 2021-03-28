@@ -29,5 +29,8 @@ https://startbootstrap.com/template/scrolling-nav
 
 https://icons.getbootstrap.com/
 
-### Dropdown
+### 리스트 테이블 템플릿
 
+https://www.creative-tim.com/product/fresh-bootstrap-table
+내용을 수정하여 사용하였음.
+: follow MIT Licence

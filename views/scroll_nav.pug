@@ -12,11 +12,15 @@ html
 
     <!-- Custom styles for this template -->
     link(href="/stylesheets/scrolling-nav.css" rel="stylesheet")
+    link(href="/stylesheets/fresh-bootstrap-table.css" rel="stylesheet")
 
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js") 
+    script(src="https://code.jquery.com/jquery-3.3.1.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
     script(src="/bootstrap/dist/js/bootstrap.min.js")
     script(src='/javascripts/socketIO/socket.io.js')
+
+    <!-- bootstrap-table -->
+    script(src="https://unpkg.com/bootstrap-table/dist/bootstrap-table.min.js")
 
     <!-- Custom JavaScript for this theme -->
     script(src="/javascripts/scrolling-nav.js")
@@ -27,7 +31,7 @@ html
         a(class="navbar-brand js-scroll-trigger" href="/") MyInvest
         button(class="navbar-toggler" style="position:absolute; right:65px; top:8px;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation")
           span(class="navbar-toggler-icon")
-        div(class="nav-item" style="position:absolute; color:white; right:15px; top:0px; font-size:30px")
+        div(class="nav-item" style="position:absolute; color:white; right:15px; top:4px; font-size:30px")
           div(class="btn-group")
             i.textbox_icon.bi.bi-person-circle(type='button' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
             div(class="dropdown-menu dropdown-menu-right px-4 py-3 no-drag" style="border-top-width: 5px;")
@@ -57,12 +61,6 @@ html
                 a(class="nav-link js-scroll-trigger" href="#contact" style="color:white") 환율
               -else
                 a(class="nav-link js-scroll-trigger" href="#contact") 환율
-    p
-    p
-    p
-    p
-    p
-    br
     script.
       $("#login_info_btn").click(function(){
         $("#login_info").modal({backdrop: true});
