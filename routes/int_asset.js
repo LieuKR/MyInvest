@@ -15,7 +15,7 @@ const time_functions = require('../serverside_functions/time_functions.js');
 router.get('/', function(req, res) {
   if(req.session.loginid){
     MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` ORDER BY \`time\` DESC`, (err, rows1) => {
-      rows1.map(x => time_functions.dateform_time(x));
+      rows1.map(x => time_functions.dateform_dateORtime(x));
       res.render('int_asset_list', {pageinfo: 'Test', pagestatus : '2', loginid : req.session.loginid, table_data : rows1});
     })
   } else {

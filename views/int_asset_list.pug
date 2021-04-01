@@ -33,15 +33,13 @@ block content
         table(id="fresh-table" class="table")
           thead
             tr
-              th
+              th(data-width="70px")
                 i(type='button' data-toggle="modal" data-target="#exampleModalLong" class="bi bi-plus" style="position:relative; left:7px; font-size : 15px; cursor: pointer;")
               th(data-sortable="true") 종목명 
               th 최근 가격
               th 증감량 (률)
-              th(data-sortable="true") 갱신 시간
-              th(data-sortable="true") 보유량
-              th 총 평가액
-              th 평가 손익
+              th(data-sortable="true" data-width="100px") 갱신 시간
+              th(data-sortable="true" data-width="100px") 보유량
           tbody(style="font-size : 13px;")
             -for (let i = 0; i < table_data.length; i++)
               div(class="modal fade" id=`insert_data_${i}` tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
@@ -104,14 +102,8 @@ block content
                 -if(table_data[i].count == 0)
                   td -
                 -else
-                  td=table_data[i].count
-                td=(table_data[i].count * table_data[i].price).toLocaleString('ko-KR') + table_data[i].unit
-                -if(table_data[i].price > table_data[i].average_bought_price)
-                  td(style="color:red;")=((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count)).toLocaleString('ko-KR') + table_data[i].unit + " 이익"
-                -else if(table_data[i].price < table_data[i].average_bought_price)
-                  td(style="color:blue;")=(Math.abs((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count))).toLocaleString('ko-KR') + table_data[i].unit  + " 손실"
-                -else
-                  td -
+                  td=table_data[i].count + "개"
+                
       script.
         var $table = $('#fresh-table')
         $(function () {

@@ -1,5 +1,5 @@
 // 게시판 글 목록 날짜 형식 변환 함수
-exports.dateform_list_time = function (array) {
+exports.dateform_dateORtime = function (array) {
     let year = array.time.getFullYear();
     let month = array.time.getMonth()+1;
     let day = array.time.getDate();
@@ -18,7 +18,9 @@ exports.dateform_list_time = function (array) {
         min = "0"+min;
       }
     let today = new Date();
-    if(today.getFullYear() == year && today.getMonth()+1 == month && today.getDate() == day){
+    if(today.getFullYear() !== year){
+      array.time = year + "." + month + "." + day;
+    } else if(today.getFullYear() == year && today.getMonth()+1 == month && today.getDate() == day){
         array.time = hour+":"+min;
     } else {
         array.time = month+"-"+day;
