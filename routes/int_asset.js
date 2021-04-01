@@ -15,8 +15,10 @@ const time_functions = require('../serverside_functions/time_functions.js');
 router.get('/', function(req, res) {
   if(req.session.loginid){
     MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` ORDER BY \`time\` DESC`, (err, rows1) => {
-      rows1.map(x => time_functions.dateform_dateORtime(x));
-      res.render('int_asset_list', {pageinfo: 'Test', pagestatus : '2', loginid : req.session.loginid, table_data : rows1});
+      MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows2) => {
+        rows1.map(x => time_functions.dateform_dateORtime(x));
+        res.render('int_asset_list', {pageinfo: 'Test', pagestatus : '2', loginid : req.session.loginid, table_int_data : rows1, my_ass_count : Object.values(rows2[0])[0]});
+      })
     })
   } else {
     res.redirect('/')

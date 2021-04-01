@@ -38,21 +38,21 @@ block content
               th(data-sortable="true") 종목명 
               th 최근 가격
               th 증감량 (률)
-              th(data-sortable="true" data-width="100px") 갱신 시간
-              th(data-sortable="true" data-width="100px") 보유량
+              th(data-sortable="true") 갱신 시간
+              th(data-sortable="true") 보유량
           tbody(style="font-size : 13px;")
-            -for (let i = 0; i < table_data.length; i++)
+            -for (let i = 0; i < table_int_data.length; i++)
               div(class="modal fade" id=`insert_data_${i}` tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
                 .modal-dialog(role='document' style="top:100px;")
                   .modal-content
                     .modal-header(style="padding: 10px; padding-left: 25px; color:black;")
-                      h4(style="font-weight: bold;")=table_data[i].name + ' 데이터 추가'
+                      h4(style="font-weight: bold;")=table_int_data[i].name + ' 데이터 추가'
                     form(action='/asset/update_data', method='post')
                       .modal-body(style="padding-left: 30px; padding-right: 30px;")
-                        input(type='hidden' name="code" value=`${table_data[i].code}`)
-                        input(type='hidden' name="name" value=`${table_data[i].name}`)
-                        input(type='hidden' name="before_count" value=`${table_data[i].count}`)
-                        input(type='hidden' name="before_price" value=`${table_data[i].price}`)
+                        input(type='hidden' name="code" value=`${table_int_data[i].code}`)
+                        input(type='hidden' name="name" value=`${table_int_data[i].name}`)
+                        input(type='hidden' name="before_count" value=`${table_int_data[i].count}`)
+                        input(type='hidden' name="before_price" value=`${table_int_data[i].price}`)
                         .form-group
                           div.textbox_input.no-drag
                             label(for='type' style="font-weight: bold;") 구분 : 
@@ -65,44 +65,44 @@ block content
                         .form-group
                           div.textbox_input
                             label(for='price' style="font-weight: bold;") 가격 : 
-                            input.input_test(type='number' name="price" autocomplete="off" placeholder=`${table_data[i].price.toLocaleString('ko-KR')}${table_data[i].unit}` style="padding-left: 55px;" min="0" required)
+                            input.input_test(type='number' name="price" autocomplete="off" placeholder=`${table_int_data[i].price.toLocaleString('ko-KR')}${table_int_data[i].unit}` style="padding-left: 55px;" min="0" required)
                         .form-group
                           div.textbox_input
                             label(for='count' style="font-weight: bold;") 수량 : 
-                            input.input_test(type='number' name="count" autocomplete="off" placeholder=`${table_data[i].count}개` style="padding-left: 55px;" min="0")
+                            input.input_test(type='number' name="count" autocomplete="off" placeholder=`${table_int_data[i].count}개` style="padding-left: 55px;" min="0")
                         button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; margin-top : 5px; margin-bottom : 8px") 제출     
               tr
                 th 
                   i(type='button' data-toggle="modal" data-target=`#insert_data_${i}` class="bi bi-plus" style="position:relative; left:10px; font-size : 15px; cursor: pointer;")
                 td
-                  a(href="#", style="color:black")=table_data[i].name
-                -if(table_data[i].status_price == 1)
+                  a(href="#", style="color:black")=table_int_data[i].name
+                -if(table_int_data[i].status_price == 1)
                   td(style="color:red;")
                     i.bi.bi-caret-up-fill
-                    span=" " + table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
-                -else if(table_data[i].status_price == 0)
-                  td=" " + table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
+                    span=" " + table_int_data[i].price.toLocaleString('ko-KR') + table_int_data[i].unit
+                -else if(table_int_data[i].status_price == 0)
+                  td=" " + table_int_data[i].price.toLocaleString('ko-KR') + table_int_data[i].unit
                 -else
                   td(style="color:blue;")
                     i.bi.bi-caret-down-fill
-                    span=" " + table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
-                -if(table_data[i].price > table_data[i].before_price)
+                    span=" " + table_int_data[i].price.toLocaleString('ko-KR') + table_int_data[i].unit
+                -if(table_int_data[i].price > table_int_data[i].before_price)
                   td(style="color:red;")
                     i.bi.bi-caret-up-fill
-                    span=" " + (table_data[i].price - table_data[i].before_price).toLocaleString('ko-KR') + table_data[i].unit
-                    span(style="font-size:90%")=" (" + ((table_data[i].price - table_data[i].before_price)*100/table_data[i].before_price).toFixed(2) + "%)"
-                -else if (table_data[i].price == table_data[i].before_price)
+                    span=" " + (table_int_data[i].price - table_int_data[i].before_price).toLocaleString('ko-KR') + table_int_data[i].unit
+                    span(style="font-size:90%")=" (" + ((table_int_data[i].price - table_int_data[i].before_price)*100/table_int_data[i].before_price).toFixed(2) + "%)"
+                -else if (table_int_data[i].price == table_int_data[i].before_price)
                   td -
                 -else 
                   td(style="color:blue;")
                     i.bi.bi-caret-down-fill
-                    span=" " + (table_data[i].price - table_data[i].before_price).toLocaleString('ko-KR')  + table_data[i].unit
-                    span(style="font-size:90%")=" (" + ((-table_data[i].price + table_data[i].before_price)*100/table_data[i].before_price).toFixed(2) + "%)"
-                td=table_data[i].time
-                -if(table_data[i].count == 0)
+                    span=" " + (table_int_data[i].price - table_int_data[i].before_price).toLocaleString('ko-KR')  + table_int_data[i].unit
+                    span(style="font-size:90%")=" (" + ((-table_int_data[i].price + table_int_data[i].before_price)*100/table_int_data[i].before_price).toFixed(2) + "%)"
+                td=table_int_data[i].time
+                -if(table_int_data[i].count == 0)
                   td -
                 -else
-                  td=table_data[i].count + "개"
+                  td=table_int_data[i].count + "개"
                 
       script.
         var $table = $('#fresh-table')
