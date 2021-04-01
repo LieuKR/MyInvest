@@ -59,7 +59,7 @@ block content
                 th 
                   i(type='button' data-toggle="modal" data-target=`#insert_data_${i}` class="bi bi-plus" style="position:relative; left:10px; font-size : 15px; cursor: pointer;")
                 td
-                  a(href="#", style="color:black")=table_int_data[i].name
+                  a(href=`/asset_info/${table_int_data[i].code}`, style="color:black")=table_int_data[i].name
                 -if(table_int_data[i].status_price == 1)
                   td(style="color:red;")
                     i.bi.bi-caret-up-fill
