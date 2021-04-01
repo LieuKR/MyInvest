@@ -56,11 +56,11 @@ html
                 a(class="nav-link js-scroll-trigger" href="/asset") 보유 자산
             li(class="nav-item")
               -if(pagestatus == 2)
-                a(class="nav-link js-scroll-trigger" href="#services" style="color:white") 관심 자산
+                a(class="nav-link js-scroll-trigger" href="/int_asset" style="color:white") 관심 자산
               -else 
-                a(class="nav-link js-scroll-trigger" href="#services") 관심 자산
+                a(class="nav-link js-scroll-trigger" href="/int_asset") 관심 자산
             li(class="nav-item")
-              -if(pagestatus == 2)
+              -if(pagestatus == 3)
                 a(class="nav-link js-scroll-trigger" href="#contact" style="color:white") 환율
               -else
                 a(class="nav-link js-scroll-trigger" href="#contact") 환율
