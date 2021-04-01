@@ -35,28 +35,41 @@ router.get('/', function(req, res) {
 // post데이터 처리. 업데이트 데이터. asset_recode 테이블에 데이터 삽입. + 그 외 작업 필요함
 router.post('/update_data', function(req, res) {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+  function dataupdate_function (status_price) {
+    MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.code}', '${date}', ${req.body.before_count} + '${req.body.count}');`, (err, rows1) => {
+      // "구매"한 경우. average_bought_price값이 변동
+      if(req.body.type == 1) {
+        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', average_bought_price = ((average_bought_price * count) + (${req.body.price} * ${req.body.count})) / (count + ${req.body.count}) , count = count + '${req.body.count}' , \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}'
+        WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
+          if(err) {throw err}
+          else {
+            res.redirect('/')
+          }
+        })
+        // count가 양수가 아님. 즉 "갱신"만 했거나, "판매"했을 경우. average_bought_price값이 유지
+      } else {
+        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count - '${req.body.count}' , \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}'
+        WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
+          if(err) {throw err}
+          else {
+            res.redirect('/')
+          }
+        })
+      }
+    })
+  }
 
-  MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.code}', '${date}', ${req.body.before_count} + '${req.body.count}');`, (err, rows1) => {
-    // count가 양수인 경우. "구매"한 경우. average_bought_price값이 변동
-    if(req.body.count > 0) {
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', average_bought_price = ((average_bought_price * count) + (${req.body.price} * ${req.body.count})) / (count + ${req.body.count}) , count = count + '${req.body.count}' , \`time\` = '${date}'
-      WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
-        if(err) {throw err}
-        else {
-          res.redirect('/')
-        }
-      })
-      // count가 양수가 아님. 즉 "갱신"만 했거나, "판매"했을 경우. average_bought_price값이 유지
-    } else {
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count + '${req.body.count}' , \`time\` = '${date}'
-      WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
-        if(err) {throw err}
-        else {
-          res.redirect('/')
-        }
-      })
-    }
-  })
+  // 가격이 상승한 경우
+  if(req.body.price - req.body.before_price > 0){
+    let status_price = 1;
+    dataupdate_function (status_price)
+  } else if (req.body.before_price == req.body.price){
+    let status_price = 0;
+    dataupdate_function (status_price)
+  } else {
+    let status_price = -1;
+    dataupdate_function (status_price)
+  }
 
 });
 
@@ -65,7 +78,7 @@ router.post('/create_data', function(req, res) {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
   MySqlHandler.myinvest_personal_DB.query(`
-      INSERT INTO \`${req.session.loginid.id}_asset_status\` (name, price, count, unit, time, average_bought_price) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${date}', '${req.body.price}');
+      INSERT INTO \`${req.session.loginid.id}_asset_status\` (name, price, count, unit, time, average_bought_price, status_price, status_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${date}', '${req.body.price}', 0, 0);
       INSERT INTO \`${req.session.loginid.id}_asset_recode\` (name, price, count, code, time, after_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${date}', '${req.body.count}');
     `, (err, rows) => {
         if(err) {throw err}

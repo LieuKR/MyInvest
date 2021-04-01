@@ -52,6 +52,7 @@ block content
                         input(type='hidden' name="code" value=`${table_data[i].code}`)
                         input(type='hidden' name="name" value=`${table_data[i].name}`)
                         input(type='hidden' name="before_count" value=`${table_data[i].count}`)
+                        input(type='hidden' name="before_price" value=`${table_data[i].price}`)
                         .form-group
                           div.textbox_input.no-drag
                             label(for='type' style="font-weight: bold;") 구분 : 
@@ -64,7 +65,7 @@ block content
                         .form-group
                           div.textbox_input
                             label(for='price' style="font-weight: bold;") 가격 : 
-                            input.input_test(type='number' name="price" autocomplete="off" placeholder=`${table_data[i].price.toLocaleString('ko-KR')}${table_data[i].unit}` style="padding-left: 48px;" min="0")
+                            input.input_test(type='number' name="price" autocomplete="off" placeholder=`${table_data[i].price.toLocaleString('ko-KR')}${table_data[i].unit}` style="padding-left: 48px;" min="0" required)
                         .form-group
                           div.textbox_input
                             label(for='count' style="font-weight: bold;") 수량 : 
@@ -74,10 +75,31 @@ block content
                 th 
                   i(type='button' data-toggle="modal" data-target=`#insert_data_${i}` class="bi bi-plus" style="position:relative; left:10px; font-size : 15px; cursor: pointer;")
                 td=table_data[i].name
-                td=table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
-                td=table_data[i].count
+                -if(table_data[i].status_price == 1)
+                  td(style="color:red;")
+                    i.bi.bi-caret-up-fill
+                    span=" " + table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
+                -else if(table_data[i].status_price == 0)
+                  td=" " + table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
+                -else
+                  td(style="color:blue;")
+                    i.bi.bi-caret-down-fill
+                    span=" " + table_data[i].price.toLocaleString('ko-KR') + table_data[i].unit
+                -if(table_data[i].status_count == 1)
+                  td(style="color:red;")
+                    span=table_data[i].count + "개"
+                -else if(table_data[i].status_count == 0)
+                  td=table_data[i].count + "개"
+                -else
+                  td(style="color:blue;")
+                    span=table_data[i].count + "개"
                 td=(table_data[i].count * table_data[i].price).toLocaleString('ko-KR') + table_data[i].unit
-                td=((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count)).toLocaleString('ko-KR') + table_data[i].unit                 
+                -if(table_data[i].price > table_data[i].average_bought_price)
+                  td(style="color:red;")=((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count)).toLocaleString('ko-KR') + table_data[i].unit + " 이익"
+                -else if(table_data[i].price < table_data[i].average_bought_price)
+                  td(style="color:blue;")=(Math.abs((table_data[i].price - table_data[i].average_bought_price) * (table_data[i].count))).toLocaleString('ko-KR') + table_data[i].unit  + " 손실"
+                -else
+                  td -
       script.
         var $table = $('#fresh-table')
         $(function () {
