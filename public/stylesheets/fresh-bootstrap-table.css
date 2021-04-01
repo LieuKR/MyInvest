@@ -259,6 +259,7 @@
   margin-right: 5px;
 }
 .bootstrap-table .fixed-table-pagination > .pagination-detail .page-list {
+  visibility: hidden;
   display: inline-block;
 }
 .bootstrap-table .fixed-table-pagination > .pagination-detail .page-list .btn-group {
