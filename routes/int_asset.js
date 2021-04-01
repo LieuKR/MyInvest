@@ -25,5 +25,19 @@ router.get('/', function(req, res) {
   }
 });
 
+// 새로운 관심자산 생성
+router.post('/create_data', function(req, res) {
+  let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+  MySqlHandler.myinvest_personal_DB.query(`
+      INSERT INTO \`${req.session.loginid.id}_asset_status\` (name, price, count, unit, time, average_bought_price, status_price, status_count, before_price) VALUES ('${req.body.name}', '${req.body.price}', 0, '${req.body.unit}', '${date}', '${req.body.price}', 0, 0, '${req.body.price}');
+      INSERT INTO \`${req.session.loginid.id}_asset_recode\` (name, price, count, code, time, after_count) VALUES ('${req.body.name}', '${req.body.price}', 0 , last_insert_id(), '${date}', 0);
+    `, (err, rows) => {
+        if(err) {throw err}
+        else {  
+        res.redirect('/int_asset');
+        }
+  })
+});
+
 module.exports = router;
 
