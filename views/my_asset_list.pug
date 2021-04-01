@@ -37,7 +37,8 @@ block content
                 i(type='button' data-toggle="modal" data-target="#exampleModalLong" class="bi bi-plus" style="position:relative; left:7px; font-size : 15px; cursor: pointer;")
               th(data-sortable="true") 종목명 
               th 최근 가격
-              th 증감량 (률)
+              th 증감량
+              th 등락률
               th(data-sortable="true") 보유량
               th 총 평가액
               th 평가 손익
@@ -91,14 +92,20 @@ block content
                   td(style="color:red;")
                     i.bi.bi-caret-up-fill
                     span=" " + (table_own_asset[i].price - table_own_asset[i].before_price).toLocaleString('ko-KR') + table_own_asset[i].unit
-                    span(style="font-size:90%")=" (" + ((table_own_asset[i].price - table_own_asset[i].before_price)*100/table_own_asset[i].before_price).toFixed(2) + "%)"
                 -else if (table_own_asset[i].price == table_own_asset[i].before_price)
                   td -
                 -else 
                   td(style="color:blue;")
                     i.bi.bi-caret-down-fill
                     span=" " + (table_own_asset[i].price - table_own_asset[i].before_price).toLocaleString('ko-KR') + table_own_asset[i].unit
-                    span(style="font-size:90%")=" (" + ((-table_own_asset[i].price + table_own_asset[i].before_price)*100/table_own_asset[i].before_price).toFixed(2) + "%)"
+                -if(table_own_asset[i].price > table_own_asset[i].before_price)
+                  td(style="color:red;")
+                    span="+" + ((table_own_asset[i].price - table_own_asset[i].before_price)*100/table_own_asset[i].before_price).toFixed(2) + "%"
+                -else if (table_own_asset[i].price == table_own_asset[i].before_price)
+                  td -
+                -else 
+                  td(style="color:blue;")
+                    span=((table_own_asset[i].price - table_own_asset[i].before_price)*100/table_own_asset[i].before_price).toFixed(2) + "%"
                 -if(table_own_asset[i].status_count == 1)
                   td(style="color:red;")
                     i.bi.bi-caret-up-fill

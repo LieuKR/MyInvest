@@ -33,7 +33,8 @@ block content
                 i(type='button' data-toggle="modal" data-target="#exampleModalLong" class="bi bi-plus" style="position:relative; left:7px; font-size : 15px; cursor: pointer;")
               th(data-sortable="true") 종목명 
               th 최근 가격
-              th 증감량 (률)
+              th 증감량
+              th 등락률
               th(data-sortable="true") 갱신 시간
               th(data-sortable="true") 보유량
           tbody(style="font-size : 13px;")
@@ -73,14 +74,20 @@ block content
                   td(style="color:red;")
                     i.bi.bi-caret-up-fill
                     span=" " + (table_int_data[i].price - table_int_data[i].before_price).toLocaleString('ko-KR') + table_int_data[i].unit
-                    span(style="font-size:90%")=" (" + ((table_int_data[i].price - table_int_data[i].before_price)*100/table_int_data[i].before_price).toFixed(2) + "%)"
                 -else if (table_int_data[i].price == table_int_data[i].before_price)
                   td -
                 -else 
                   td(style="color:blue;")
                     i.bi.bi-caret-down-fill
                     span=" " + (table_int_data[i].price - table_int_data[i].before_price).toLocaleString('ko-KR')  + table_int_data[i].unit
-                    span(style="font-size:90%")=" (" + ((-table_int_data[i].price + table_int_data[i].before_price)*100/table_int_data[i].before_price).toFixed(2) + "%)"
+                -if(table_int_data[i].price > table_int_data[i].before_price)
+                  td(style="color:red;")
+                    span="+" + ((table_int_data[i].price - table_int_data[i].before_price)*100/table_int_data[i].before_price).toFixed(2) + "%"
+                -else if (table_int_data[i].price == table_int_data[i].before_price)
+                  td -
+                -else 
+                  td(style="color:blue;")
+                    span=((table_int_data[i].price - table_int_data[i].before_price)*100/table_int_data[i].before_price).toFixed(2) + "%"
                 td=table_int_data[i].time
                 -if(table_int_data[i].count == 0)
                   td -
