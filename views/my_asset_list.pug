@@ -6,28 +6,27 @@ block content
     div(class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
       .modal-dialog(role='document' style="top:100px;")
         .modal-content
-          .modal-header
-              h4 새 종목 추가
+          .modal-header(style="padding: 10px; padding-left: 25px;")
+            h4(style="font-weight: bold;") 새로운 보유자산
           form(action='/asset/create_data', method='post')
-              .modal-body
-                .form-group.row
-                  label.col-sm-2.col-form-label(for='input_name') 종목명
-                  .col-sm-10
-                      input#input_name.form-control(type='text' name="name" autocomplete="off" placeholder="Asset name" )
-                .form-group.row
-                  label.col-sm-2.col-form-label 단위
-                  .col-sm-10
-                      input.form-control(type='text' name="unit" autocomplete="off" placeholder="Unit")
-                .form-group.row
-                  label.col-sm-2.col-form-label 현가
-                  .col-sm-10
-                      input.form-control(type='text' name="price" autocomplete="off" placeholder="Insert current price")
-                .form-group.row
-                  label.col-sm-2.col-form-label 개수
-                  .col-sm-10
-                      input.form-control(type='text' name="count" autocomplete="off" placeholder="Bought number")
-              .modal-footer
-                  button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit
+            .modal-body(style="padding-left: 30px; padding-right: 30px;")
+              .form-group
+                div.textbox_input
+                  label(for='name' style="font-weight: bold;") 자산 이름 : 
+                  input.input_test(type='text' name="name" autocomplete="off" placeholder="Name" style="padding-left: 78px;" required)
+              .form-group
+                div.textbox_input
+                  label(for='unit' style="font-weight: bold;") 가격 단위 : 
+                  input.input_test(type='text' name="unit" autocomplete="off" placeholder="원, 달러" style="padding-left: 78px;" required)
+              .form-group
+                div.textbox_input
+                  label(for='price' style="font-weight: bold;") 현재 가격 : 
+                  input.input_test(type='number' name="price" autocomplete="off" placeholder="Price" style="padding-left: 78px;" min="0" required)
+              .form-group
+                div.textbox_input
+                  label(for='count' style="font-weight: bold;") 보유 개수 : 
+                  input.input_test(type='number' name="count" autocomplete="off" placeholder="Number" style="padding-left: 78px;" min="0" required)
+              button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; margin-top : 5px; margin-bottom : 8px") 제출
     div(class="fresh-table toolbar-color-azure")
       div(class="toolbar")
       table(id="fresh-table" class="table")
@@ -45,26 +44,31 @@ block content
             div(class="modal fade" id=`insert_data_${i}` tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
               .modal-dialog(role='document' style="top:100px;")
                 .modal-content
-                  .modal-header
-                    h4=table_data[i].name + ' 데이터 추가'
+                  .modal-header(style="padding: 10px; padding-left: 25px; color:black;")
+                    h4(style="font-weight: bold;")=table_data[i].name + ' 데이터 추가'
                   form(action='/asset/update_data', method='post')
-                    .modal-body
+                    .modal-body(style="padding-left: 30px; padding-right: 30px;")
                       input(type='hidden' name="code" value=`${table_data[i].code}`)
                       input(type='hidden' name="name" value=`${table_data[i].name}`)
                       input(type='hidden' name="before_count" value=`${table_data[i].count}`)
-                      .form-group.row
-                        .col-sm-10 종류
-                          input.form-control(type='text' name="type" autocomplete="off" placeholder='구매, 판매, 갱신')
-                      .form-group.row
-                        label.col-sm-2.col-form-label 가격
-                        .col-sm-10
-                          input.form-control(type='text' name="price" autocomplete="off" placeholder=`${table_data[i].price.toLocaleString('ko-KR')}`)
-                      .form-group.row
-                        label.col-sm-2.col-form-label 개수
-                        .col-sm-10
-                          input.form-control(type='text' name="count" autocomplete="off" placeholder=`${table_data[i].count}개`)
-                    .modal-footer
-                        button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; font-family: Poppins;") Submit          
+                      .form-group
+                        div.textbox_input.no-drag
+                          label(for='type' style="font-weight: bold;") 구분 : 
+                          div(style="padding-left: 48px; font-size : 13px; border-bottom: 1px solid #999;")
+                            select.select_test(name="type")
+                              span
+                                option(value='1' style="font-size : 13px;") 구매
+                                option(value='-1' style="font-size : 13px;") 판매
+                                option(value='0' style="font-size : 13px;") 갱신
+                      .form-group
+                        div.textbox_input
+                          label(for='price' style="font-weight: bold;") 가격 : 
+                          input.input_test(type='number' name="price" autocomplete="off" placeholder=`${table_data[i].price.toLocaleString('ko-KR')}${table_data[i].unit}` style="padding-left: 48px;" min="0")
+                      .form-group
+                        div.textbox_input
+                          label(for='count' style="font-weight: bold;") 수량 : 
+                          input.input_test(type='number' name="count" autocomplete="off" placeholder=`${table_data[i].count}개` style="padding-left: 48px;" min="0")
+                      button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; margin-top : 5px; margin-bottom : 8px") 제출     
             tr
               th 
                 i(type='button' data-toggle="modal" data-target=`#insert_data_${i}` class="bi bi-plus" style="position:relative; left:10px; font-size : 15px; cursor: pointer;")
@@ -83,10 +87,9 @@ block content
             showRefresh: false,
             showToggle: false,
             showColumns: false,
-            pagination: true,
+            pagination: false,
             striped: true,
             sortable: true,
-            pageSize: 10,
 
             formatNoMatches : function(undefined) {
               return '검색결과가 존재하지 않습니다'

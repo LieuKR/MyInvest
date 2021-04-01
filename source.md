@@ -14,10 +14,6 @@ https://colorlib.com/thank-you-for-downloading/?dlm-dp-dl=1961 : Download Page
 this template is licensed under CC BY 3.0.
 not allowed to remove footer credits for that you must purchase a License.
 
-### 리스트 페이지 테이블
-
-https://colorlib.com/wp/template/fixed-header-table/
-
 ### 스크롤 되는 네비게이션 바
 
 https://startbootstrap.com/template/scrolling-nav
@@ -34,3 +30,5 @@ https://icons.getbootstrap.com/
 https://www.creative-tim.com/product/fresh-bootstrap-table
 내용을 수정하여 사용하였음.
 : follow MIT Licence
+
+### 

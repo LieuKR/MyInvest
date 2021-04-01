@@ -873,25 +873,25 @@ input[type=file] > input[type=button]::-moz-focus-inner {
 }
 
 .form-control::-moz-placeholder {
-  color: #DDDDDD;
+  color: rgba(100, 100, 100, 0.8);
   opacity: 1;
   filter: alpha(opacity=100);
 }
 
 .form-control:-moz-placeholder {
-  color: #DDDDDD;
+  color: rgba(100, 100, 100, 0.8);
   opacity: 1;
   filter: alpha(opacity=100);
 }
 
 .form-control::-webkit-input-placeholder {
-  color: #DDDDDD;
+  color: rgba(100, 100, 100, 0.8);
   opacity: 1;
   filter: alpha(opacity=100);
 }
 
 .form-control:-ms-input-placeholder {
-  color: #DDDDDD;
+  color: rgba(100, 100, 100, 0.8);
   opacity: 1;
   filter: alpha(opacity=100);
 }
