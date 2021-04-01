@@ -332,3 +332,7 @@ label {
   background: rgba(232, 232, 232, 0.993);
 }
 
+
+.backcolor_dropdown:active{
+  background-color: rgb(221, 221, 221) !important;
+}
