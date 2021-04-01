@@ -37,8 +37,8 @@ html
             div(class="dropdown-menu dropdown-menu-right px-4 py-3 no-drag animate slideIn" style="border-top-width: 5px; font-size:14px;")
               div(class="dropdown-header" style="color:black; font-size:15px;")=loginid.id
               div(class="dropdown-divider")
-              div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;") 보유 자산 : 13종
-              div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;") 관심 자산 : 21종
+              div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + table_data.length + "종"
+              div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;") 관심 자산 : -종
               div(class="dropdown-divider")
               div(class="dropdown-item backcolor_dropdown")
                 i.bi.bi-gear-fill
