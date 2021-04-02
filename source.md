@@ -31,4 +31,9 @@ https://www.creative-tim.com/product/fresh-bootstrap-table
 내용을 수정하여 사용하였음.
 : follow MIT Licence
 
-### 
+### 대시보드 탬플릿
+
+https://themewagon.com/themes/free-bootstrap-4-admin-template/
+내용을 일부 수정하여 사용하였음.
+: follow MIT Licence
+
