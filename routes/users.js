@@ -13,13 +13,13 @@ router.get('/', function(req, res) {
     res.redirect('/asset');
   } else {
     // 로그인 페이지 출력
-    res.render('login_form', {pageinfo: 'Login'});
+    res.render('login_form', {pageinfo: 'MyInvest'});
   }
 });
 
 // 회원가입 폼 작성 페이지
 router.get('/sign_up', function(req, res) {
-  res.render('sign_up', {pageinfo: 'Sign_up'});
+  res.render('sign_up', {pageinfo: 'MyInvest - 회원 가입'});
 });
 
 // 회원가입 Post 데이터 처리 페이지
