@@ -12,11 +12,19 @@ const time_functions = require('../serverside_functions/time_functions.js');
 // 개별 자산 정보 페이지
 router.get('/:code', function(req, res) {
   if(req.session.loginid){
-    res.render('asset_info', {pageinfo: 'Test', pagestatus : '4', loginid : req.session.loginid});
+    // req.params.code : 주소에서 가져온 코드값
+    MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` WHERE \`code\` = '${req.params.code}'`, (err, rows1) => {
+      MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`code\` = '${req.params.code}' ORDER BY \`time\` DESC`, (err, rows2) => {
+        MySqlHandler.myinvest_personal_DB.query(`SELECT \`name\`, \`code\` FROM \`${req.session.loginid.id}_asset_status\` WHERE \`code\` <> '${req.params.code}' ORDER BY \`time\` DESC`, (err, rows3) => {
+          rows1.map(x => time_functions.dateform_time(x));
+          rows2.map(x => time_functions.dateform_time(x));
+          res.render('asset_info', {pageinfo: `자산정보 - ${rows1[0].name}`, pagestatus : '4', loginid : req.session.loginid, asset_status : rows1, asset_recode : rows2, asset_list : rows3});
+        })
+      })
+    })
   } else {
     res.redirect('/')
   }
 });
 
 module.exports = router;
-
