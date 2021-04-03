@@ -37,3 +37,8 @@ https://themewagon.com/themes/free-bootstrap-4-admin-template/
 내용을 일부 수정하여 사용하였음.
 : follow MIT Licence
 
+### pace.js
+
+pace.js : An automatic web page progress bar.
+https://github.com/CodeByZach/pace
+
