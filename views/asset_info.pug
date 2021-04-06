@@ -24,14 +24,7 @@ block content
               .col-sm-6.col-lg-3
                 .card.text-white.my_color_css_1
                   .card-body.pb-0
-                    .btn-group.float-right
-                      button.btn.btn-transparent.dropdown-toggle.p-0(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-                        i.icon-settings
-                      .dropdown-menu.dropdown-menu-right
-                        a.dropdown-item(href='#') Action
-                        a.dropdown-item(href='#') Another action
-                        a.dropdown-item(href='#') Something else here
-                    h4.mb-0 9.823
+                    h4.mb-0=asset_status[0].price.toLocaleString('ko-KR') + `${asset_status[0].unit}`
                     p(style="font-size:13px") 현재 가격
                   .chart-wrapper.px-3(style='height:70px;')
                     canvas#card-chart1.chart(height='70')
@@ -39,24 +32,15 @@ block content
               .col-sm-6.col-lg-3
                 .card.text-white.my_color_css_2
                   .card-body.pb-0
-                    button.btn.btn-transparent.p-0.float-right(type='button')
-                      i.icon-location-pin
-                    h4.mb-0 9.823
-                    p(style="font-size:13px") 보유량
+                    h4.mb-0=asset_status[0].count.toLocaleString('ko-KR') + "개"
+                    p(style="font-size:13px") 보유 수량
                   .chart-wrapper.px-3(style='height:70px;')
                     canvas#card-chart2.chart(height='70')
               // /.col
               .col-sm-6.col-lg-3
                 .card.text-white.my_color_css_3
                   .card-body.pb-0
-                    .btn-group.float-right
-                      button.btn.btn-transparent.dropdown-toggle.p-0(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-                        i.icon-settings
-                      .dropdown-menu.dropdown-menu-right
-                        a.dropdown-item(href='#') Action
-                        a.dropdown-item(href='#') Another action
-                        a.dropdown-item(href='#') Something else here
-                    h4.mb-0 9.823
+                    h4.mb-0=asset_status[0].average_bought_price.toLocaleString('ko-KR') + `${asset_status[0].unit}`
                     p(style="font-size:13px") 평균 구매가
                   .chart-wrapper(style='height:70px;')
                     canvas#card-chart3.chart(height='70')
@@ -64,14 +48,7 @@ block content
               .col-sm-6.col-lg-3
                 .card.text-white.my_color_css_4
                   .card-body.pb-0
-                    .btn-group.float-right
-                      button.btn.btn-transparent.dropdown-toggle.p-0(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-                        i.icon-settings
-                      .dropdown-menu.dropdown-menu-right
-                        a.dropdown-item(href='#') Action
-                        a.dropdown-item(href='#') Another action
-                        a.dropdown-item(href='#') Something else here
-                    h4.mb-0 9.823
+                    h4.mb-0=asset_status[0].actural_earn + `${asset_status[0].unit}`
                     p(style="font-size:13px") 총 실현 손익
                   .chart-wrapper.px-3(style='height:70px;')
                     canvas#card-chart4.chart(height='70')
@@ -113,18 +90,16 @@ block content
                     table.table.table-responsive.table-hover.table-outline.mb-0
                       thead.thead-default
                         tr
-                          th.text-center
-                            i.icon-people
+                          th.text-center ㅁ
                           th User
                           th.text-center Country
                           th Usage
                           th.text-center Payment Method
                           th Activity
+                          th asdf
                       tbody
                         tr
-                          td.text-center
-                            .avatar
-                              span.avatar-status.badge-success
+                          td.text-center ㅁ
                           td
                             div Yiorgos Avraamu
                             .small.text-muted
@@ -144,124 +119,7 @@ block content
                           td
                             .small.text-muted Last login
                             strong 10 sec ago
-                        tr
-                          td.text-center
-                            .avatar
-                              span.avatar-status.badge-danger
-                          td
-                            div Avram Tarasios
-                            .small.text-muted
-                              span Recurring
-                              |  | Registered: Jan 1, 2015
-                          td.text-center
-                          td
-                            .clearfix
-                              .float-left
-                                strong 10%
-                              .float-right
-                                small.text-muted Jun 11, 2015 - Jul 10, 2015
-                            .progress.progress-xs
-                              .progress-bar.bg-info(role='progressbar' style='width: 10%' aria-valuenow='10' aria-valuemin='0' aria-valuemax='100')
-                          td.text-center
-                            i.fa.fa-cc-visa(style='font-size:24px')
-                          td
-                            .small.text-muted Last login
-                            strong 5 minutes ago
-                        tr
-                          td.text-center
-                            .avatar
-                              span.avatar-status.badge-warning
-                          td
-                            div Quintin Ed
-                            .small.text-muted
-                              span New
-                              |  | Registered: Jan 1, 2015
-                          td.text-center
-                          td
-                            .clearfix
-                              .float-left
-                                strong 74%
-                              .float-right
-                                small.text-muted Jun 11, 2015 - Jul 10, 2015
-                            .progress.progress-xs
-                              .progress-bar.bg-warning(role='progressbar' style='width: 74%' aria-valuenow='74' aria-valuemin='0' aria-valuemax='100')
-                          td.text-center
-                            i.fa.fa-cc-stripe(style='font-size:24px')
-                          td
-                            .small.text-muted Last login
-                            strong 1 hour ago
-                        tr
-                          td.text-center
-                            .avatar
-                              span.avatar-status.badge-secondary
-                          td
-                            div En&eacute;as Kwadwo
-                            .small.text-muted
-                              span New
-                              |  | Registered: Jan 1, 2015
-                          td.text-center
-                          td
-                            .clearfix
-                              .float-left
-                                strong 98%
-                              .float-right
-                                small.text-muted Jun 11, 2015 - Jul 10, 2015
-                            .progress.progress-xs
-                              .progress-bar.bg-danger(role='progressbar' style='width: 98%' aria-valuenow='98' aria-valuemin='0' aria-valuemax='100')
-                          td.text-center
-                            i.fa.fa-paypal(style='font-size:24px')
-                          td
-                            .small.text-muted Last login
-                            strong Last month
-                        tr
-                          td.text-center
-                            .avatar
-                              span.avatar-status.badge-success
-                          td
-                            div Agapetus Tade&aacute;&scaron;
-                            .small.text-muted
-                              span New
-                              |  | Registered: Jan 1, 2015
-                          td.text-center
-                          td
-                            .clearfix
-                              .float-left
-                                strong 22%
-                              .float-right
-                                small.text-muted Jun 11, 2015 - Jul 10, 2015
-                            .progress.progress-xs
-                              .progress-bar.bg-info(role='progressbar' style='width: 22%' aria-valuenow='22' aria-valuemin='0' aria-valuemax='100')
-                          td.text-center
-                            i.fa.fa-google-wallet(style='font-size:24px')
-                          td
-                            .small.text-muted Last login
-                            strong Last week
-                        tr
-                          td.text-center
-                            .avatar
-                              span.avatar-status.badge-danger
-                          td
-                            div Friderik D&aacute;vid
-                            .small.text-muted
-                              span New
-                              |  | Registered: Jan 1, 2015
-                          td.text-center
-                          td
-                            .clearfix
-                              .float-left
-                                strong 43%
-                              .float-right
-                                small.text-muted Jun 11, 2015 - Jul 10, 2015
-                            .progress.progress-xs
-                              .progress-bar.bg-success(role='progressbar' style='width: 43%' aria-valuenow='43' aria-valuemin='0' aria-valuemax='100')
-                          td.text-center
-                            i.fa.fa-cc-amex(style='font-size:24px')
-                          td
-                            .small.text-muted Last login
-                            strong Yesterday
-              // /.col
-            // /.row
-        // /.conainer-fluid
+                          td asdf
         
       <!-- Plugins and scripts required by all views -->
       script(src="/javascripts/chart.js/dist/Chart.min.js")
