@@ -85,42 +85,97 @@ block content
                 .card
                   .card-body
                     .col-sm-5
-                    h4.card-title.mb-0 거래 내역
-                    br
-                    table.table.table-responsive.table-hover.table-outline.mb-0
-                      thead.thead-default
-                        tr
-                          th.text-center ㅁ
-                          th User
-                          th.text-center Country
-                          th Usage
-                          th.text-center Payment Method
-                          th Activity
-                          th asdf
-                      tbody
-                        tr
-                          td.text-center ㅁ
-                          td
-                            div Yiorgos Avraamu
-                            .small.text-muted
-                              span New
-                              |  | Registered: Jan 1, 2015
-                          td.text-center
-                          td
-                            .clearfix
-                              .float-left
-                                strong 50%
-                              .float-right
-                                small.text-muted Jun 11, 2015 - Jul 10, 2015
-                            .progress.progress-xs
-                              .progress-bar.bg-success(role='progressbar' style='width: 50%' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100')
-                          td.text-center
-                            i.fa.fa-cc-mastercard(style='font-size:24px')
-                          td
-                            .small.text-muted Last login
-                            strong 10 sec ago
-                          td asdf
-        
+                    h4.card-title.mb-0(style="position:absolute") 거래 내역
+                    div(class="fresh-table toolbar-color-azure")
+                      div(class="toolbar")
+                      table(id="fresh-table" class="table")
+                        thead
+                          tr
+                            th(data-width="70px")
+                              i(type='button' class="bi bi-dash" style="position:relative; left:7px; font-size : 13px; cursor: pointer;")
+                            th 구분
+                            th 가격
+                            th 증감량
+                            th 증감률
+                            th 거래량
+                            th 보유 잔고
+                            th 평균 구매가
+                            th 평가 손익
+                            th 총 실현 손익
+                            th(data-sortable="true") 시간
+                        tbody(style="font-size : 13px;")
+                          -for (let i = 0; i < asset_recode.length; i++)
+                            tr
+                              th 
+                                i(type='button' class="bi bi-dash" style="position:relative; left:10px; font-size : 13px; cursor: pointer;")
+                              -if(asset_recode[i].status_count > 0)
+                                td 구매
+                              -else if(asset_recode[i].status_count == 0)
+                                td 갱신
+                              -else
+                                td 판매
+                              -if(asset_recode[i].status_price == 1)
+                                td(style="color:red")
+                                  i.bi.bi-caret-up-fill
+                                  span=' ' + asset_recode[i].price.toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              -else if(asset_recode[i].status_price == 0)
+                                td
+                                  span=asset_recode[i].price.toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              -else
+                                td(style="color:blue")
+                                  i.bi.bi-caret-down-fill
+                                  spen=' ' + asset_recode[i].price.toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              -if(i == asset_recode.length - 1)
+                                td -
+                              -else
+                                -if(asset_recode[i].status_price == 1)
+                                  td(style="color:red")
+                                    i.bi.bi-caret-up-fill
+                                    span=' ' + (asset_recode[i].price - asset_recode[i+1].price).toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                                -else if (asset_recode[i].status_price == 0)
+                                  td -
+                                -else
+                                  td(style="color:blue")
+                                    i.bi.bi-caret-down-fill
+                                    span=' ' + (-asset_recode[i].price + asset_recode[i+1].price).toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              -if(i == asset_recode.length - 1)
+                                td -
+                              -else
+                                -if(asset_recode[i].status_price == 1)
+                                  td(style="color:red")='+' + ((asset_recode[i].price - asset_recode[i+1].price) * 100 / asset_recode[i+1].price).toFixed(2) + "%"
+                                -else if (asset_recode[i].status_price == 0)
+                                  td -
+                                -else
+                                  td(style="color:blue")='-' + ((-asset_recode[i].price + asset_recode[i+1].price) * 100 / asset_recode[i+1].price).toFixed(2) + "%"
+                              -if(asset_recode[i].status_count == 0)
+                                td -
+                              -else
+                                td=asset_recode[i].count + "개"
+                              -if(asset_recode[i].status_count == 1)
+                                td(style="color:red")
+                                  i.bi.bi-caret-up-fill
+                                  span=' ' + asset_recode[i].after_count + "개"
+                              -else if(asset_recode[i].status_count == 0)
+                                td=asset_recode[i].after_count + "개"
+                              -else
+                                td(style="color:blue")
+                                  i.bi.bi-caret-down-fill
+                                  span=' ' + asset_recode[i].after_count + "개"
+                              td=asset_recode[i].average_bought_price.toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              -if(asset_recode[i].price > asset_recode[i].average_bought_price)
+                                td(style="color:red")=((asset_recode[i].price - asset_recode[i].average_bought_price) * asset_recode[i].after_count).toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              -else if(asset_recode[i].price == asset_recode[i].average_bought_price)
+                                td -
+                              -else
+                                td(style="color:blue")=((asset_recode[i].price - asset_recode[i].average_bought_price) * asset_recode[i].after_count).toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              -if(asset_recode[i].actural_earn > 0)
+                                td(style="color:red")=asset_recode[i].actural_earn.toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              -else if(asset_recode[i].actural_earn == 0)
+                                td -
+                              -else
+                                td(style="color:blue")=asset_recode[i].actural_earn.toLocaleString('ko-KR') + `${asset_status[0].unit}`
+                              td=asset_recode[i].time
+
       <!-- Plugins and scripts required by all views -->
       script(src="/javascripts/chart.js/dist/Chart.min.js")
       
@@ -130,4 +185,29 @@ block content
       <!-- Custom scripts required by this view -->
       script(src="/javascripts/info_page.js")
 
+      script.
+        var $table = $('#fresh-table')
+        $(function () {
+          $table.bootstrapTable({
+            classes: 'table table-hover table-striped',
+            toolbar: '.toolbar',
+            search: true,
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            pagination: true,
+            sortable: true,
+            pageSize: 10,
 
+            formatNoMatches : function(undefined) {
+              return '검색결과가 존재하지 않습니다'
+            },
+
+            formatShowingRows: function (pageFrom, pageTo, totalRows) {
+              return ''
+            },
+            formatRecordsPerPage: function (pageNumber) {
+              return pageNumber
+            }
+          })
+        })

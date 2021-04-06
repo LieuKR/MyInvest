@@ -28,7 +28,7 @@ router.post('/update_data', function(req, res) {
   function dataupdate_function (status_price) {
      // "구매"한 경우. average_bought_price값이 변동 && actural_earn은 변동 X
      if(req.body.type == 1) {
-      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.code}', '${date}', ${req.body.before_count} + '${req.body.count}', ((${req.body.average_bought_price} * ${req.body.before_count}) + (${req.body.price} * ${req.body.count})) / (${req.body.before_count} + ${req.body.count}), '${req.body.actural_earn}');`, (err, rows1) => {
+      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.code}', '${date}', ${req.body.before_count} + ${req.body.count}, ((${req.body.average_bought_price} * ${req.body.before_count}) + (${req.body.price} * ${req.body.count})) / (${req.body.before_count} + ${req.body.count}), '${req.body.actural_earn}', '${status_price}', '${req.body.type}');`, (err, rows1) => {
         MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', average_bought_price = ((${req.body.average_bought_price} * count) + (${req.body.price} * ${req.body.count})) / (count + ${req.body.count}) , count = count + '${req.body.count}' , \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
@@ -39,7 +39,7 @@ router.post('/update_data', function(req, res) {
       })
      } else {
       // count가 양수가 아님. 즉 "갱신"만 했거나, "판매"했을 경우. average_bought_price값이 유지 && actural_earn 변동
-      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.code}', '${date}', ${req.body.before_count} + '${req.body.count}', '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${req.body.count});`, (err, rows1) => {
+      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.code}', '${date}', ${req.body.before_count} + '${req.body.count}', '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${req.body.count}, '${status_price}', '${req.body.type}');`, (err, rows1) => {
         MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count - '${req.body.count}' , \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${req.body.count}, \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
@@ -71,7 +71,7 @@ router.post('/create_data', function(req, res) {
 
   MySqlHandler.myinvest_personal_DB.query(`
       INSERT INTO \`${req.session.loginid.id}_asset_status\` (name, price, count, unit, time, average_bought_price, status_price, status_count, before_price, actural_earn) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${date}', '${req.body.price}', 0, 0, '${req.body.price}', 0);
-      INSERT INTO \`${req.session.loginid.id}_asset_recode\` (name, price, count, code, time, after_count, average_bought_price, actural_earn) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${date}', '${req.body.count}', '${req.body.price}', 0);
+      INSERT INTO \`${req.session.loginid.id}_asset_recode\` (name, price, count, code, time, after_count, average_bought_price, actural_earn, status_price, status_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${date}', '${req.body.count}', '${req.body.price}', 0, 0, 0);
     `, (err, rows) => {
         if(err) {throw err}
         else {  
