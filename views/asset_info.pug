@@ -28,7 +28,6 @@ block content
                     p(style="font-size:13px") 현재 가격
                   .chart-wrapper(style='height:70px;')
                     canvas#card-chart1.chart(height='70')
-              // /.col
               .col-sm-6.col-lg-3
                 .card.text-white.my_color_css_2
                   .card-body.pb-0
@@ -36,7 +35,6 @@ block content
                     p(style="font-size:13px") 보유 수량
                   .chart-wrapper(style='height:70px;')
                     canvas#card-chart2.chart(height='70')
-              // /.col
               .col-sm-6.col-lg-3
                 .card.text-white.my_color_css_3
                   .card-body.pb-0
@@ -44,7 +42,6 @@ block content
                     p(style="font-size:13px") 평균 구매가
                   .chart-wrapper(style='height:70px;')
                     canvas#card-chart3.chart(height='70')
-              // /.col
               .col-sm-6.col-lg-3
                 .card.text-white.my_color_css_4
                   .card-body.pb-0
@@ -52,14 +49,12 @@ block content
                     p(style="font-size:13px") 총 실현 손익
                   .chart-wrapper(style='height:70px;')
                     canvas#card-chart4.chart(height='70')
-              // /.col
-            // /.row
             .row
               .col-md-12
                 .card
                   .card-body
                     .col-sm-5
-                    h4.card-title.mb-0(style="position:absolute") 거래 내역
+                    h4.card-title.mb-0(style="position:absolute") 기록 내역
                     div(class="fresh-table toolbar-color-azure")
                       div(class="toolbar")
                       table(id="fresh-table" class="table")
@@ -155,23 +150,6 @@ block content
                   .col-sm-5
                     h4.card-title.mb-0 가격 추이
                     .small.text-muted(style="margin-top:5px")="단위 : " + asset_status[0].unit
-                  // /.col
-                  .col-sm-7.hidden-sm-down
-                    button.btn.btn-primary.float-right(type='button')
-                      i.icon-cloud-download
-                    .btn-toolbar.float-right(role='toolbar' aria-label='Toolbar with button groups')
-                      .btn-group.mr-3(data-toggle='buttons' aria-label='First group')
-                        label.btn.btn-outline-secondary
-                          input#option1(type='radio' name='options')
-                          |  Day
-                        label.btn.btn-outline-secondary.active
-                          input#option2(type='radio' name='options' checked='')
-                          |  Month
-                        label.btn.btn-outline-secondary
-                          input#option3(type='radio' name='options')
-                          |  Year
-                  // /.col
-                // /.row
                 .chart-wrapper(style='height:300px;margin-top:40px;')
                   canvas#main-chart.chart(height='300')
       

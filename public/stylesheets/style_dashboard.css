@@ -8723,21 +8723,21 @@ hr.transparent {
     border-right-color: #536c79; }
 
 .my_color_css_1{
-  background: rgb(106,117,195);
-  background: linear-gradient(133deg, rgba(106,117,195,1) 0%, rgba(56,75,210,1) 49%, rgba(109,99,184,1) 100%);
+  background: rgb(0,53,177);
+  background: linear-gradient(180deg, rgba(0,53,177,1) 0%, rgba(0,50,219,1) 55%, rgba(76, 111, 255, 1) 100%);
 }
 
 .my_color_css_2{
-  background: rgb(106,195,190);
-  background: linear-gradient(133deg, rgba(106,195,190,1) 0%, rgba(56,210,198,1) 49%, rgba(99,184,178,1) 100%);
+  background: rgb(11,177,0);
+  background: linear-gradient(180deg, rgba(11,177,0,1) 0%, rgba(103, 196, 28, 1) 55%, rgba(36, 202, 107, 1) 100%);
 }
 
 .my_color_css_3{
-  background: rgb(217,192,117);
-  background: linear-gradient(133deg, rgba(217,192,117,1) 0%, rgba(255,133,67,1) 49%, rgba(217,181,117,1) 100%);
+  background: rgb(214,148,0);
+  background: linear-gradient(180deg, rgba(214,148,0,1) 0%, rgba(255,172,0,1) 55%, rgba(211, 160, 51, 1) 100%);
 }
 
 .my_color_css_4{
-  background: rgb(217,117,117);
-  background: linear-gradient(133deg, rgba(217,117,117,1) 0%, rgba(255,67,67,1) 49%, rgba(217,117,117,1) 100%);
+  background: rgb(177,0,0);
+  background: linear-gradient(180deg, rgba(177,0,0,1) 0%, rgba(209, 32, 32, 1) 55%, rgba(255, 123, 89, 1) 100%);
 }

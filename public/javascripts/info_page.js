@@ -30,8 +30,8 @@ $(function(){
     labels: labels,
     datasets: [
       {
-        label: '가격',
-        backgroundColor: 'rgba(255,255,255,.2)',
+        label: ' 가격 ',
+        backgroundColor: 'rgba(255,255,255,.3)',
         borderColor: 'rgba(255,255,255,.55)',
         data: data
       },
@@ -52,14 +52,19 @@ $(function(){
     },
     elements: {
       line: {
-        borderWidth: 2
+        borderWidth: 3
       },
       point: {
-        radius: 0,
-        hitRadius: 10,
+        radius: 4,
+        hitRadius: 15,
         hoverRadius: 4,
       },
-    }
+    },
+    tooltips: {
+        
+
+      }
+
   };
   var ctx = $('#card-chart1');
   var cardChart1 = new Chart(ctx, {
@@ -78,7 +83,7 @@ $(function(){
     labels: labels,
     datasets: [
       {
-        label: '보유 수량',
+        label: ' 보유 수량 ',
         backgroundColor: 'rgba(255,255,255,.2)',
         borderColor: 'rgba(255,255,255,.55)',
         data: data
@@ -104,7 +109,7 @@ $(function(){
     labels: labels,
     datasets: [
       {
-        label: '평균 구매가',
+        label: ' 평균 구매가 ',
         backgroundColor: 'rgba(255,255,255,.2)',
         borderColor: 'rgba(255,255,255,.55)',
         data: data
@@ -129,7 +134,7 @@ $(function(){
     labels: labels,
     datasets: [
       {
-        label: '총 실현손익',
+        label: ' 총 실현손익 ',
         backgroundColor: 'rgba(255,255,255,.2)',
         borderColor: 'rgba(255,255,255,.55)',
         data: data
@@ -144,46 +149,38 @@ $(function(){
   });
 
   
-  //Random Numbers
-  function random(min,max) {
-    return Math.floor(Math.random()*(max-min+1)+min);
-  }
-
-  var elements = 7;
-  var labels = [];
-  var data = [];
-
-  for (var i = 2000; i <= 2000 + elements; i++) {
-    labels.push(i);
-    data.push(random(40,100));
-  }
-
-
   //Main Chart
-  var elements = 27;
+
+  // Data push labels for chart
+  var labels = [];
   var data1 = [];
   var data2 = [];
   var data3 = [];
 
-  for (var i = 0; i <= elements; i++) {
-    data1.push(random(50,200));
-    data2.push(random(80,100));
-    data3.push(65);
+  let max_data_numb_main = Math.min(30,asset_recode.length);
+
+  for(let i = 0; i < max_data_numb_main; i++){
+    labels[max_data_numb_main - i - 1] = asset_recode[i].time;
+    data1[max_data_numb_main - i - 1] = asset_recode[i].price;
+    data2[max_data_numb_main - i - 1] = asset_recode[i].average_bought_price;
+    data3[max_data_numb_main - i - 1] = asset_recode[i].actural_earn;
   }
 
+
+
   var data = {
-    labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S', 'M', 'T', 'W', 'T', 'F', 'S', 'S', 'M', 'T', 'W', 'T', 'F', 'S', 'S', 'M', 'T', 'W', 'T', 'F', 'S', 'S'],
+    labels: labels,
     datasets: [
       {
-        label: 'My First dataset',
-        backgroundColor: convertHex($.brandInfo,10),
+        label: '가격',
+        backgroundColor: 'transparent',
         borderColor: $.brandInfo,
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
         data: data1
       },
       {
-        label: 'My Second dataset',
+        label: '평균 구매가',
         backgroundColor: 'transparent',
         borderColor: $.brandSuccess,
         pointHoverBackgroundColor: '#fff',
@@ -191,7 +188,7 @@ $(function(){
         data: data2
       },
       {
-        label: 'My Third dataset',
+        label: '총 실현 손익',
         backgroundColor: 'transparent',
         borderColor: $.brandDanger,
         pointHoverBackgroundColor: '#fff',
@@ -209,16 +206,12 @@ $(function(){
     },
     scales: {
       xAxes: [{
-        gridLines: {
-          drawOnChartArea: false,
-        }
+        display: false
       }],
       yAxes: [{
         ticks: {
           beginAtZero: true,
           maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250
         }
       }]
     },
