@@ -12,119 +12,31 @@ $(function(){
     return result;
   }
 
-  //Cards with Charts
-  var labels = ['January','February','March','April','May','June','July'];
+
+  // asset_recode
+
+
+  // Data push labels for chart1,2 (현재 가격, 보유 수량) && data for chart 1
+  var labels = [];
+  var data = [];
+  let max_data_numb = Math.min(15,asset_recode.length);
+
+  for(let i = 0; i < max_data_numb; i++){
+    labels[max_data_numb - i - 1] = asset_recode[i].time;
+    data[max_data_numb - i - 1] = asset_recode[i].price;
+  }
+  
   var data = {
     labels: labels,
     datasets: [
       {
-        label: 'My First dataset',
-        backgroundColor: $.brandPrimary,
+        label: '가격',
+        backgroundColor: 'rgba(255,255,255,.2)',
         borderColor: 'rgba(255,255,255,.55)',
-        data: [65, 59, 84, 84, 51, 55, 40]
+        data: data
       },
     ]
   };
-  var options = {
-    maintainAspectRatio: false,
-    legend: {
-      display: false
-    },
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        }
-
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: Math.min.apply(Math, data.datasets[0].data) - 5,
-          max: Math.max.apply(Math, data.datasets[0].data) + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    }
-  };
-  var ctx = $('#card-chart1');
-  var cardChart1 = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: options
-  });
-
-  var data = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'My First dataset',
-        backgroundColor: $.brandInfo,
-        borderColor: 'rgba(255,255,255,.55)',
-        data: [1, 18, 9, 17, 34, 22, 11]
-      },
-    ]
-  };
-  var options = {
-    maintainAspectRatio: false,
-    legend: {
-      display: false
-    },
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        }
-
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: Math.min.apply(Math, data.datasets[0].data) - 5,
-          max: Math.max.apply(Math, data.datasets[0].data) + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        tension: 0.00001,
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    }
-  };
-  var ctx = $('#card-chart2');
-  var cardChart2 = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: options
-  });
-
   var options = {
     maintainAspectRatio: false,
     legend: {
@@ -149,14 +61,53 @@ $(function(){
       },
     }
   };
+  var ctx = $('#card-chart1');
+  var cardChart1 = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: options
+  });
+
+  // push data for chart2 (보유 수량)
+  var data = [];
+  for(let i = 0; i < max_data_numb; i++){
+    data[max_data_numb - i - 1] = asset_recode[i].after_count
+  }
+
   var data = {
     labels: labels,
     datasets: [
       {
-        label: 'My First dataset',
+        label: '보유 수량',
         backgroundColor: 'rgba(255,255,255,.2)',
         borderColor: 'rgba(255,255,255,.55)',
-        data: [78, 81, 80, 45, 34, 12, 40]
+        data: data
+      },
+    ]
+  };
+
+  var ctx = $('#card-chart2');
+  var cardChart2 = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: options
+  });
+
+  // Data push chart3 (평균 구매가, 총 실현손익)
+  var data = [];
+
+  for(let i = 0; i < max_data_numb; i++){
+    data[max_data_numb - i - 1] = asset_recode[i].average_bought_price;
+  }
+  
+  var data = {
+    labels: labels,
+    datasets: [
+      {
+        label: '평균 구매가',
+        backgroundColor: 'rgba(255,255,255,.2)',
+        borderColor: 'rgba(255,255,255,.55)',
+        data: data
       },
     ]
   };
@@ -167,12 +118,38 @@ $(function(){
     options: options
   });
 
+  // Data push =for chart 4 (총 실현손익))
+  var data = [];
+
+  for(let i = 0; i < max_data_numb; i++){
+    data[max_data_numb - i - 1] = asset_recode[i].actural_earn;
+  }
+
+  var data = {
+    labels: labels,
+    datasets: [
+      {
+        label: '총 실현손익',
+        backgroundColor: 'rgba(255,255,255,.2)',
+        borderColor: 'rgba(255,255,255,.55)',
+        data: data
+      },
+    ]
+  };
+  var ctx = $('#card-chart4');
+  var cardChart4 = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: options
+  });
+
+  
   //Random Numbers
   function random(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
   }
 
-  var elements = 16;
+  var elements = 7;
   var labels = [];
   var data = [];
 
@@ -181,38 +158,6 @@ $(function(){
     data.push(random(40,100));
   }
 
-  var options = {
-    maintainAspectRatio: false,
-    legend: {
-      display: false
-    },
-    scales: {
-      xAxes: [{
-        display: false,
-        barPercentage: 0.6,
-      }],
-      yAxes: [{
-        display: false,
-      }]
-    },
-
-  };
-  var data = {
-    labels: labels,
-    datasets: [
-      {
-        backgroundColor: 'rgba(255,255,255,.3)',
-        borderColor: 'transparent',
-        data: data
-      },
-    ]
-  };
-  var ctx = $('#card-chart4');
-  var cardChart4 = new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: options
-  });
 
   //Main Chart
   var elements = 27;

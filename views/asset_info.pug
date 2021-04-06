@@ -26,7 +26,7 @@ block content
                   .card-body.pb-0
                     h4.mb-0=asset_status[0].price.toLocaleString('ko-KR') + `${asset_status[0].unit}`
                     p(style="font-size:13px") 현재 가격
-                  .chart-wrapper.px-3(style='height:70px;')
+                  .chart-wrapper(style='height:70px;')
                     canvas#card-chart1.chart(height='70')
               // /.col
               .col-sm-6.col-lg-3
@@ -34,7 +34,7 @@ block content
                   .card-body.pb-0
                     h4.mb-0=asset_status[0].count.toLocaleString('ko-KR') + "개"
                     p(style="font-size:13px") 보유 수량
-                  .chart-wrapper.px-3(style='height:70px;')
+                  .chart-wrapper(style='height:70px;')
                     canvas#card-chart2.chart(height='70')
               // /.col
               .col-sm-6.col-lg-3
@@ -48,38 +48,12 @@ block content
               .col-sm-6.col-lg-3
                 .card.text-white.my_color_css_4
                   .card-body.pb-0
-                    h4.mb-0=asset_status[0].actural_earn + `${asset_status[0].unit}`
+                    h4.mb-0=asset_status[0].actural_earn.toLocaleString('ko-KR') + `${asset_status[0].unit}`
                     p(style="font-size:13px") 총 실현 손익
-                  .chart-wrapper.px-3(style='height:70px;')
+                  .chart-wrapper(style='height:70px;')
                     canvas#card-chart4.chart(height='70')
               // /.col
             // /.row
-            .card
-              .card-body
-                .row
-                  .col-sm-5
-                    h4.card-title.mb-0 가격 추이
-                    .small.text-muted(style="margin-top:5px")="단위 : " + asset_status[0].unit
-                  // /.col
-                  .col-sm-7.hidden-sm-down
-                    button.btn.btn-primary.float-right(type='button')
-                      i.icon-cloud-download
-                    .btn-toolbar.float-right(role='toolbar' aria-label='Toolbar with button groups')
-                      .btn-group.mr-3(data-toggle='buttons' aria-label='First group')
-                        label.btn.btn-outline-secondary
-                          input#option1(type='radio' name='options')
-                          |  Day
-                        label.btn.btn-outline-secondary.active
-                          input#option2(type='radio' name='options' checked='')
-                          |  Month
-                        label.btn.btn-outline-secondary
-                          input#option3(type='radio' name='options')
-                          |  Year
-                  // /.col
-                // /.row
-                .chart-wrapper(style='height:300px;margin-top:40px;')
-                  canvas#main-chart.chart(height='300')
-                  
             .row
               .col-md-12
                 .card
@@ -175,14 +149,43 @@ block content
                               -else
                                 td(style="color:blue")=asset_recode[i].actural_earn.toLocaleString('ko-KR') + `${asset_status[0].unit}`
                               td=asset_recode[i].time
-
+            .card
+              .card-body
+                .row
+                  .col-sm-5
+                    h4.card-title.mb-0 가격 추이
+                    .small.text-muted(style="margin-top:5px")="단위 : " + asset_status[0].unit
+                  // /.col
+                  .col-sm-7.hidden-sm-down
+                    button.btn.btn-primary.float-right(type='button')
+                      i.icon-cloud-download
+                    .btn-toolbar.float-right(role='toolbar' aria-label='Toolbar with button groups')
+                      .btn-group.mr-3(data-toggle='buttons' aria-label='First group')
+                        label.btn.btn-outline-secondary
+                          input#option1(type='radio' name='options')
+                          |  Day
+                        label.btn.btn-outline-secondary.active
+                          input#option2(type='radio' name='options' checked='')
+                          |  Month
+                        label.btn.btn-outline-secondary
+                          input#option3(type='radio' name='options')
+                          |  Year
+                  // /.col
+                // /.row
+                .chart-wrapper(style='height:300px;margin-top:40px;')
+                  canvas#main-chart.chart(height='300')
+      
       <!-- Plugins and scripts required by all views -->
-      script(src="/javascripts/chart.js/dist/Chart.min.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js")
       
       <!-- GenesisUI main scripts -->
       script(src="/javascripts/info_app.js")
 
-      <!-- Custom scripts required by this view -->
+      <!-- info_page.js 내부의 Chart.js 모듈에서 사용할 데이터 -->
+      script.
+        let asset_recode = !{JSON.stringify(asset_recode)};
+
+      <!-- Custom scripts required by this view. Chart도 여기서 생성 -->
       script(src="/javascripts/info_page.js")
 
       script.
