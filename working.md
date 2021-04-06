@@ -194,3 +194,7 @@
 ### chart.js가 종목 정보 페이지에서 작동하게 처리
 
 ### pace.js : 페이지 로딩 바 추가
+
+### 새로운 DB내 데이터 컬럼 생성 및 연결 (일단 user_asset 라우터에만 연결)
+- asset_recode, status에 "actural_earn" : 실현 손익을 실시간으로 기록하는 컬럼
+- asset_recode에 average_bought_price 컬럼 추가 : 데이터 그래프를 제공하기 위해 기록
