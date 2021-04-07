@@ -336,3 +336,11 @@ label {
 .backcolor_dropdown:active{
   background-color: rgb(221, 221, 221) !important;
 }
+
+.transparent-button {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent;
+  border: none;
+}
+
