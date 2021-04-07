@@ -162,8 +162,7 @@ a {
   background-color: transparent;
   -webkit-text-decoration-skip: objects; }
   a:hover {
-    color: #167495;
-    text-decoration: underline; }
+    color: #167495;}
 
 a:not([href]):not([tabindex]) {
   color: inherit;
@@ -3518,7 +3517,7 @@ button.close {
   background-color: #20a8d8 !important; }
 
 a.bg-primary:focus, a.bg-primary:hover {
-  background-color: #0069d9; !important; }
+  background-color: #0069d9;}
 
 .bg-secondary {
   background-color: #a4b7c1 !important; }
@@ -5449,7 +5448,7 @@ a.bg-dark:focus, a.bg-dark:hover {
   color: #20a8d8 !important; }
 
 a.text-primary:focus, a.text-primary:hover {
-  color: #0069d9; !important; }
+  color: #0069d9;}
 
 .text-secondary {
   color: #a4b7c1 !important; }
@@ -6874,8 +6873,7 @@ base-chart.chart {
 
 .dropdown-item {
   position: relative;
-  padding: 10px 20px;
-  border-bottom: 1px solid #c2cfd6; }
+  padding: 10px 20px;}
   .dropdown-item:last-child {
     border-bottom: 0; }
   .dropdown-item i {

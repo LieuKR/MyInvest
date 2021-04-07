@@ -47,6 +47,12 @@ html
               -else if (table_int_data)
                 div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + my_ass_count + "종"
                 div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + table_int_data.length + "종"
+              -else if(asset_own_list)
+                -if(asset_status[0].count > 0)
+                  div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + (asset_own_list.length + 1) + "종"
+                -else
+                  div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + asset_own_list.length + "종"
+                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + (asset_own_list.length + asset_int_list.length + 1) + "종"
               div(class="dropdown-divider")
               div(class="dropdown-item backcolor_dropdown")
                 i.bi.bi-gear-fill

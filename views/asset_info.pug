@@ -10,10 +10,15 @@ block content
             li.nav-item
               a.nav-link(href=`/asset_info/${asset_status[0].code}` style="font-size : 15px; font-weight: bold; margin-left : 20px; text-align: left;")=asset_status[0].name
             li.nav-title
-              | 관심 자산 리스트
-            -for (let i = 0; i < 15 && i < asset_list.length; i ++)
+              | 보유 자산 목록
+            -for (let i = 0; i < 10 && i < asset_own_list.length; i ++)
               li.nav-item(style="margin-left : 35px; text-align: left;")
-                a.nav-link(href=`/asset_info/${asset_list[i].code}` style="font-size : 13px;")=asset_list[i].name
+                a.nav-link(href=`/asset_info/${asset_own_list[i].code}` style="font-size : 13px;")=asset_own_list[i].name
+            li.nav-title
+              | 관심 자산 목록
+            -for (let i = 0; i < 10 && i < asset_int_list.length; i ++)
+              li.nav-item(style="margin-left : 35px; text-align: left;")
+                a.nav-link(href=`/asset_info/${asset_int_list[i].code}` style="font-size : 13px;")=asset_int_list[i].name
       // Main content
       div(class="modal fade" id=`insert_data` tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
         .modal-dialog(role='document' style="top:100px;")
