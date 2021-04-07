@@ -1,21 +1,6 @@
 $(function(){
   'use strict';
 
-  //convert Hex to RGBA
-  function convertHex(hex,opacity){
-    hex = hex.replace('#','');
-    var r = parseInt(hex.substring(0,2), 16);
-    var g = parseInt(hex.substring(2,4), 16);
-    var b = parseInt(hex.substring(4,6), 16);
-
-    var result = 'rgba('+r+','+g+','+b+','+opacity/100+')';
-    return result;
-  }
-
-
-  // asset_recode
-
-
   // Data push labels for chart1,2 (현재 가격, 보유 수량) && data for chart 1
   var labels = [];
   var data = [];
@@ -31,7 +16,7 @@ $(function(){
     datasets: [
       {
         label: ' 가격 ',
-        backgroundColor: 'rgba(255,255,255,.3)',
+        backgroundColor: 'rgba(255,255,255,.4)',
         borderColor: 'rgba(255,255,255,.55)',
         data: data
       },
@@ -52,16 +37,89 @@ $(function(){
     },
     elements: {
       line: {
-        borderWidth: 3
+        borderWidth: 2
       },
       point: {
-        radius: 4,
-        hitRadius: 15,
-        hoverRadius: 4,
+        radius: 0,
+        hitRadius: 9,
+        hoverRadius: 5,
       },
     },
     tooltips: {
-        
+      enabled: false,
+
+      custom: function(tooltipModel) {
+          // Tooltip Element
+          var tooltipEl = document.getElementById('chartjs-tooltip');
+
+          // Create element on first render
+          if (!tooltipEl) {
+              tooltipEl = document.createElement('div');
+              tooltipEl.id = 'chartjs-tooltip';
+              tooltipEl.innerHTML = "<table></table>";
+              document.body.appendChild(tooltipEl);
+          }
+
+          // Hide if no tooltip
+          if (tooltipModel.opacity === 0) {
+              tooltipEl.style.opacity = 0;
+              return;
+          }
+
+          // Set caret Position
+          tooltipEl.classList.remove('above', 'below', 'no-transform');
+          if (tooltipModel.yAlign) {
+              tooltipEl.classList.add(tooltipModel.yAlign);
+          } else {
+              tooltipEl.classList.add('no-transform');
+          }
+
+          function getBody(bodyItem) {
+              return bodyItem.lines;
+          }
+
+          // Set Text
+          if (tooltipModel.body) {
+              var titleLines = tooltipModel.title || [];
+              var bodyLines = tooltipModel.body.map(getBody);
+
+              var innerHtml = '<thead>';
+
+              titleLines.forEach(function(title) {
+                  innerHtml += '<tr><th>' + title + '</th></tr>';
+              });
+              innerHtml += '</thead><tbody>';
+
+              bodyLines.forEach(function(body, i) {
+                  var colors = tooltipModel.labelColors[i];
+                  var style = 'background:' + colors.backgroundColor;
+                  style += '; border-color:' + colors.borderColor;
+                  style += '; border-width: 2px';
+                  var span = '<span style="' + style + '"></span>';
+                  innerHtml += '<tr><td>' + span + body + '</td></tr>';
+              });
+              innerHtml += '</tbody>';
+
+              var tableRoot = tooltipEl.querySelector('table');
+              tableRoot.innerHTML = innerHtml;
+          }
+
+          // `this` will be the overall tooltip
+          var position = this._chart.canvas.getBoundingClientRect();
+
+          // Display, position, and set styles for font
+          tooltipEl.style.background = 'rgba(0, 0, 0, 0.7)';
+          tooltipEl.style.borderRadius = '3px';
+          tooltipEl.style.color = 'white';
+          tooltipEl.style.opacity = 1;
+          tooltipEl.style.position = 'absolute';
+          tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
+          tooltipEl.style.top = position.top + tooltipModel.caretY + 'px';
+          tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+          tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
+          tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+          tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+      }
 
       }
 
