@@ -255,7 +255,6 @@ $(function(){
       }],
       yAxes: [{
         ticks: {
-          beginAtZero: true,
           maxTicksLimit: 5,
         }
       }]
