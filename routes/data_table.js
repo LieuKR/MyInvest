@@ -7,7 +7,7 @@ const MySqlHandler = require('../serverside_functions/MySqlHandler.js');
 // 시간값 처리하는 함수들
 const time_functions = require('../serverside_functions/time_functions.js');
 
-// let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); : 시간값 입력할때 쓰자
+// time_functions.Make_time() : 대한민국 표준시로 변환한 시간. YYYY-MM-DD HH-MM-SS 형식으로 출력
 
 // 보유 자산 목록 페이지
 router.get('/own', function(req, res) {

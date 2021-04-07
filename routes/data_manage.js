@@ -7,17 +7,16 @@ const MySqlHandler = require('../serverside_functions/MySqlHandler.js');
 // 시간값 처리하는 함수들
 const time_functions = require('../serverside_functions/time_functions.js');
 
-// let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); : 시간값 입력할때 쓰자
+// time_functions.Make_time() : 대한민국 표준시로 변환한 시간. YYYY-MM-DD HH-MM-SS 형식으로 출력
 
 // Update 데이터 처리
 router.post('/update_data', function(req, res) {
-  let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
   function dataupdate_function (status_price, count_num) {
     if(count_num == 0) {
     // count가 0. 즉 "갱신"만 한 경우의 쿼리문
-    MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', 0 , '${req.body.code}', '${date}', ${req.body.before_count}, '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, '${status_price}', 0);`, (err, rows1) => {
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = 0, \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, \`before_price\` = '${req.body.before_price}'
+    MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', 0 , '${req.body.code}', '${time_functions.Make_time()}', ${req.body.before_count}, '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, '${status_price}', 0);`, (err, rows1) => {
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${status_price}', \`status_count\` = 0, \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
@@ -28,8 +27,8 @@ router.post('/update_data', function(req, res) {
     }
     // "구매"한 경우. average_bought_price값이 변동 && actural_earn은 변동 X
     else if(req.body.type == 1) {
-      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${count_num}', '${req.body.code}', '${date}', ${req.body.before_count} + ${count_num}, ((${req.body.average_bought_price} * ${req.body.before_count}) + (${req.body.price} * ${count_num})) / (${req.body.before_count} + ${count_num}), '${req.body.actural_earn}', '${status_price}', '${req.body.type}');`, (err, rows1) => {
-        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', average_bought_price = ((${req.body.average_bought_price} * count) + (${req.body.price} * ${count_num})) / (count + ${count_num}) , count = count + '${count_num}' , \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`before_price\` = '${req.body.before_price}'
+      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${count_num}', '${req.body.code}', '${time_functions.Make_time()}', ${req.body.before_count} + ${count_num}, ((${req.body.average_bought_price} * ${req.body.before_count}) + (${req.body.price} * ${count_num})) / (${req.body.before_count} + ${count_num}), '${req.body.actural_earn}', '${status_price}', '${req.body.type}');`, (err, rows1) => {
+        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', average_bought_price = ((${req.body.average_bought_price} * count) + (${req.body.price} * ${count_num})) / (count + ${count_num}) , count = count + '${count_num}' , \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
@@ -40,8 +39,8 @@ router.post('/update_data', function(req, res) {
     } 
     else {
       // count가 양수가 아닌. 즉 "판매"했을 경우. average_bought_price값이 유지 && actural_earn 변동
-      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', (${count_num} * ${req.body.type}) , '${req.body.code}', '${date}', ${req.body.before_count} + (${count_num} * ${req.body.type}), '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, '${status_price}', '${req.body.type}');`, (err, rows1) => {
-        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count + (${count_num} * ${req.body.type}) , \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, \`before_price\` = '${req.body.before_price}'
+      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', (${count_num} * ${req.body.type}) , '${req.body.code}', '${time_functions.Make_time()}', ${req.body.before_count} + (${count_num} * ${req.body.type}), '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, '${status_price}', '${req.body.type}');`, (err, rows1) => {
+        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count + (${count_num} * ${req.body.type}) , \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
@@ -85,11 +84,9 @@ router.post('/update_data', function(req, res) {
 
 // 새로운 종목 생성
 router.post('/create_data', function(req, res) {
-  let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-
   MySqlHandler.myinvest_personal_DB.query(`
-      INSERT INTO \`${req.session.loginid.id}_asset_status\` (name, price, count, unit, time, average_bought_price, status_price, status_count, before_price, actural_earn) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${date}', '${req.body.price}', 0, 0, '${req.body.price}', 0);
-      INSERT INTO \`${req.session.loginid.id}_asset_recode\` (name, price, count, code, time, after_count, average_bought_price, actural_earn, status_price, status_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${date}', '${req.body.count}', '${req.body.price}', 0, 0, 0);
+      INSERT INTO \`${req.session.loginid.id}_asset_status\` (name, price, count, unit, time, average_bought_price, status_price, status_count, before_price, actural_earn) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${time_functions.Make_time()}', '${req.body.price}', 0, 0, '${req.body.price}', 0);
+      INSERT INTO \`${req.session.loginid.id}_asset_recode\` (name, price, count, code, time, after_count, average_bought_price, actural_earn, status_price, status_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${time_functions.Make_time()}', '${req.body.count}', '${req.body.price}', 0, 0, 0);
     `, (err, rows) => {
         if(err) {throw err}
         else {  
@@ -100,7 +97,6 @@ router.post('/create_data', function(req, res) {
 
 // 입력 기록 삭제 && 만약 마지막 입력기록일 경우 모든 데이터 삭제
 router.post('/delete_data', function(req, res) {
-  let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
   // delete_all이 존재할 경우 : 그냥 전부 삭제
   if(req.body.delete_all == 1){
     MySqlHandler.myinvest_personal_DB.query(`DELETE FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`code\`= ${req.body.code}; DELETE FROM \`${req.session.loginid.id}_asset_status\` WHERE \`code\`= ${req.body.code};`, (err, rows) => {
@@ -110,7 +106,7 @@ router.post('/delete_data', function(req, res) {
   } else {
     // 구매기록 제거시
     if(req.body.count > 0){
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET average_bought_price = ((average_bought_price * count) - (price * ${req.body.count})) / (count - ${req.body.count}), \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${date}', \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET average_bought_price = ((average_bought_price * count) - (price * ${req.body.count})) / (count - ${req.body.count}), \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
       DELETE FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
         if(err) {throw err}
         else { 
@@ -119,7 +115,7 @@ router.post('/delete_data', function(req, res) {
       })
       // 판매 or 갱신기록 제거시
     } else {
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${date}', \`actural_earn\` = actural_earn - (${req.body.old_price} - average_bought_price) * ${req.body.count}, \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${time_functions.Make_time()}', \`actural_earn\` = actural_earn - (${req.body.old_price} - average_bought_price) * ${req.body.count}, \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
       DELETE FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
         if(err) {throw err}
         else { 

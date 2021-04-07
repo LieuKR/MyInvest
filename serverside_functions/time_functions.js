@@ -1,4 +1,13 @@
 // 게시판 글 목록 날짜 형식 변환 함수
+exports.Make_time = function (){
+  let curr = new Date()
+  const utc = curr.getTime();
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000; // 표준시간에 더해주는 시간. GMT+0900 : 대한민국 표준시 이므로 9시간을 더해줌
+  const kr_curr = new Date(utc + KR_TIME_DIFF).toISOString().replace(/T/, ' ').replace(/\..+/, '');
+  return(kr_curr);
+};
+
+
 exports.dateform_dateORtime = function (array) {
     let year = array.time.getFullYear();
     let month = array.time.getMonth()+1;
