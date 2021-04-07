@@ -213,7 +213,6 @@ $(function(){
   var labels = [];
   var data1 = [];
   var data2 = [];
-  var data3 = [];
 
   let max_data_numb_main = Math.min(30,asset_recode.length);
 
@@ -221,7 +220,6 @@ $(function(){
     labels[max_data_numb_main - i - 1] = asset_recode[i].time;
     data1[max_data_numb_main - i - 1] = asset_recode[i].price;
     data2[max_data_numb_main - i - 1] = asset_recode[i].average_bought_price;
-    data3[max_data_numb_main - i - 1] = asset_recode[i].actural_earn;
   }
 
 
@@ -232,7 +230,7 @@ $(function(){
       {
         label: '가격',
         backgroundColor: 'transparent',
-        borderColor: $.brandInfo,
+        borderColor: 'blue',
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
         data: data1
@@ -240,31 +238,20 @@ $(function(){
       {
         label: '평균 구매가',
         backgroundColor: 'transparent',
-        borderColor: $.brandSuccess,
+        borderColor: 'orange',
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
         data: data2
       },
-      {
-        label: '총 실현 손익',
-        backgroundColor: 'transparent',
-        borderColor: $.brandDanger,
-        pointHoverBackgroundColor: '#fff',
-        borderWidth: 1,
-        borderDash: [8, 5],
-        data: data3
-      }
     ]
   };
 
   var options = {
     maintainAspectRatio: false,
     legend: {
-      display: false
     },
     scales: {
       xAxes: [{
-        display: false
       }],
       yAxes: [{
         ticks: {
@@ -275,7 +262,7 @@ $(function(){
     },
     elements: {
       point: {
-        radius: 0,
+        radius: 2,
         hitRadius: 10,
         hoverRadius: 4,
         hoverBorderWidth: 3,
