@@ -33,7 +33,7 @@ router.post('/update_data', function(req, res) {
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
-            res.redirect('/')
+            res.redirect('back')
           }
         })
       })
@@ -44,7 +44,7 @@ router.post('/update_data', function(req, res) {
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
-            res.redirect('/')
+            res.redirect('back')
           }
         })
       })

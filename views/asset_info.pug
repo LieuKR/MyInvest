@@ -15,6 +15,37 @@ block content
               li.nav-item(style="margin-left : 35px; text-align: left;")
                 a.nav-link(href=`/asset_info/${asset_list[i].code}` style="font-size : 13px;")=asset_list[i].name
       // Main content
+      div(class="modal fade" id=`insert_data` tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true")
+        .modal-dialog(role='document' style="top:100px;")
+          .modal-content
+            .modal-header(style="padding: 10px; padding-left: 25px; color:black;")
+              h4(style="font-weight: bold; padding-top: 20px;")=asset_status[0].name + ' 데이터 추가'
+            form(action='/asset/update_data', method='post')
+              .modal-body(style="padding-left: 30px; padding-right: 30px;")
+                input(type='hidden' name="code" value=`${asset_status[0].code}`)
+                input(type='hidden' name="name" value=`${asset_status[0].name}`)
+                input(type='hidden' name="before_count" value=`${asset_status[0].count}`)
+                input(type='hidden' name="before_price" value=`${asset_status[0].price}`)
+                input(type='hidden' name="average_bought_price" value=`${asset_status[0].average_bought_price}`)
+                input(type='hidden' name="actural_earn" value=`${asset_status[0].actural_earn}`)
+                .form-group
+                  div.textbox_input.no-drag
+                    label(for='type' style="font-weight: bold;") 구분 : 
+                    div(style="padding-left: 48px; font-size : 13px; border-bottom: 1px solid #999;")
+                      select.select_test(name="type")
+                        span
+                          option(value='1' style="font-size : 13px;") 구매
+                          option(value='-1' style="font-size : 13px;") 판매
+                          option(value='0' style="font-size : 13px;") 갱신
+                .form-group
+                  div.textbox_input
+                    label(for='price' style="font-weight: bold;") 가격 : 
+                    input.input_test(type='number' name="price" autocomplete="off" placeholder=`${asset_status[0].price.toLocaleString('ko-KR')}${asset_status[0].unit}` style="padding-left: 55px;" min="0" required)
+                .form-group
+                  div.textbox_input
+                    label(for='count' style="font-weight: bold;") 수량 : 
+                    input.input_test(type='number' name="count" autocomplete="off" placeholder=`${asset_status[0].count}개` style="padding-left: 55px;" min="0")
+                button(type="submit" class="btn btn-primary float-end" style="font-size : 13px; margin-top : 5px; margin-bottom : 8px; font-weight:600; padding-left: 16px;padding-right: 16px;") 제출     
       main.main
         p
         p
@@ -61,7 +92,7 @@ block content
                         thead
                           tr
                             th(data-width="70px")
-                              i(type='button' class="bi bi-dash" style="position:relative; left:7px; font-size : 13px; cursor: pointer;")
+                              i(type='button' data-toggle="modal" data-target="#insert_data" class="bi bi-plus" style="position:relative; left:7px; font-size : 15px; cursor: pointer;")
                             th 구분
                             th 가격
                             th 증감량
