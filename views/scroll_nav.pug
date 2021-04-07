@@ -59,14 +59,14 @@ html
           ul(class="navbar-nav ml-auto")
             li(class="nav-item")
               -if(pagestatus == 1)
-                a(class="nav-link js-scroll-trigger" href="/asset" style="color:white") 보유 자산
+                a(class="nav-link js-scroll-trigger" href="/my_table/own" style="color:white") 보유 자산
               -else
-                a(class="nav-link js-scroll-trigger" href="/asset") 보유 자산
+                a(class="nav-link js-scroll-trigger" href="/my_table/own") 보유 자산
             li(class="nav-item")
               -if(pagestatus == 2)
-                a(class="nav-link js-scroll-trigger" href="/int_asset" style="color:white") 관심 자산
+                a(class="nav-link js-scroll-trigger" href="/my_table/int" style="color:white") 관심 자산
               -else 
-                a(class="nav-link js-scroll-trigger" href="/int_asset") 관심 자산
+                a(class="nav-link js-scroll-trigger" href="/my_table/int") 관심 자산
             li(class="nav-item")
               -if(pagestatus == 3)
                 a(class="nav-link js-scroll-trigger" href="#contact" style="color:white") 환율

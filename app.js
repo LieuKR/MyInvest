@@ -15,9 +15,9 @@ const socketio = require("socket.io");
 
 // Routers
 var usersRouter = require('./routes/users');
-var user_AssetRouter = require('./routes/user_asset');
-var int_AssetRouter = require('./routes/int_asset');
+var user_AssetRouter = require('./routes/data_table');
 var info_AssetRouter = require('./routes/asset_info');
+var data_AssetRouter = require('./routes/data_manage');
 
 var app = express();
 
@@ -48,9 +48,9 @@ app.use(session({
 }))
 
 app.use('/', usersRouter);
-app.use('/asset', user_AssetRouter);
-app.use('/int_asset', int_AssetRouter);
+app.use('/my_table', user_AssetRouter);
 app.use('/asset_info', info_AssetRouter);
+app.use('/data', data_AssetRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

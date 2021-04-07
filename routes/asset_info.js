@@ -7,12 +7,9 @@ const MySqlHandler = require('../serverside_functions/MySqlHandler.js');
 // 시간값 처리하는 함수들
 const time_functions = require('../serverside_functions/time_functions.js');
 
-// let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); : 시간값 입력할때 쓰자
-
 // 개별 자산 정보 페이지
 router.get('/:code', function(req, res) {
   if(req.session.loginid){
-    // req.params.code : 주소에서 가져온 코드값
     MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` WHERE \`code\` = '${req.params.code}'`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`code\` = '${req.params.code}' ORDER BY \`time\` DESC`, (err, rows2) => {
         MySqlHandler.myinvest_personal_DB.query(`SELECT \`name\`, \`code\` FROM \`${req.session.loginid.id}_asset_status\` WHERE \`code\` <> '${req.params.code}' ORDER BY \`time\` DESC`, (err, rows3) => {

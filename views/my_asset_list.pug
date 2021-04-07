@@ -9,7 +9,7 @@ block content
           .modal-content
             .modal-header(style="padding: 10px; padding-left: 25px;")
               h4(style="font-weight: bold;") 새로운 보유자산
-            form(action='/asset/create_data', method='post')
+            form(action='/data/create_data', method='post')
               .modal-body(style="padding-left: 30px; padding-right: 30px;")
                 .form-group
                   div.textbox_input
@@ -49,7 +49,7 @@ block content
                   .modal-content
                     .modal-header(style="padding: 10px; padding-left: 25px; color:black;")
                       h4(style="font-weight: bold;")=table_own_asset[i].name + ' 데이터 추가'
-                    form(action='/asset/update_data', method='post')
+                    form(action='/data/update_data', method='post')
                       .modal-body(style="padding-left: 30px; padding-right: 30px;")
                         input(type='hidden' name="code" value=`${table_own_asset[i].code}`)
                         input(type='hidden' name="name" value=`${table_own_asset[i].name}`)
