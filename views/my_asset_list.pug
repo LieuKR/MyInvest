@@ -90,20 +90,20 @@ block content
                   td(style="color:blue;")
                     i.bi.bi-caret-down-fill
                     span=" " + table_own_asset[i].price.toLocaleString('ko-KR') + table_own_asset[i].unit
-                -if(table_own_asset[i].price > table_own_asset[i].before_price)
+                -if(table_own_asset[i].status_price == 1)
                   td(style="color:red;")
                     i.bi.bi-caret-up-fill
                     span=" " + (table_own_asset[i].price - table_own_asset[i].before_price).toLocaleString('ko-KR') + table_own_asset[i].unit
-                -else if (table_own_asset[i].price == table_own_asset[i].before_price)
+                -else if (table_own_asset[i].status_price == 0)
                   td -
                 -else 
                   td(style="color:blue;")
                     i.bi.bi-caret-down-fill
                     span=" " + (table_own_asset[i].price - table_own_asset[i].before_price).toLocaleString('ko-KR') + table_own_asset[i].unit
-                -if(table_own_asset[i].price > table_own_asset[i].before_price)
+                -if(table_own_asset[i].status_price == 1)
                   td(style="color:red;")
                     span="+" + ((table_own_asset[i].price - table_own_asset[i].before_price)*100/table_own_asset[i].before_price).toFixed(2) + "%"
-                -else if (table_own_asset[i].price == table_own_asset[i].before_price)
+                -else if (table_own_asset[i].status_price == 0)
                   td -
                 -else 
                   td(style="color:blue;")

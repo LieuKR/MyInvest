@@ -107,7 +107,26 @@ block content
                           -for (let i = 0; i < asset_recode.length; i++)
                             tr
                               th 
-                                i(type='button' class="bi bi-dash" style="position:relative; left:10px; font-size : 13px; cursor: pointer;")
+                                -if(i == 0)
+                                  form(action='/asset/delete_data', method='post')
+                                    input(type='hidden' name="code" value=`${asset_recode[0].code}`)
+                                    input(type='hidden' name="count" value=`${asset_recode[0].count}`)
+                                    -if(asset_recode[2])
+                                      input(type='hidden' name="before_price" value=`${asset_recode[2].price}`)
+                                      input(type='hidden' name="actural_earn" value=`${asset_recode[1].actural_earn}`)
+                                      input(type='hidden' name="old_price" value=`${asset_recode[1].price}`)
+                                      input(type='hidden' name="status_price" value=`${asset_recode[1].status_price}`)
+                                      input(type='hidden' name="status_count" value=`${asset_recode[1].status_count}`)
+                                    -else if(asset_recode[1])
+                                      input(type='hidden' name="before_price" value=`${asset_recode[1].price}`)
+                                      input(type='hidden' name="actural_earn" value=`${asset_recode[1].actural_earn}`)
+                                      input(type='hidden' name="old_price" value=`${asset_recode[1].price}`)
+                                      input(type='hidden' name="status_price" value=`${asset_recode[1].status_price}`)
+                                      input(type='hidden' name="status_count" value=`${asset_recode[1].status_count}`)
+                                    -else
+                                      input(type='hidden' name="delete_all" value=1)
+                                    input(type='hidden' name="no" value=`${asset_recode[0].no}`)
+                                    button(type='submit' class="bi bi-dash" style="position:relative; left:10px; font-size : 13px; cursor: pointer;")
                               -if(asset_recode[i].status_count > 0)
                                 td 구매
                               -else if(asset_recode[i].status_count == 0)
@@ -150,7 +169,7 @@ block content
                               -if(asset_recode[i].status_count == 0)
                                 td -
                               -else
-                                td=asset_recode[i].count + "개"
+                                td=Math.abs(asset_recode[i].count) + "개"
                               -if(asset_recode[i].status_count == 1)
                                 td(style="color:red")
                                   i.bi.bi-caret-up-fill

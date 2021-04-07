@@ -39,8 +39,8 @@ router.post('/update_data', function(req, res) {
       })
      } else {
       // count가 양수가 아님. 즉 "갱신"만 했거나, "판매"했을 경우. average_bought_price값이 유지 && actural_earn 변동
-      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.code}', '${date}', ${req.body.before_count} + '${req.body.count}', '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${req.body.count}, '${status_price}', '${req.body.type}');`, (err, rows1) => {
-        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count - '${req.body.count}' , \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${req.body.count}, \`before_price\` = '${req.body.before_price}'
+      MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.session.loginid.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', (${req.body.count} * ${req.body.type}) , '${req.body.code}', '${date}', ${req.body.before_count} + (${req.body.count} * ${req.body.type}), '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${req.body.count}, '${status_price}', '${req.body.type}');`, (err, rows1) => {
+        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count + (${req.body.count} * ${req.body.type}) , \`time\` = '${date}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${req.body.count}, \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
@@ -92,15 +92,21 @@ router.post('/delete_data', function(req, res) {
   } else {
     // 구매기록 제거시
     if(req.body.count > 0){
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET average_bought_price = ((average_bought_price * count) - (price * ${req.body.count})) / (count - ${req.body.count}), \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${date}' WHERE \`code\`= '${req.body.code}';
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET average_bought_price = ((average_bought_price * count) - (price * ${req.body.count})) / (count - ${req.body.count}), \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${date}', \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
       DELETE FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
-        res.redirect('/');
+        if(err) {throw err}
+        else { 
+          res.redirect('back');
+        }
       })
       // 판매 or 갱신기록 제거시
     } else {
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${date}' WHERE \`code\`= '${req.body.code}' , \`actural_earn\` = actural_earn - (${req.body.old_price} - average_bought_price) * ${req.body.count};
+      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.session.loginid.id}_asset_status\` SET \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${date}', \`actural_earn\` = actural_earn - (${req.body.old_price} - average_bought_price) * ${req.body.count}, \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
       DELETE FROM \`${req.session.loginid.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
-        res.redirect('/');
+        if(err) {throw err}
+        else { 
+          res.redirect('back');
+        }
       })
     }
   }
