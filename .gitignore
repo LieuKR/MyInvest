@@ -5,4 +5,3 @@ config/
 ## 특정 파일 무시
 views/test.pug
 views/test copy.pug
-views/my_asset_list_oldver.pug
