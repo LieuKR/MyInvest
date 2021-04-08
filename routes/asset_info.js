@@ -7,6 +7,20 @@ const MySqlHandler = require('../serverside_functions/MySqlHandler.js');
 // 시간값 처리하는 함수들
 const time_functions = require('../serverside_functions/time_functions.js');
 
+router.get('/', function(req, res) {
+  if(req.session.loginid){
+    MySqlHandler.myinvest_personal_DB.query(`SELECT \`code\` FROM \`${req.session.loginid.id}_asset_status\` ORDER BY \`time\` DESC LIMIT 1`, (err, rows) => {
+      if(rows[0].code){
+        res.redirect(`/asset_info/${rows[0].code}`)
+      } else{
+        res.redirect('/')
+      }
+    })
+  } else {
+    res.redirect('/')
+  }
+});
+
 // 개별 자산 정보 페이지
 router.get('/:code', function(req, res) {
   if(req.session.loginid){
@@ -16,7 +30,7 @@ router.get('/:code', function(req, res) {
           MySqlHandler.myinvest_personal_DB.query(`SELECT \`name\`, \`code\` FROM \`${req.session.loginid.id}_asset_status\` WHERE \`code\` <> '${req.params.code}' AND \`count\` = 0 ORDER BY \`time\` DESC`, (err, rows4) => {
             rows1.map(x => time_functions.dateform_time(x));
             rows2.map(x => time_functions.dateform_time(x));
-            res.render('asset_info', {pageinfo: `자산정보 - ${rows1[0].name}`, pagestatus : '4', loginid : req.session.loginid, asset_status : rows1, asset_recode : rows2, asset_own_list : rows3, asset_int_list : rows4});
+            res.render('asset_info', {pageinfo: `자산정보 - ${rows1[0].name}`, pagestatus : '3', loginid : req.session.loginid, asset_status : rows1, asset_recode : rows2, asset_own_list : rows3, asset_int_list : rows4});
           })
         })
       })

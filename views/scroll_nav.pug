@@ -55,11 +55,11 @@ html
                 div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + (asset_own_list.length + asset_int_list.length + 1) + "종"
               div(class="dropdown-divider")
               div(class="dropdown-item backcolor_dropdown")
-                i.bi.bi-gear-fill
+                i.bi.bi-gear-fill(style="color:black")
                 a(href="#" style="color:black") &nbsp;&nbsp;마이페이지
               div(class="dropdown-divider")
               div(class="dropdown-item backcolor_dropdown")
-                i.bi.bi-box-arrow-up-right
+                i.bi.bi-box-arrow-up-right(style="color:black")
                 a(href="/logout" style="color:black") &nbsp;&nbsp;로그아웃
         div(class="collapse navbar-collapse" id="navbarResponsive" style="margin-right:20px; font-size:14px;")
           ul(class="navbar-nav ml-auto")
@@ -73,6 +73,11 @@ html
                 a(class="nav-link js-scroll-trigger" href="/my_table/int" style="color:white") 관심 자산
               -else 
                 a(class="nav-link js-scroll-trigger" href="/my_table/int") 관심 자산
+            li(class="nav-item")
+              -if(pagestatus == 3)
+                a(class="nav-link js-scroll-trigger" href="/asset_info" style="color:white") 자산 정보
+              -else 
+                a(class="nav-link js-scroll-trigger" href="/asset_info") 자산 정보
     script.
       $("#login_info_btn").click(function(){
         $("#login_info").modal({backdrop: true});
