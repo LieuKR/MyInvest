@@ -20,10 +20,10 @@ block content
                     span(style="margin-left : 20px;")='이메일 : ' + loginid.email
                 .form-group_mypage
                   div
-                    span(style="margin-left : 20px;")="보유 자산 : " + table_own_asset.length + "종"
+                    span(style="margin-left : 20px;")="보유 자산 : " + own_asset_count + "종"
                 .form-group_mypage
                   div
-                    span(style="margin-left : 20px;")="관심 자산 : " + int_ass_count + "종"
+                    span(style="margin-left : 20px;")="관심 자산 : " + int_asset_count + "종"
                 .form-group_mypage.form-button_mypage
                   button(type="button" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;") 회원정보 변경
                   button(type="button" class="btn btn-secondary" style="margin-left : 10px; font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;") 회원 탈퇴

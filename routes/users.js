@@ -17,12 +17,13 @@ router.get('/', function(req, res) {
   }
 });
 
-// 마이페이지
+// 회원정보 페이지
 router.get('/mypage', function(req, res) {
   if(req.session.loginid){
-    MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0 ORDER BY \`time\` DESC`, (err, rows1) => {
+    MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` `, (err, rows2) => {
-        res.render('mypage_main', {pageinfo: 'MyInvest - 보유 자산', pagestatus : '1', loginid : req.session.loginid, table_own_asset : rows1, int_ass_count : Object.values(rows2[0])[0]});
+        console.log(Object.values(rows1[0])[0]);
+        res.render('mypage_main', {pageinfo: 'MyInvest - 보유 자산', pagestatus : '4', loginid : req.session.loginid, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
       })
     })
   } else {

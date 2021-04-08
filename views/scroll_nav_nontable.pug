@@ -37,21 +37,11 @@ html
             div(class="dropdown-menu dropdown-menu-right px-4 py-3 no-drag animate slideIn" style="right : -13px; top:50px; border-width: 3px; font-size:14px;")
               div(class="dropdown-header" style="color:black; font-size:15px;")=loginid.id
               div(class="dropdown-divider")
-              -if(table_own_asset)
-                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + table_own_asset.length + "종"
-                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + int_ass_count + "종"
-              -else if (table_int_data)
-                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + my_ass_count + "종"
-                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + table_int_data.length + "종"
-              -else if(asset_own_list)
-                -if(asset_status[0].count > 0)
-                  div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + (asset_own_list.length + 1) + "종"
-                -else
-                  div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + asset_own_list.length + "종"
-                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + (asset_own_list.length + asset_int_list.length + 1) + "종"
+              div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + own_asset_count + "종"
+              div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + int_asset_count + "종"
               div(class="dropdown-divider")
               div(class="dropdown-item backcolor_dropdown")
-                a(href="/mypage" style="color:black") 
+                a(href="/mypage" style="color:black")
                   i.bi.bi-gear-fill(style="color:black")
                   span &nbsp;&nbsp;회원정보
               div(class="dropdown-divider")
