@@ -89,7 +89,7 @@ block content
                 .card
                   .card-body
                     .col-sm-5
-                    h4.card-title.mb-0(style="position:absolute") 기록 내역
+                    h4.card-title.mb-0(style="position:absolute")=asset_status[0].name + ' 기록'
                     div(class="fresh-table toolbar-color-azure")
                       div(class="toolbar")
                       table(id="fresh-table" class="table")
@@ -203,7 +203,7 @@ block content
               .card-body
                 .row
                   .col-sm-5
-                    h4.card-title.mb-0 가격 추이
+                    h4.card-title.mb-0=asset_status[0].name + ' 가격 추이'
                     .small.text-muted(style="margin-top:5px")="단위 : " + asset_status[0].unit
                 .chart-wrapper(style='height:300px;margin-top:40px;')
                   canvas#main-chart.chart(height='300')
