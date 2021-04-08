@@ -1,15 +1,32 @@
-extends scroll_nav
+extends scroll_nav_nontable
 block content
   head
-  body 
-    div.body_middle
-      h4(style="position: relative; margin-left:10px; font-weight: bold;") 회원정보
-      p 아이디
-      p 닉네임
-      p 이메일 주소
-      p 보유 자산
-      p 관심 자산
-      p 로그아웃, 회원정보 변경, 회원 탈퇴
-      button(type="button" class="btn btn-secondary") 로그아웃
-      button(type="button" class="btn btn-secondary") 회원정보 변경
-      button(type="button" class="btn btn-secondary") 회원 탈퇴
+  body(style="background: #f8f8f8;")
+    div
+      section.signup_mypage
+        .container_mypage
+          .signup-content_mypage
+            .signup-form_mypage
+              h2.form-title_mypage 회원정보
+              #register-form.register-form(style="font-size : 14px")
+                .form-group_mypage
+                  div
+                    span(style="margin-left : 20px;")='아이디 : ' + loginid.id
+                .form-group_mypage
+                  div
+                    span(style="margin-left : 20px;")='닉네임 : ' + loginid.id
+                .form-group_mypage
+                  div
+                    span(style="margin-left : 20px;")='이메일 : ' + loginid.email
+                .form-group_mypage
+                  div
+                    span(style="margin-left : 20px;")="보유 자산 : " + table_own_asset.length + "종"
+                .form-group_mypage
+                  div
+                    span(style="margin-left : 20px;")="관심 자산 : " + int_ass_count + "종"
+                .form-group_mypage.form-button_mypage
+                  button(type="button" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;") 회원정보 변경
+                  button(type="button" class="btn btn-secondary" style="margin-left : 10px; font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;") 회원 탈퇴
+            .signup-image_mypage(style="margin:20px")
+              figure.figure_mypage
+                img.img_mypage(src='/images/logo/logo_300px.png' alt='sing up image')

@@ -1,0 +1,84 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title= pageinfo
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css")
+    link(rel="shortcut icon" href="/images/logo/favicon.png")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css")
+
+    <!-- An automatic web page progress bar pace.js -->
+    script(src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js")
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css")
+
+    <!-- Custom styles for this template -->
+    link(href="/stylesheets/scrolling-nav.css" rel="stylesheet")
+
+    script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
+    script(src="/bootstrap/dist/js/bootstrap.min.js")
+    script(src='/javascripts/socketIO/socket.io.js')
+
+    <!-- Custom JavaScript for this theme -->
+    script(src="/javascripts/scrolling-nav.js")
+  body
+    <!-- Navigation -->
+    nav(class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav")
+      div(class="container")
+        a(class="navbar-brand js-scroll-trigger" href="/") MyInvest
+        button(class="navbar-toggler" style="position:absolute; right:65px; top:8px;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation")
+          span(class="navbar-toggler-icon")
+        div(class="nav-item" style="position:absolute; color:white; right:15px; top: 6px;")
+          div(class="btn-group")
+            i.textbox_icon.bi.bi-person-circle(type='button' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size:30px;")
+            div(class="dropdown-menu dropdown-menu-right px-4 py-3 no-drag animate slideIn" style="right : -13px; top:50px; border-width: 3px; font-size:14px;")
+              div(class="dropdown-header" style="color:black; font-size:15px;")=loginid.id
+              div(class="dropdown-divider")
+              -if(table_own_asset)
+                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + table_own_asset.length + "종"
+                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + int_ass_count + "종"
+              -else if (table_int_data)
+                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + my_ass_count + "종"
+                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + table_int_data.length + "종"
+              -else if(asset_own_list)
+                -if(asset_status[0].count > 0)
+                  div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + (asset_own_list.length + 1) + "종"
+                -else
+                  div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="보유 자산 : " + asset_own_list.length + "종"
+                div(class="dropdown-header" style="color:black; padding-top:3px; padding-bottom:3px;")="관심 자산 : " + (asset_own_list.length + asset_int_list.length + 1) + "종"
+              div(class="dropdown-divider")
+              div(class="dropdown-item backcolor_dropdown")
+                a(href="/mypage" style="color:black") 
+                  i.bi.bi-gear-fill(style="color:black")
+                  span &nbsp;&nbsp;회원정보
+              div(class="dropdown-divider")
+              div(class="dropdown-item backcolor_dropdown")
+                a(href="/logout" style="color:black") 
+                  i.bi.bi-box-arrow-up-right(style="color:black")
+                  span &nbsp;&nbsp;로그아웃
+        div(class="collapse navbar-collapse" id="navbarResponsive" style="margin-right:20px; font-size:14px;")
+          ul(class="navbar-nav ml-auto")
+            li(class="nav-item")
+              -if(pagestatus == 1)
+                a(class="nav-link js-scroll-trigger" href="/my_table/own" style="color:white") 보유 자산
+              -else
+                a(class="nav-link js-scroll-trigger" href="/my_table/own") 보유 자산
+            li(class="nav-item")
+              -if(pagestatus == 2)
+                a(class="nav-link js-scroll-trigger" href="/my_table/int" style="color:white") 관심 자산
+              -else 
+                a(class="nav-link js-scroll-trigger" href="/my_table/int") 관심 자산
+            li(class="nav-item")
+              -if(pagestatus == 3)
+                a(class="nav-link js-scroll-trigger" href="/asset_info" style="color:white") 자산 정보
+              -else 
+                a(class="nav-link js-scroll-trigger" href="/asset_info") 자산 정보
+    script.
+      $("#login_info_btn").click(function(){
+        $("#login_info").modal({backdrop: true});
+      });
+    block content
+
