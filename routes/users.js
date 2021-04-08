@@ -79,5 +79,18 @@ router.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
+// 회원탈퇴 비밀번호 확인 페이지
+router.get('/sign_off', function(req, res) {
+  if(req.session.loginid){
+    MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
+      MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` `, (err, rows2) => {
+        console.log(Object.values(rows1[0])[0]);
+        res.render('sign_off', {pageinfo: 'MyInvest - 회원 탈퇴', pagestatus : '4', loginid : req.session.loginid, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
+      })
+    })
+  } else {
+    res.redirect('/')
+  }
+});
 
 module.exports = router;
