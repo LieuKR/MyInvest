@@ -5,6 +5,7 @@ var router = express.Router();
 const crypto = require('crypto');
 const cryptoconfig  = require('../config/pwcryptset.json');
 const MySqlHandler = require('../serverside_functions/MySqlHandler.js');
+const e = require('express');
 
 // 메인 페이지. 로그인이 필요하면 로그인 페이지, 로그인이 되어 있으면 다른 페이지로 리다이렉트
 router.get('/', function(req, res) {
@@ -38,21 +39,53 @@ router.get('/sign_up', function(req, res) {
 
 // 회원가입 Post 데이터 처리 페이지
 router.post('/sign_up', function(req, res) {
-  // crypto를 통한 비밀번호 암호화 -> 콜백함수 하나로 sql에 저장
-  crypto.pbkdf2(req.body.pass, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
-    cryptoconfig.method, (err, derivedKey) => {
-      MySqlHandler.myinvest_mainDB.query(`INSERT INTO users (id, password, email, name) VALUES 
-        ('${req.body.id}', '${derivedKey.toString('hex')}', '${req.body.email}', '${req.body.id}');`, 
-        (err, rows) => {
-          if(err){
-            console.log('에러가 발생하였습니다');
+  // POST 데이터 유효성 검사. ID, Mail, PW 순
+  if (!/^[a-zA-Z0-9]{8,20}$/.test(req.body.id)){
+    console.log('8~20자리 영문, 숫자로 구성된 형식을 만족하지 못함')
+    res.redirect('/');
+  } else {
+    MySqlHandler.myinvest_mainDB.query(`SELECT EXISTS (SELECT \`id\` FROM \`users\` WHERE \`id\`='${req.body.id}') as success`,
+      (err, rows1) => {
+        if(rows1[0].success == 1){
+          console.log('중복되는 아이디가 존재함')
+          res.redirect('/');
+        } else { // ID 유효성 검사 통화한 상태
+          // email 유효성검사
+          let emailRule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
+          if (!emailRule.test(req.body.email)){
+            console.log('이메일 양식을 만족하지 못함')
             res.redirect('/');
           } else {
-            console.log('회원가입이 성공하였습니다!');
-            res.redirect('/');
-          };
-        });
-    });
+            MySqlHandler.myinvest_mainDB.query(`SELECT EXISTS (SELECT \`email\` FROM \`users\` WHERE \`email\`='${req.body.email}') as success`,
+            (err, rows2) => {
+              if(rows2[0].success == 1){
+                console.log('중복되는 이메일 주소가 존재함')
+                res.redirect('/');
+              } else { // ID, Email 유효성 검사 통화한 상태
+                if(!/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/.test(req.body.pass)){
+                  console.log('비밀번호 양식이 잘못됨')
+                  res.redirect('/');
+                } else if (req.body.pass !== req.body.re_pass) {
+                  console.log('입력된 비밀번호가 서로 다름')
+                  res.redirect('/');
+                } else { // 모든 데이터 유효성 검사 통화한 상태. 회원가입 진행
+                  // crypto를 통한 비밀번호 암호화 -> 콜백함수 하나로 sql에 저장
+                  crypto.pbkdf2(req.body.pass, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
+                    cryptoconfig.method, (err, derivedKey) => {
+                      MySqlHandler.myinvest_mainDB.query(`INSERT INTO users (id, password, email, name) VALUES 
+                        ('${req.body.id}', '${derivedKey.toString('hex')}', '${req.body.email}', '${req.body.id}');`, 
+                        (err, rows) => {
+                          console.log('회원가입이 성공하였습니다!');
+                          res.redirect('/');
+                        });
+                    });
+                }
+              }
+            })
+          }
+        }
+      })
+  }
 });
 
 // 로그인 post 데이터 처리 페이지
