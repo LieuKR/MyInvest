@@ -40,7 +40,7 @@ block content
                     div.textbox_alert_changeinfo
                       i#PWchecknotice2.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
                 .form-group_mypage.form-button_mypage
-                  button#change(type="submit" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;") 회원정보 변경
+                  button#change(type="submit" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;" disabled=true) 회원정보 변경
             .signup-image_mypage(style="margin:20px")
               figure.figure_mypage
                 img.img_mypage(src='/images/logo/logo_300px.png' alt='sing up image')
@@ -51,6 +51,7 @@ block content
       })     
 
       const socket = io();
+      test = [1,1,1]; // 1 : 이상이 없는 경우를 표현
 
       Nickname.oninput = function() {
         socket.emit('checkName', {postdata: Nickname.value, socket_id : socket.id});
@@ -58,47 +59,107 @@ block content
       
       // socket.io로 서버 데이터 수신
       socket.on('Name_check', function (data) {
-        console.log(data.checkvalue)
+        console.log(pass.value)
         if(data.checkvalue == 0){
           $('#Namechecknotice').attr('data-original-title', '');
           document.getElementById("Namechecknotice").style = 'color:gray';
+          test[0] = 1;
+          if(test[1] + test[2] == 2 && pass.value !== ''){
+            document.getElementById('change').disabled = false;
+          } else {
+            document.getElementById('change').disabled = true;
+          }
         } else if(data.checkvalue == 1) {
           $('#Namechecknotice').attr('data-original-title', '중복 닉네임이 존재합니다.');
           document.getElementById("Namechecknotice").style = 'color:red';
+          test[0] = 0;
+          document.getElementById('change').disabled = true;
         } else if(data.checkvalue == 2) {
           $('#Namechecknotice').attr('data-original-title', '사용 가능한 닉네임입니다.');
           document.getElementById("Namechecknotice").style = 'color:blue';
+          test[0] = 1;
+          if(test[1] + test[2] == 2){
+            document.getElementById('change').disabled = false;
+          } else {
+            document.getElementById('change').disabled = true;
+          }
         }
       });
 
       // 입력된 PW 유효성 검사. 보안상의 문제로 클라이언트에서 검사 후 사용.
       // PW 양식 확인
       pass.oninput = function() {
-          if(pass.value.length > 20 || pass.value.length < 8){
-              $('#PWchecknotice1').attr('data-original-title', '비밀번호는 8자리 이상, 20자리 이하이어야 합니다.');
-              document.getElementById("PWchecknotice1").style = 'color:red'
+          if(pass.value == ''){
+            $('#PWchecknotice1').attr('data-original-title', '');
+            document.getElementById("PWchecknotice1").style = 'color:gray';
+            test[1] = 1;
+            if(test[0] == 1 && test[0] !== '' && test[2] == ''){
+              document.getElementById('change').disabled = false;
+            } else {
+              document.getElementById('change').disabled = true;
+            }
+          } else if(pass.value.length > 20 || pass.value.length < 8){
+            $('#PWchecknotice1').attr('data-original-title', '비밀번호는 8자리 이상, 20자리 이하이어야 합니다.');
+            document.getElementById("PWchecknotice1").style = 'color:red'
+            test[1] = 0;
+            document.getElementById('change').disabled = true;
           } else if(!/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/.test(pass.value)){
-              $('#PWchecknotice1').attr('data-original-title', '비밀번호는 숫자나, 특수문자를 포함해야 합니다.');
-              document.getElementById("PWchecknotice1").style = 'color:red'
+            $('#PWchecknotice1').attr('data-original-title', '비밀번호는 숫자나, 특수문자를 포함해야 합니다.');
+            document.getElementById("PWchecknotice1").style = 'color:red'
+            test[1] = 0;
+            document.getElementById('change').disabled = true;
           } else {
-              $('#PWchecknotice1').attr('data-original-title', '사용 가능한 비밀번호입니다.');
-              document.getElementById("PWchecknotice1").style = 'color:blue'
+            $('#PWchecknotice1').attr('data-original-title', '사용 가능한 비밀번호입니다.');
+            document.getElementById("PWchecknotice1").style = 'color:blue'
+            test[1] = 1;
           }
-          if(pass.value !== re_pass.value){
-              $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
-              document.getElementById("PWchecknotice2").style = 'color:red'
+          if(pass.value == ''){
+            $('#PWchecknotice2').attr('data-original-title', '');
+            document.getElementById("PWchecknotice2").style = 'color:gray';
+          } else if(pass.value !== re_pass.value){
+            $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
+            document.getElementById("PWchecknotice2").style = 'color:red'
+            test[2] = 0;
+            document.getElementById('change').disabled = true;
           } else {
-              $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
-              document.getElementById("PWchecknotice2").style = 'color:blue'
+            $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
+            document.getElementById("PWchecknotice2").style = 'color:blue'
+            test[2] = 1;
+            if(test[0] == 0){
+              document.getElementById('change').disabled = true;
+            } else if(test[1] == 0) {
+              document.getElementById('change').disabled = true;
+            } else {
+              document.getElementById('change').disabled = false;
+            }
           }
       };
       // 같은 PW 입력 확인
       re_pass.oninput = function() {
-          if(pass.value !== re_pass.value){
+          if(re_pass.value == ''){
+            $('#PWchecknotice2').attr('data-original-title', '');
+            document.getElementById("PWchecknotice2").style = 'color:gray';
+            test[2] = 1;
+            if(test[0] !== '' && test[0] == 1 && pass.value == ''){
+              document.getElementById('change').disabled = false;
+            } else {
+              document.getElementById('change').disabled = true;
+            }
+          } else if(pass.value !== re_pass.value){
               $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
               document.getElementById("PWchecknotice2").style = 'color:red'
+              test[2] = 0;
+              document.getElementById('change').disabled = true;
           } else {
               $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
               document.getElementById("PWchecknotice2").style = 'color:blue'
+              test[2] = 1;
+              if(test[0] == 0){
+                document.getElementById('change').disabled = true;
+              } else if(test[1] == 0) {
+                document.getElementById('change').disabled = true;
+              } else {
+                document.getElementById('change').disabled = false;
+              }
           }
       };

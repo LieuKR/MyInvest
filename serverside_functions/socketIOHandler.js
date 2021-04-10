@@ -22,7 +22,6 @@ exports = module.exports = function(io) {
 
         // 이메일 유효성 체크
         socket.on("checkEmail", function(data) {
-            console.log(data.postdata)
             let emailRule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
             if (!emailRule.test(data.postdata)){
                 io.to(data.socket_id).emit('mailcheck', {checkvalue : 2});
