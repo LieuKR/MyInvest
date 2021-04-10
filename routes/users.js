@@ -84,7 +84,6 @@ router.get('/sign_off_check', function(req, res) {
   if(req.session.loginid){
     MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` `, (err, rows2) => {
-        console.log(Object.values(rows1[0])[0]);
         res.render('sign_off_check', {pageinfo: 'MyInvest - 회원 탈퇴', pagestatus : '4', loginid : req.session.loginid, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
       })
     })
@@ -99,7 +98,6 @@ router.get('/change_info', function(req, res) {
   if(req.session.loginid){
     MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` `, (err, rows2) => {
-        console.log(Object.values(rows1[0])[0]);
         res.render('change_info_check', {pageinfo: 'MyInvest - 회원정보 변경', pagestatus : '4', loginid : req.session.loginid, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
       })
     })
@@ -113,13 +111,37 @@ router.post('/change_info', function(req, res) {
   if(req.session.loginid){
     MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` `, (err, rows2) => {
-        console.log(Object.values(rows1[0])[0]);
         res.render('change_info_form', {pageinfo: 'MyInvest - 회원정보 변경', pagestatus : '4', loginid : req.session.loginid, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
       })
     })
   } else {
     res.redirect('/')
   }
+});
+
+// 회원정보 변경 Form데이터 처리 페이지
+router.post('/submit_info', function(req, res) {
+
+  function update_function (logined_id, callback) {
+    if(req.body.name) {
+      MySqlHandler.myinvest_mainDB.query(`UPDATE users SET \`name\` = '${req.body.name}' WHERE \`id\`= '${logined_id}'`, (err, rows) => {
+      })
+    }
+    if(req.body.pass){
+      crypto.pbkdf2(req.body.pass, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
+        cryptoconfig.method, (err, derivedKey) => {
+          MySqlHandler.myinvest_mainDB.query(`UPDATE users SET \`password\` = '${derivedKey.toString('hex')}' WHERE \`id\`= '${logined_id}'`, 
+            (err, rows) => {
+            });
+        });
+    }
+    callback()
+  }
+
+  update_function(req.session.loginid.id, () => {
+    req.session.destroy();
+    res.redirect('/');
+  })
 });
 
 module.exports = router;
