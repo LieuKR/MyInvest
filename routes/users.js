@@ -121,7 +121,6 @@ router.post('/change_info', function(req, res) {
 
 // 회원정보 변경 Form데이터 처리 페이지
 router.post('/submit_info', function(req, res) {
-
   function update_function (logined_id, callback) {
     if(req.body.name) {
       MySqlHandler.myinvest_mainDB.query(`UPDATE users SET \`name\` = '${req.body.name}' WHERE \`id\`= '${logined_id}'`, (err, rows) => {
@@ -137,11 +136,18 @@ router.post('/submit_info', function(req, res) {
     }
     callback()
   }
-
   update_function(req.session.loginid.id, () => {
     req.session.destroy();
     res.redirect('/');
   })
 });
+
+// 회원탈퇴 Form데이터 처리 페이지
+router.post('/sign_off', function(req, res) {
+
+
+  
+});
+
 
 module.exports = router;
