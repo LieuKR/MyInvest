@@ -8,39 +8,21 @@ block content
           .signup-content_mypage
             .signup-form_mypage
               h2.form-title_mypage 회원정보 변경
-              form#register-form.register-form(href="/change_info_check", method='POST' style="font-size : 14px")
-                .form-group_mypage
-                  div(style="text-align:center;")
-                    span="닉네임 변경"
+              form#register-form.register-form(href="/change_info", method='POST' style="font-size : 14px")
                 .form-group_mypage
                   div
-                    div.textbox_input_changeinfo
-                      label(style="left : auto")(for='pass')
-                        i.textbox_icon.bi.bi-person-fill
-                      input#pass.my_input(type="text" placeholder="Nickname" name="name" required)
-                    div.textbox_alert_changeinfo
-                      i#IDchecknotice.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
+                    span(style="margin-left : 20px;")
                 .form-group_mypage
-                  div(style="text-align:center;")
-                    span="비밀번호를 다시 입력해주세요."
-                .form-group_mypage
-                  div
-                    div.textbox_input_changeinfo
+                  div(style="margin-left : 20%; margin-right : 20%;")
+                    div
                       label(style="left : auto")(for='pass')
                         i.textbox_icon.bi.bi-lock-fill
                       input#pass.my_input(type="password" placeholder="Password" name="password" required)
-                    div.textbox_alert_changeinfo
-                      i#IDchecknotice.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
                 .form-group_mypage
-                  div
-                    div.textbox_input_changeinfo
-                      label(style="left : auto")(for='pass')
-                        i.textbox_icon.bi.bi-lock
-                      input#pass.my_input(type="password" placeholder="Password" name="password" required)
-                    div.textbox_alert_changeinfo
-                      i#IDchecknotice.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
+                  div(style="text-align:center; margin-bottom : 30px;")
+                    span="비밀번호를 다시 입력해주세요."
                 .form-group_mypage.form-button_mypage
-                  button(type="submit" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;") 회원정보 변경
+                  button(type="submit" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;") 회원 탈퇴
             .signup-image_mypage(style="margin:20px")
               figure.figure_mypage
                 img.img_mypage(src='/images/logo/logo_300px.png' alt='sing up image')

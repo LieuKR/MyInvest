@@ -38,8 +38,18 @@ exports = module.exports = function(io) {
             };
         });
 
+        socket.on("checkName", function(data) {
+            MySqlHandler.myinvest_mainDB.query(`SELECT EXISTS (SELECT \`name\` FROM \`users\` WHERE \`name\`='${data.postdata}') as success`,
+                (err, rows1) => {
+                    if(rows1[0].success == 1){
+                        io.to(data.socket_id).emit('Name_check', {checkvalue : 1});
+                    } else if (data.postdata == '') {
+                        io.to(data.socket_id).emit('Name_check', {checkvalue : 0});
+                    } else{
+                        io.to(data.socket_id).emit('Name_check', {checkvalue : 2});
+                    }
 
-
-
+                })
+        });
     })
 };

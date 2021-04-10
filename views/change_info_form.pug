@@ -1,0 +1,72 @@
+extends scroll_nav_nontable
+block content
+  head
+  body(style="background: #f8f8f8;")
+    div
+      section.signup_mypage
+        .container_mypage
+          .signup-content_mypage
+            .signup-form_mypage
+              h2.form-title_mypage 회원정보 변경
+              form#register-form.register-form(href="/change_info", method='POST' style="font-size : 14px")
+                .form-group_mypage
+                  div
+                    span="닉네임 변경"
+                .form-group_mypage
+                  div
+                    div.textbox_input_changeinfo
+                      label(style="left : auto" for='Nickname')
+                        i.textbox_icon.bi.bi-person-fill
+                      input#Nickname.my_input(type="text" placeholder=`${loginid.name}` name="name" required)
+                    div.textbox_alert_changeinfo
+                      i#Namechecknotice.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
+                .form-group_mypage
+                  div
+                    span="비밀번호를 다시 입력해주세요."
+                .form-group_mypage
+                  div
+                    div.textbox_input_changeinfo
+                      label(style="left : auto" for='pass')
+                        i.textbox_icon.bi.bi-lock-fill
+                      input#pass.my_input(type="password" placeholder="Password" name="pass" required)
+                    div.textbox_alert_changeinfo
+                      i#PWchecknotice1.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
+                .form-group_mypage
+                  div
+                    div.textbox_input_changeinfo
+                      label(style="left : auto" for='re_pass')
+                        i.textbox_icon.bi.bi-lock
+                      input#re_pass.my_input(type="password" placeholder="Repeat password" name="re_pass" required)
+                    div.textbox_alert_changeinfo
+                      i#PWchecknotice2.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
+                .form-group_mypage.form-button_mypage
+                  button#change(type="submit" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;") 회원정보 변경
+            .signup-image_mypage(style="margin:20px")
+              figure.figure_mypage
+                img.img_mypage(src='/images/logo/logo_300px.png' alt='sing up image')
+    script.
+      // 부트스트랩 - 툴팁 기능
+      $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+      })     
+
+      const socket = io();
+
+      Nickname.oninput = function() {
+        socket.emit('checkName', {postdata: Nickname.value, socket_id : socket.id});
+      };
+      
+      // socket.io로 서버 데이터 수신
+      socket.on('Name_check', function (data) {
+        console.log(data.checkvalue)
+        if(data.checkvalue == 0){
+          $('#Namechecknotice').attr('data-original-title', '');
+          document.getElementById("Namechecknotice").style = 'color:gray';
+        } else if(data.checkvalue == 1) {
+          $('#Namechecknotice').attr('data-original-title', '중복 닉네임이 존재합니다.');
+          document.getElementById("Namechecknotice").style = 'color:red';
+        } else if(data.checkvalue == 2) {
+          $('#Namechecknotice').attr('data-original-title', '사용 가능한 닉네임입니다.');
+          document.getElementById("Namechecknotice").style = 'color:blue';
+        }
+      });
