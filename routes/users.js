@@ -75,8 +75,40 @@ router.post('/sign_up', function(req, res) {
                       MySqlHandler.myinvest_mainDB.query(`INSERT INTO users (id, password, email, name) VALUES 
                         ('${req.body.id}', '${derivedKey.toString('hex')}', '${req.body.email}', '${req.body.id}');`, 
                         (err, rows) => {
-                          console.log('회원가입이 성공하였습니다!');
-                          res.redirect('/');
+                          // 개인 데이터 테이블 두개 생성
+                          MySqlHandler.myinvest_personal_DB.query(`CREATE TABLE \`${req.body.id}_asset_recode\` (
+                            \`no\` int AUTO_INCREMENT PRIMARY KEY, 
+                            \`code\` int,
+                            \`name\` varchar(30), 
+                            \`price\` float,
+                            \`count\` float,
+                            \`time\` datetime,
+                            \`after_count\` float,
+                            \`average_bought_price\` float,
+                            \`actural_earn\` float,
+                            \`status_price\` tinyint,
+                            \`status_count\` tinyint
+                            );
+                            
+                            CREATE TABLE \`myinvest_personal_data\`.\`${req.body.id}_asset_status\` (
+                              \`code\` int AUTO_INCREMENT PRIMARY KEY,
+                              \`name\` varchar(30),
+                              \`price\` float,
+                              \`count\` float,
+                              \`unit\` varchar(30),
+                              \`time\` datetime,
+                              \`average_bought_price\` float,
+                              \`actural_earn\` float,
+                              \`before_price\` float,
+                              \`status_price\` tinyint,
+                              \`status_count\` tinyint
+                              );
+                            
+                            
+                            `, (err, rows3) => {
+                            console.log('회원가입이 성공하였습니다!');
+                            res.redirect('/');
+                          })
                         });
                     });
                 }
