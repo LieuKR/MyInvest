@@ -469,3 +469,15 @@ label {
 .my_input:focus {
   outline: none;
 }
+
+.textbox_input_changeinfo{
+  width:92%;
+}
+
+.textbox_icon_changeinfo{
+  font-size:10px; left:5px; position:relative
+}
+
+.textbox_alert_changeinfo{
+  right:0; bottom:3px; position: absolute; font-size: 13px;
+}

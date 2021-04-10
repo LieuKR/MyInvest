@@ -108,4 +108,18 @@ router.get('/change_info_check', function(req, res) {
   }
 });
 
+// 회원정보 변경 Form 페이지
+router.post('/change_info_check', function(req, res) {
+  if(req.session.loginid){
+    MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
+      MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` `, (err, rows2) => {
+        console.log(Object.values(rows1[0])[0]);
+        res.render('change_info_check', {pageinfo: 'MyInvest - 회원정보 변경', pagestatus : '4', loginid : req.session.loginid, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
+      })
+    })
+  } else {
+    res.redirect('/')
+  }
+});
+
 module.exports = router;
