@@ -70,3 +70,35 @@ block content
           document.getElementById("Namechecknotice").style = 'color:blue';
         }
       });
+
+      // 입력된 PW 유효성 검사. 보안상의 문제로 클라이언트에서 검사 후 사용.
+      // PW 양식 확인
+      pass.oninput = function() {
+          if(pass.value.length > 20 || pass.value.length < 8){
+              $('#PWchecknotice1').attr('data-original-title', '비밀번호는 8자리 이상, 20자리 이하이어야 합니다.');
+              document.getElementById("PWchecknotice1").style = 'color:red'
+          } else if(!/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/.test(pass.value)){
+              $('#PWchecknotice1').attr('data-original-title', '비밀번호는 숫자나, 특수문자를 포함해야 합니다.');
+              document.getElementById("PWchecknotice1").style = 'color:red'
+          } else {
+              $('#PWchecknotice1').attr('data-original-title', '사용 가능한 비밀번호입니다.');
+              document.getElementById("PWchecknotice1").style = 'color:blue'
+          }
+          if(pass.value !== re_pass.value){
+              $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
+              document.getElementById("PWchecknotice2").style = 'color:red'
+          } else {
+              $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
+              document.getElementById("PWchecknotice2").style = 'color:blue'
+          }
+      };
+      // 같은 PW 입력 확인
+      re_pass.oninput = function() {
+          if(pass.value !== re_pass.value){
+              $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
+              document.getElementById("PWchecknotice2").style = 'color:red'
+          } else {
+              $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
+              document.getElementById("PWchecknotice2").style = 'color:blue'
+          }
+      };
