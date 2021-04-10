@@ -109,15 +109,22 @@ router.get('/change_info', function(req, res) {
 // 회원정보 변경 Form 페이지
 router.post('/change_info', function(req, res) {
   if(req.session.loginid){
-    MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
-      MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` `, (err, rows2) => {
-        res.render('change_info_form', {pageinfo: 'MyInvest - 회원정보 변경', pagestatus : '4', loginid : req.session.loginid, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
+    // 비밀번호가 일치하면 rows가 선택됨.
+    crypto.pbkdf2(req.body.pass, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, cryptoconfig.method, (err, derivedKey) => {
+      MySqlHandler.myinvest_mainDB.query(`SELECT * FROM users WHERE  id='${req.session.loginid.id}' and \`password\`= '${derivedKey.toString('hex')}'`, (err, rows) => {
+        if(rows[0]){
+          MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
+            MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.session.loginid.id}_asset_status\` `, (err, rows2) => {
+              res.render('change_info_form', {pageinfo: 'MyInvest - 회원정보 변경', pagestatus : '4', loginid : req.session.loginid, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
+            })
+          })
+        } else {
+        res.redirect('back')
+        }
       })
     })
-  } else {
-    res.redirect('/')
   }
-});
+})
 
 // 회원정보 변경 Form데이터 처리 페이지
 router.post('/submit_info', function(req, res) {
@@ -146,7 +153,7 @@ router.post('/submit_info', function(req, res) {
 router.post('/sign_off', function(req, res) {
 
 
-  
+
 });
 
 
