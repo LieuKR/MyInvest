@@ -103,8 +103,6 @@ router.post('/sign_up', function(req, res) {
                               \`status_price\` tinyint,
                               \`status_count\` tinyint
                               );
-                            
-                            
                             `, (err, rows3) => {
                             console.log('회원가입이 성공하였습니다!');
                             res.redirect('/');

@@ -56,11 +56,27 @@ block content
 
         // 입력 발생시 socket.io로 데이터 서버 전송
         id.oninput = function() {
-            socket.emit('checkID', {postdata: id.value, socket_id : socket.id});
+            if(id.value == ''){
+                $('#IDchecknotice').attr('data-original-title', '');
+                document.getElementById("IDchecknotice").style = 'color:gray';
+                document.getElementById('signup').style = "background-color:gray"
+                document.getElementById('signup').disabled = true;
+                test[0] = 0;
+            } else {
+                socket.emit('checkID', {postdata: id.value, socket_id : socket.id});
+            }
         };
 
         email.oninput = function() {
-            socket.emit('checkEmail', {postdata: email.value, socket_id : socket.id});
+            if(email.value == ''){
+                $('#Mailchecknotice').attr('data-original-title', '');
+                document.getElementById("Mailchecknotice").style = 'color:gray';
+                document.getElementById('signup').style = "background-color:gray"
+                document.getElementById('signup').disabled = true;
+                test[1] = 0;
+            } else {
+                socket.emit('checkEmail', {postdata: email.value, socket_id : socket.id});
+            } 
         };
 
         // socket.io로 서버 데이터 수신
@@ -118,58 +134,80 @@ block content
         // 입력된 PW 유효성 검사. 보안상의 문제로 클라이언트에서 검사 후 사용.
         // PW 양식 확인
         pass.oninput = function() {
-            if(pass.value.length > 20 || pass.value.length < 8){
-                $('#PWchecknotice1').attr('data-original-title', '비밀번호는 8자리 이상, 20자리 이하이어야 합니다.');
+            if(pass.value == ''){
+                $('#PWchecknotice1').attr('data-original-title', '');
                 document.getElementById('signup').disabled = true;
-                document.getElementById("PWchecknotice1").style = 'color:red'
+                document.getElementById("PWchecknotice1").style = 'color:gray'
                 document.getElementById('signup').style = "background-color:gray"
                 test[2] = 0;
-            } else if(!/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/.test(pass.value)){
-                $('#PWchecknotice1').attr('data-original-title', '비밀번호는 숫자나, 특수문자를 포함해야 합니다.');
-                document.getElementById('signup').disabled = true;
-                document.getElementById("PWchecknotice1").style = 'color:red'
-                document.getElementById('signup').style = "background-color:gray"
-                test[2] = 0;
-            } else {
-                $('#PWchecknotice1').attr('data-original-title', '사용 가능한 비밀번호입니다.');
-                document.getElementById("PWchecknotice1").style = 'color:blue'
-                test[2] = 1;
-                if(test.reduce((a, b) => a + b, 0) == 4){
-                    document.getElementById('signup').disabled = false;
-                    document.getElementById('signup').style = "background-color:blue"
+                if(re_pass.value == ''){
+                    $('#PWchecknotice2').attr('data-original-title', '');
+                    document.getElementById("PWchecknotice2").style = 'color:gray'
+                    document.getElementById('signup').style = "background-color:gray"
+                    test[3] = 0;
                 }
-            }
-            if(pass.value !== re_pass.value){
-                $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
-                document.getElementById("PWchecknotice2").style = 'color:red'
-                document.getElementById('signup').style = "background-color:gray"
-                document.getElementById('signup').disabled = true;
-                test[3] = 0;
             } else {
-                $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
-                document.getElementById("PWchecknotice2").style = 'color:blue'
-                test[3] = 1;
-                if(test.reduce((a, b) => a + b, 0) == 4){
-                    document.getElementById('signup').disabled = false;
-                    document.getElementById('signup').style = "background-color:blue"
+                if(pass.value.length > 20 || pass.value.length < 8){
+                    $('#PWchecknotice1').attr('data-original-title', '비밀번호는 8자리 이상, 20자리 이하이어야 합니다.');
+                    document.getElementById('signup').disabled = true;
+                    document.getElementById("PWchecknotice1").style = 'color:red'
+                    document.getElementById('signup').style = "background-color:gray"
+                    test[2] = 0;
+                } else if(!/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/.test(pass.value)){
+                    $('#PWchecknotice1').attr('data-original-title', '비밀번호는 숫자나, 특수문자를 포함해야 합니다.');
+                    document.getElementById('signup').disabled = true;
+                    document.getElementById("PWchecknotice1").style = 'color:red'
+                    document.getElementById('signup').style = "background-color:gray"
+                    test[2] = 0;
+                } else {
+                    $('#PWchecknotice1').attr('data-original-title', '사용 가능한 비밀번호입니다.');
+                    document.getElementById("PWchecknotice1").style = 'color:blue'
+                    test[2] = 1;
+                    if(test.reduce((a, b) => a + b, 0) == 4){
+                        document.getElementById('signup').disabled = false;
+                        document.getElementById('signup').style = "background-color:blue"
+                    }
+                }
+                if(pass.value !== re_pass.value){
+                    $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
+                    document.getElementById("PWchecknotice2").style = 'color:red'
+                    document.getElementById('signup').style = "background-color:gray"
+                    document.getElementById('signup').disabled = true;
+                    test[3] = 0;
+                } else {
+                    $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
+                    document.getElementById("PWchecknotice2").style = 'color:blue'
+                    test[3] = 1;
+                    if(test.reduce((a, b) => a + b, 0) == 4){
+                        document.getElementById('signup').disabled = false;
+                        document.getElementById('signup').style = "background-color:blue"
+                    }
                 }
             }
         };
         // 같은 PW 입력 확인
         re_pass.oninput = function() {
-            if(pass.value !== re_pass.value){
-                $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
-                document.getElementById("PWchecknotice2").style = 'color:red'
+            if(re_pass.value == ''){
+                $('#PWchecknotice2').attr('data-original-title', '');
+                document.getElementById("PWchecknotice2").style = 'color:gray'
                 document.getElementById('signup').style = "background-color:gray"
                 document.getElementById('signup').disabled = true;
                 test[3] = 0;
             } else {
-                $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
-                document.getElementById("PWchecknotice2").style = 'color:blue'
-                test[3] = 1;
-                if(test.reduce((a, b) => a + b, 0) == 4){
-                    document.getElementById('signup').disabled = false;
-                    document.getElementById('signup').style = "background-color:blue"
+                if(pass.value !== re_pass.value){
+                    $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호를 입력해 주세요.');
+                    document.getElementById("PWchecknotice2").style = 'color:red'
+                    document.getElementById('signup').style = "background-color:gray"
+                    document.getElementById('signup').disabled = true;
+                    test[3] = 0;
+                } else {
+                    $('#PWchecknotice2').attr('data-original-title', '서로 같은 비밀번호가 입력되었습니다.');
+                    document.getElementById("PWchecknotice2").style = 'color:blue'
+                    test[3] = 1;
+                    if(test.reduce((a, b) => a + b, 0) == 4){
+                        document.getElementById('signup').disabled = false;
+                        document.getElementById('signup').style = "background-color:blue"
+                    }
                 }
             }
         };
