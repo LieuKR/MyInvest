@@ -13,6 +13,11 @@ const sessionconfig  = require('./config/sessionset.json');
 const http = require("http");
 const socketio = require("socket.io");
 
+// 암호화 모듈 및 암호화 키, Mysql 핸들러
+const crypto = require('crypto');
+const cryptoconfig  = require('./config/pwcryptset.json');
+const MySqlHandler = require('./serverside_functions/MySqlHandler.js');
+
 // Routers
 var usersRouter = require('./routes/users');
 var user_AssetRouter = require('./routes/data_table');
@@ -46,6 +51,57 @@ app.use(session({
   saveUninitialized: true,
   cookie: sessionconfig.cookieset
 }))
+
+// Passport.js
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
+
+app.use(passport.initialize()); // Express에 passport 연결
+app.use(passport.session()); // passport에 세션 연결
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+  MySqlHandler.myinvest_mainDB.query(`SELECT id, email, name FROM users WHERE id='${id}'`, 
+  (err, rows) => {
+    if(rows[0] == null) {
+      return done(err)
+    } else {
+      return done(null, rows[0])
+    }
+  });
+});
+
+passport.use(new LocalStrategy(
+  {
+    usernameField: 'id',
+    passwordField: 'pass'
+  },
+  function(username, password, done) {
+    crypto.pbkdf2(password, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
+      cryptoconfig.method, (err, derivedKey) => {
+        MySqlHandler.myinvest_mainDB.query(`SELECT * FROM users WHERE id='${username}' and password='${derivedKey.toString('hex')}'`, 
+          (err, rows) => {
+            if (rows[0] == null) {
+              console.log('아이디, 비밀번호가 잘못되었습니다')
+              return done(null, false, {
+                message: '아이디, 비밀번호가 잘못되었습니다.'
+              })
+            } else {
+              return done(null, rows[0])
+            }
+          });
+      });
+  }
+));
+
+app.post('/login',
+  passport.authenticate('local', { 
+    successRedirect: '/',
+    failureRedirect: '/'
+  })
+);
 
 app.use('/', usersRouter);
 app.use('/my_table', user_AssetRouter);
