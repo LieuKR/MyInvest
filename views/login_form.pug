@@ -1,15 +1,14 @@
 extends layout
 block content
     link(href="/stylesheets/signin.css" rel="stylesheet")
-    body(class="text-center", style="font-size:14px")
+    body.no-drag(class="text-center", style="font-size:14px")
         form.form-signin(action='/login' method='POST')
             img.mb-4(src='/images/logo/logo_200px.png' alt='' width='200' height='200')
             input#id.form-control(style="font-size:13px" name="id" type='text' placeholder='아이디' required='' autofocus='')
             input#pass.form-control(style="font-size:13px" name="pass" type='password' placeholder='비밀번호' required='')
             .checkbox.mb-3
-                label
-                input(type='checkbox' name="remember_me", value='yes')
-                |  로그인 상태 유지
+                input#maintain_login(type='checkbox' name="remember_me", value='yes', style="cursor: pointer; margin-right : 6px")
+                label(for="maintain_login" style="cursor: pointer;") 로그인 상태 유지
             button.btn.btn-lg.btn-primary.btn-block(type='submit' style="font-size:15px") 로그인
             p 
             p
