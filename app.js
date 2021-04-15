@@ -42,6 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 // 세션과 Mysql DB 연결
 app.use(session({
@@ -84,7 +85,7 @@ passport.use(new LocalStrategy({
   },
   function(req, username, password, done) {
     if(req.body.remember_me){
-      req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000;
+      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 로그인 상태 유지시 세션 유효기간 30일
     }
     crypto.pbkdf2(password, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
       cryptoconfig.method, (err, derivedKey) => {
