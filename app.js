@@ -59,9 +59,12 @@ var passport = require('passport')
 app.use(passport.initialize()); // Express에 passport 연결
 app.use(passport.session()); // passport에 세션 연결
 
+// 로그인시 인증
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
+
+// 매 페이지 로드할 때 마다 인증 여부 확인하고 인증될시 req.user에 로그인 데이터 삽입
 passport.deserializeUser(function(id, done) {
   MySqlHandler.myinvest_mainDB.query(`SELECT id, email, name FROM users WHERE id='${id}'`, 
   (err, rows) => {
@@ -73,21 +76,22 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-passport.use(new LocalStrategy(
-  {
+passport.use(new LocalStrategy({
     usernameField: 'id',
-    passwordField: 'pass'
+    passwordField: 'pass',
+    session: true,
+    passReqToCallback: true
   },
-  function(username, password, done) {
+  function(req, username, password, done) {
+    if(req.body.remember_me){
+      req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000;
+    }
     crypto.pbkdf2(password, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
       cryptoconfig.method, (err, derivedKey) => {
         MySqlHandler.myinvest_mainDB.query(`SELECT * FROM users WHERE id='${username}' and password='${derivedKey.toString('hex')}'`, 
           (err, rows) => {
             if (rows[0] == null) {
-              console.log('아이디, 비밀번호가 잘못되었습니다')
-              return done(null, false, {
-                message: '아이디, 비밀번호가 잘못되었습니다.'
-              })
+              return done(null, false)
             } else {
               return done(null, rows[0])
             }
