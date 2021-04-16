@@ -25,11 +25,17 @@ block content
             button.btn.btn-lg.btn-primary.btn-block(type='submit' style="font-size:14px; margin-bottom : 10px;") 로그인
             a(href='/sign_up', style="margin : 10px; font-size:13px;") 회원가입
 
-    -if(err_login)
+    -if(alert_data.red_alert)
         script.
             alert_base.fire({
                 icon: 'error',
-                title: "#{err_login}"
+                title: "#{alert_data.red_alert}"
+            })
+    -if(alert_data.green_alert)
+        script.
+            alert_base.fire({
+                icon: 'success',
+                title: "#{alert_data.green_alert}"
             })
 
     <!-- This templates was came from (https://getbootstrap.com/docs/5.0/examples/sign-in/) -->

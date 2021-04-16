@@ -13,7 +13,8 @@ router.get('/', function(req, res) {
     res.redirect('/my_table/own');
   } else {
     // 로그인 페이지 출력
-    res.render('login_form', {pageinfo: 'MyInvest', err_login : req.flash().err_login});
+    // req.flash('red_alert','아이디 또는 비밀번호가 잘못되었습니다.')
+    res.render('login_form', {pageinfo: 'MyInvest', alert_data: req.flash()});
   }
 });
 
@@ -103,7 +104,7 @@ router.post('/sign_up', function(req, res) {
                               \`status_count\` tinyint
                               );
                             `, (err, rows3) => {
-                            console.log('회원가입이 성공하였습니다!');
+                            req.flash('green_alert','회원가입에 성공하였습니다.')
                             res.redirect('/');
                           })
                         });

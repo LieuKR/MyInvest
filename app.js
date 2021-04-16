@@ -67,7 +67,6 @@ app.use(passport.session()); // passport에 세션 연결
 
 // 로그인시 인증
 passport.serializeUser(function(user, done) {
-  alert.green(res, '로그인 되었습니다');
   done(null, user.id);
 });
 
@@ -98,7 +97,7 @@ passport.use(new LocalStrategy({
         MySqlHandler.myinvest_mainDB.query(`SELECT * FROM users WHERE id='${username}' and password='${derivedKey.toString('hex')}'`, 
           (err, rows) => {
             if (rows[0] == null) {
-              req.flash('err_login','아이디와 비밀번호가 잘못되었습니다')
+              req.flash('red_alert','아이디 또는 비밀번호가 잘못되었습니다.')
               return done(null, false)
             } else {
               return done(null, rows[0])
