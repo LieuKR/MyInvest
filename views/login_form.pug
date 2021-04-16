@@ -7,10 +7,26 @@ block content
             input#id.form-control(style="font-size:13px" name="id" type='text' placeholder='아이디' required='' autofocus='')
             input#pass.form-control(style="font-size:13px; margin-bottom : 10px;" name="pass" type='password' placeholder='비밀번호' required='')
             .checkbox.mb-3#alert_place
-                input#maintain_login(type='checkbox' name="remember_me", value='yes', style="cursor: pointer; margin-right : 6px")
+                input#maintain_login(data-swal-toast-template='#alert_maintain_login' type='checkbox' name="remember_me", value='yes', style="cursor: pointer; margin-right : 6px")
                 label(for="maintain_login" style="cursor: pointer;") 로그인 상태 유지
             button.btn.btn-lg.btn-primary.btn-block(type='submit' style="font-size:14px; margin-bottom : 10px;") 로그인
             a(href='/sign_up', style="margin : 10px; font-size:13px;") 회원가입
+
     <!-- This templates was came from (https://getbootstrap.com/docs/5.0/examples/sign-in/) -->
 
     script.
+        let check = 0;
+
+        maintain_login.oninput = function() {
+            if(check == 0){
+                Swal.fire({
+                    title: '개인정보 보호를 위해 개인 기기에서만 사용해 주세요.',
+                    icon: 'warning',
+                    timer: 3000,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    toast: true,
+                })
+                check = 1;
+            }
+        }
