@@ -9,6 +9,8 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session');
 const sessionconfig  = require('./config/sessionset.json');
 
+const flash = require('connect-flash');
+
 // Socket.io 서버를 위한 모듈
 const http = require("http");
 const socketio = require("socket.io");
@@ -53,6 +55,9 @@ app.use(session({
   cookie: sessionconfig.cookieset
 }))
 
+// connect-flash : 일회성 메시지 알람을 위한 미들웨어, cookie-parser, express-session을 사용
+app.use(flash());
+
 // Passport.js
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
@@ -62,6 +67,7 @@ app.use(passport.session()); // passport에 세션 연결
 
 // 로그인시 인증
 passport.serializeUser(function(user, done) {
+  alert.green(res, '로그인 되었습니다');
   done(null, user.id);
 });
 
@@ -92,6 +98,7 @@ passport.use(new LocalStrategy({
         MySqlHandler.myinvest_mainDB.query(`SELECT * FROM users WHERE id='${username}' and password='${derivedKey.toString('hex')}'`, 
           (err, rows) => {
             if (rows[0] == null) {
+              req.flash('err_login','아이디와 비밀번호가 잘못되었습니다')
               return done(null, false)
             } else {
               return done(null, rows[0])
