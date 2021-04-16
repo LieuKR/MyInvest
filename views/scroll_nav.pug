@@ -32,6 +32,7 @@ html
     <!-- sweetalert 2 module -->
     script(src="/node_modules/sweetalert2/dist/sweetalert2.all.js")
     link(rel="stylesheet" href="/node_modules/sweetalert2/dist/sweetalert2.min.css")
+    script(src="/javascripts/alert.js")
   body
     <!-- Navigation -->
     nav(class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav")
@@ -90,3 +91,15 @@ html
       });
     block content
 
+    -if(alert_data.red_alert)
+      script.
+          alert_base.fire({
+              icon: 'error',
+              title: "#{alert_data.red_alert}"
+          })
+    -if(alert_data.green_alert)
+        script.
+            alert_base.fire({
+                icon: 'success',
+                title: "#{alert_data.green_alert}"
+            })

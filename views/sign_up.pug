@@ -43,12 +43,7 @@ block content
                         figure
                             img(src='/images/logo/logo_300px.png' alt='sing up image')
                         a.signup-image-link(href='/' style="font-size : 14px") 이미 MyInvest의 회원입니다
-    -if(alert_data.red_alert)
-        script.
-            alert_base.fire({
-                icon: 'error',
-                title: "#{alert_data.red_alert}"
-            })
+
     <!-- This templates was made by Colorlib (https://colorlib.com) -->
     script.
         // 부트스트랩 - 툴팁 기능

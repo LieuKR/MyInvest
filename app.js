@@ -100,6 +100,7 @@ passport.use(new LocalStrategy({
               req.flash('red_alert','아이디 또는 비밀번호가 잘못되었습니다.')
               return done(null, false)
             } else {
+              req.flash('green_alert','로그인 되었습니다')
               return done(null, rows[0])
             }
           });

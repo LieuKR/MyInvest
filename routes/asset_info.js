@@ -30,7 +30,7 @@ router.get('/:code', function(req, res) {
           MySqlHandler.myinvest_personal_DB.query(`SELECT \`name\`, \`code\` FROM \`${req.user.id}_asset_status\` WHERE \`code\` <> '${req.params.code}' AND \`count\` = 0 ORDER BY \`time\` DESC`, (err, rows4) => {
             rows1.map(x => time_functions.dateform_time(x));
             rows2.map(x => time_functions.dateform_time(x));
-            res.render('asset_info', {pageinfo: `자산정보 - ${rows1[0].name}`, pagestatus : '3', loginid : req.user, asset_status : rows1, asset_recode : rows2, asset_own_list : rows3, asset_int_list : rows4});
+            res.render('asset_info', {pageinfo: `자산정보 - ${rows1[0].name}`, alert_data: req.flash(), pagestatus : '3', loginid : req.user, asset_status : rows1, asset_recode : rows2, asset_own_list : rows3, asset_int_list : rows4});
           })
         })
       })

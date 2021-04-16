@@ -33,6 +33,7 @@ router.get('/mypage', function(req, res) {
 
 // 회원가입 폼 작성 페이지
 router.get('/sign_up', function(req, res) {
+  // req.flash('red_alert','아이디 또는 비밀번호가 잘못되었습니다.')
   res.render('sign_up', {pageinfo: 'MyInvest - 회원 가입', alert_data: req.flash()});
 });
 

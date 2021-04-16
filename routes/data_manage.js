@@ -20,6 +20,7 @@ router.post('/update_data', function(req, res) {
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
+            req.flash('green_alert','자산 정보가 업데이트되었습니다.')
             res.redirect('back')
           }
         })
@@ -32,6 +33,7 @@ router.post('/update_data', function(req, res) {
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
+            req.flash('green_alert','자산 정보가 업데이트되었습니다.')
             res.redirect('back')
           }
         })
@@ -44,6 +46,7 @@ router.post('/update_data', function(req, res) {
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
           if(err) {throw err}
           else {
+            req.flash('green_alert','자산 정보가 업데이트되었습니다.')
             res.redirect('back')
           }
         })
@@ -89,7 +92,8 @@ router.post('/create_data', function(req, res) {
       INSERT INTO \`${req.user.id}_asset_recode\` (name, price, count, code, time, after_count, average_bought_price, actural_earn, status_price, status_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${time_functions.Make_time()}', '${req.body.count}', '${req.body.price}', 0, 0, 0);
     `, (err, rows) => {
         if(err) {throw err}
-        else {  
+        else { 
+        req.flash('green_alert','새 종목이 추가되었습니다.')
         res.redirect('back');
         }
   })
@@ -100,6 +104,7 @@ router.post('/delete_data', function(req, res) {
   // delete_all이 존재할 경우 : 그냥 전부 삭제
   if(req.body.delete_all == 1){
     MySqlHandler.myinvest_personal_DB.query(`DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`code\`= ${req.body.code}; DELETE FROM \`${req.user.id}_asset_status\` WHERE \`code\`= ${req.body.code};`, (err, rows) => {
+      req.flash('green_alert','종목 데이터가 모두 삭제되었습니다.')
       res.redirect('back');
     });
   // 그 외의 경우 : asset_status값을 역으로 수정해주어야함. + actural_earn 수정해주었음
@@ -110,6 +115,7 @@ router.post('/delete_data', function(req, res) {
       DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
         if(err) {throw err}
         else { 
+          req.flash('green_alert','기록 내용이 삭제되었습니다.')
           res.redirect('back');
         }
       })
@@ -119,6 +125,7 @@ router.post('/delete_data', function(req, res) {
       DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
         if(err) {throw err}
         else { 
+          req.flash('green_alert','기록 내용이 삭제되었습니다.')
           res.redirect('back');
         }
       })
