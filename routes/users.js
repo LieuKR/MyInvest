@@ -23,8 +23,7 @@ router.get('/mypage', function(req, res) {
   if(req.user){
     MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` `, (err, rows2) => {
-        console.log(Object.values(rows1[0])[0]);
-        res.render('mypage_main', {pageinfo: 'MyInvest - 보유 자산', pagestatus : '4', loginid : req.user, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
+        res.render('mypage_main', {pageinfo: 'MyInvest - 보유 자산', alert_data: req.flash() , pagestatus : '4', loginid : req.user, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
       })
     })
   } else {
@@ -34,40 +33,40 @@ router.get('/mypage', function(req, res) {
 
 // 회원가입 폼 작성 페이지
 router.get('/sign_up', function(req, res) {
-  res.render('sign_up', {pageinfo: 'MyInvest - 회원 가입'});
+  res.render('sign_up', {pageinfo: 'MyInvest - 회원 가입', alert_data: req.flash()});
 });
 
 // 회원가입 Post 데이터 처리 페이지
 router.post('/sign_up', function(req, res) {
   // POST 데이터 유효성 검사. ID, Mail, PW 순
   if (!/^[a-zA-Z0-9]{8,20}$/.test(req.body.id)){
-    console.log('8~20자리 영문, 숫자로 구성된 형식을 만족하지 못함')
-    res.redirect('/');
+    req.flash('red_alert','아이디 양식이 잘못되었습니다.')
+    res.redirect('back');
   } else {
     MySqlHandler.myinvest_mainDB.query(`SELECT EXISTS (SELECT \`id\` FROM \`users\` WHERE \`id\`='${req.body.id}') as success`,
       (err, rows1) => {
         if(rows1[0].success == 1){
-          console.log('중복되는 아이디가 존재함')
-          res.redirect('/');
+          req.flash('red_alert','중복되는 아이디가 존재합니다.')
+          res.redirect('back');
         } else { // ID 유효성 검사 통화한 상태
           // email 유효성검사
           let emailRule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; //이메일 정규식
           if (!emailRule.test(req.body.email)){
-            console.log('이메일 양식을 만족하지 못함')
-            res.redirect('/');
+            req.flash('red_alert','이메일 양식을 만족하지 못하였습니다.')
+            res.redirect('back');
           } else {
             MySqlHandler.myinvest_mainDB.query(`SELECT EXISTS (SELECT \`email\` FROM \`users\` WHERE \`email\`='${req.body.email}') as success`,
             (err, rows2) => {
               if(rows2[0].success == 1){
-                console.log('중복되는 이메일 주소가 존재함')
-                res.redirect('/');
+                req.flash('red_alert','중복 이메일 주소가 존재합니다.')
+                res.redirect('back');
               } else { // ID, Email 유효성 검사 통화한 상태
                 if(!/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/.test(req.body.pass)){
-                  console.log('비밀번호 양식이 잘못됨')
-                  res.redirect('/');
+                  req.flash('red_alert','비밀번호 양식이 잘못되었습니다.')
+                  res.redirect('back');
                 } else if (req.body.pass !== req.body.re_pass) {
-                  console.log('입력된 비밀번호가 서로 다름')
-                  res.redirect('/');
+                  req.flash('red_alert','서로 다른 비밀번호가 입력되었습니다.')
+                  res.redirect('back');
                 } else { // 모든 데이터 유효성 검사 통화한 상태. 회원가입 진행
                   // crypto를 통한 비밀번호 암호화 -> 콜백함수 하나로 sql에 저장
                   crypto.pbkdf2(req.body.pass, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
@@ -131,7 +130,7 @@ router.get('/sign_off_check', function(req, res) {
   if(req.user){
     MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` `, (err, rows2) => {
-        res.render('sign_off_check', {pageinfo: 'MyInvest - 회원 탈퇴', pagestatus : '4', loginid : req.user, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
+        res.render('sign_off_check', {pageinfo: 'MyInvest - 회원 탈퇴', alert_data: req.flash(), pagestatus : '4', loginid : req.user, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
       })
     })
   } else {
@@ -145,7 +144,7 @@ router.get('/change_info', function(req, res) {
   if(req.user){
     MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` `, (err, rows2) => {
-        res.render('change_info_check', {pageinfo: 'MyInvest - 회원정보 변경', pagestatus : '4', loginid : req.user, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
+        res.render('change_info_check', {pageinfo: 'MyInvest - 회원정보 변경', alert_data: req.flash() , pagestatus : '4', loginid : req.user, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
       })
     })
   } else {
@@ -162,7 +161,7 @@ router.post('/change_info', function(req, res) {
         if(rows[0]){
           MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` WHERE count <> 0`, (err, rows1) => {
             MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` `, (err, rows2) => {
-              res.render('change_info_form', {pageinfo: 'MyInvest - 회원정보 변경', pagestatus : '4', loginid : req.user, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
+              res.render('change_info_form', {pageinfo: 'MyInvest - 회원정보 변경', alert_data: req.flash() , pagestatus : '4', loginid : req.user, own_asset_count : Object.values(rows1[0])[0], int_asset_count : Object.values(rows2[0])[0]});
             })
           })
         } else {

@@ -43,8 +43,13 @@ block content
                         figure
                             img(src='/images/logo/logo_300px.png' alt='sing up image')
                         a.signup-image-link(href='/' style="font-size : 14px") 이미 MyInvest의 회원입니다
+    -if(alert_data.red_alert)
+        script.
+            alert_base.fire({
+                icon: 'error',
+                title: "#{alert_data.red_alert}"
+            })
     <!-- This templates was made by Colorlib (https://colorlib.com) -->
-
     script.
         // 부트스트랩 - 툴팁 기능
         $(function () {
@@ -81,7 +86,6 @@ block content
 
         // socket.io로 서버 데이터 수신
         socket.on('idcheck', function (data) {
-            console.log(data.checkvalue)
             if(data.checkvalue == 1){
                 $('#IDchecknotice').attr('data-original-title', '중복 아이디가 존재합니다.');
                 document.getElementById("IDchecknotice").style = 'color:red';
@@ -106,7 +110,6 @@ block content
         });
 
         socket.on('mailcheck', function (data) {
-            console.log(data.checkvalue)
             if(data.checkvalue == 1){
                 $('#Mailchecknotice').attr('data-original-title', '중복 이메일이 존재합니다.');
                 document.getElementById("Mailchecknotice").style = 'color:red'

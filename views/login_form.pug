@@ -1,18 +1,5 @@
 extends layout
 block content
-    script.
-        const alert_base = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-
     link(href="/stylesheets/signin.css" rel="stylesheet")
     body.no-drag(class="text-center", style="font-size:14px")
         form.form-signin(action='/login' method='POST')
