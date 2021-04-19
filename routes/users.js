@@ -191,8 +191,10 @@ router.post('/submit_info', function(req, res) {
     callback()
   }
   update_function(req.user.id, () => {
-    req.session.destroy();
-    res.redirect('/');
+    setTimeout(function() {  // 회원정보 변경 후 2초 뒤 로그아웃, 메인페이지로 전송
+      req.session.destroy();
+      res.redirect('/');
+    }, 2000);
   })
 });
 
