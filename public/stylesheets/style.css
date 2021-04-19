@@ -448,7 +448,14 @@ label {
 
 .form-group_mypage {
   position: relative;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  overflow: hidden; }
+  .form-group_mypage:last-child {
+    margin-bottom: 0px; }
+
+.form-group_mypage_title {
+  position: relative;
+  margin-bottom: 10px;
   overflow: hidden; }
   .form-group_mypage:last-child {
     margin-bottom: 0px; }

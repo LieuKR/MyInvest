@@ -14,6 +14,7 @@ router.get('/own', function(req, res) {
   if(req.user){
     MySqlHandler.myinvest_personal_DB.query(`SELECT * FROM \`${req.user.id}_asset_status\` WHERE count <> 0 ORDER BY \`time\` DESC`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`SELECT COUNT(*) FROM \`${req.user.id}_asset_status\` `, (err, rows2) => {
+        // req.flash('green_alert','자산 정보가 업데이트되었습니다.')
         res.render('my_asset_list', {pageinfo: 'MyInvest - 보유 자산', alert_data: req.flash(), pagestatus : '1', loginid : req.user, table_own_asset : rows1, int_ass_count : Object.values(rows2[0])[0]});
       })
     })
@@ -37,4 +38,3 @@ router.get('/int', function(req, res) {
 });
 
 module.exports = router;
-

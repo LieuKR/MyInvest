@@ -9,20 +9,22 @@ block content
             .signup-form_mypage
               h2.form-title_mypage 회원정보 변경
               form#register-form.register-form(action="/submit_info", method='POST' style="font-size : 14px")
-                .form-group_mypage
+                .form-group_mypage_title
                   div
-                    span="닉네임 변경"
+                    i.bi.bi-dot
+                    span="닉네임을 변경하시려면 입력해주세요."
                 .form-group_mypage
                   div
                     div.textbox_input_changeinfo
                       label(style="left : auto" for='Nickname')
                         i.textbox_icon.bi.bi-person-fill
-                      input#Nickname.my_input(type="text" placeholder=`${loginid.name}` name="name" autocomplete="off")
+                      input#Nickname.my_input(type="text" placeholder=`${loginid.name}` name="name" autofocus='' autocomplete="off")
                     div.textbox_alert_changeinfo
                       i#Namechecknotice.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
-                .form-group_mypage
+                .form-group_mypage_title
                   div
-                    span="비밀번호를 다시 입력해주세요."
+                    i.bi.bi-dot
+                    span="비밀번호를 변경하시려면 입력해주세요."
                 .form-group_mypage
                   div
                     div.textbox_input_changeinfo

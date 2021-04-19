@@ -11,20 +11,22 @@ block content
               form#register-form.register-form(action="/sign_off" method='POST' style="font-size : 14px")
                 .form-group_mypage
                   div
+                    i.bi.bi-dot
                     span="다음 문장을 아래에 입력해 주세요."
                     br
-                    span="'회원 탈퇴에 동의합니다'"
+                    span(style="margin-left:30px;")="'회원 탈퇴에 동의합니다'"
                 .form-group_mypage
                   div
                     div.textbox_input_changeinfo
                       label(style="left : auto" for='check')
                         i.textbox_icon.bi.bi-pencil-fill
-                      input#check.my_input(type="text" placeholder="회원 탈퇴에 동의합니다" name="check" required autocomplete="off")
+                      input#check.my_input(type="text" placeholder="회원 탈퇴에 동의합니다" name="check" required autocomplete="off" autofocus='')
                     div.textbox_alert_changeinfo
                       i#checknotice.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
                 .form-group_mypage
                   div
-                    span="비밀번호를 다시 입력해주세요."
+                    i.bi.bi-dot
+                    span="비밀번호를 입력해주세요."
                 .form-group_mypage
                   div
                     div.textbox_input_changeinfo

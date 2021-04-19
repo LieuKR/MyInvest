@@ -13,7 +13,6 @@ router.get('/', function(req, res) {
     res.redirect('/my_table/own');
   } else {
     // 로그인 페이지 출력
-    // req.flash('red_alert','아이디 또는 비밀번호가 잘못되었습니다.')
     res.render('login_form', {pageinfo: 'MyInvest', alert_data: req.flash()});
   }
 });
@@ -33,7 +32,6 @@ router.get('/mypage', function(req, res) {
 
 // 회원가입 폼 작성 페이지
 router.get('/sign_up', function(req, res) {
-  // req.flash('red_alert','아이디 또는 비밀번호가 잘못되었습니다.')
   res.render('sign_up', {pageinfo: 'MyInvest - 회원 가입', alert_data: req.flash()});
 });
 
@@ -120,6 +118,7 @@ router.post('/sign_up', function(req, res) {
 
 /* 로그아웃 기능 페이지*/
 router.get('/logout', function(req, res) {
+  req.flash('green_alert','로그아웃 되었습니다.')
   req.logout();
   req.session.destroy(function(){
     res.redirect('/');
@@ -166,6 +165,7 @@ router.post('/change_info', function(req, res) {
             })
           })
         } else {
+        req.flash('red_alert','비밀번호가 잘못되었습니다.')
         res.redirect('back')
         }
       })
