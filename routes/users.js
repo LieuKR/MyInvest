@@ -191,18 +191,17 @@ router.post('/submit_info', function(req, res) {
     callback()
   }
   update_function(req.user.id, () => {
-    setTimeout(function() {  // 회원정보 변경 후 2초 뒤 로그아웃, 메인페이지로 전송
+    setTimeout(function() {  // 회원정보 변경 후 1초 뒤 로그아웃, 메인페이지로 전송
       req.session.destroy();
       res.redirect('/');
-    }, 2000);
+    }, 1000);
   })
 });
 
 // 회원탈퇴 Form데이터 처리 페이지
 router.post('/sign_off', function(req, res) {
-
-
-
+  // 입력받은 비밀번호(req.body.password가 일치하면 회원탈퇴 처리 후 로그아웃, 메인화면으로 리다이렉트)
+  // 일치하지 않을 경우 req.flash('red_alert','비밀번호가 잘못되었습니다.') 출력 후 전 페이지로 리다이렉트
 });
 
 

@@ -169,7 +169,7 @@ block content
       function swal_checkconfirm() {
         Swal.fire({
           title: '회원정보를 변경하시겠습니까?',
-          text: "회원정보를 변경할 시 자동으로 로그아웃됩니다.",
+          text: "변경할 시 자동으로 로그아웃됩니다.",
           icon: 'warning',
           showDenyButton: true,
           showCancelButton: false,
@@ -183,7 +183,7 @@ block content
                 icon: 'success',
                 title: "곧 로그아웃됩니다.",
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 2000,
                 timerProgressBar: true,
             })
             $('#register-form').attr('action','/submit_info').submit();

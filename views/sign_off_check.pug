@@ -36,7 +36,7 @@ block content
                     div.textbox_alert_changeinfo
                       i#PWchecknotice1.bi.bi-check-circle-fill(style="color:gray" data-toggle="tooltip" data-placement="top")
                 .form-group_mypage.form-button_mypage
-                  button#submit_signoff(type="submit" data-toggle="tooltip" data-placement="right" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;" disabled=true) 회원 탈퇴
+                  button#submit_signoff(type="button" onclick="swal_checkconfirm();" data-toggle="tooltip" data-placement="right" class="btn btn-secondary" style="font-size : 12px; padding-top : 12px; padding-bottom : 12px; padding-left : 20px; padding-right : 20px;" disabled=true) 회원 탈퇴
             .signup-image_mypage(style="margin:20px")
               figure.figure_mypage
                 img.img_mypage(src='/images/logo/logo_300px.png' alt='sing up image')
@@ -96,3 +96,28 @@ block content
           }
         }
       };
+      
+      function swal_checkconfirm() {
+        Swal.fire({
+          title: '정말 탈퇴하시겠습니까?',
+          text: "이 결정은 되돌릴 수 없습니다!",
+          icon: 'warning',
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: `회원 탈퇴`,
+          denyButtonText: `취소`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            Swal.fire({
+                toast: true,
+                icon: 'success',
+                title: "이용해주셔서 감사합니다.",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            })
+            $('#register-form').attr('action','/sign_off').submit();
+          }
+        })
+      }
