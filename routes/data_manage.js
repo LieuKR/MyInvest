@@ -18,8 +18,10 @@ router.post('/update_data', function(req, res) {
     MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.user.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', 0 , '${req.body.code}', '${time_functions.Make_time()}', ${req.body.before_count}, '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, '${status_price}', 0);`, (err, rows1) => {
       MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.user.id}_asset_status\` SET \`price\` = '${req.body.price}', \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${status_price}', \`status_count\` = 0, \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
-          if(err) {throw err}
-          else {
+          if(err) {
+            req.flash('red_alert','잘못된 정보가 입력되었습니다.')
+            res.redirect('back')
+          } else {
             req.flash('green_alert','자산 정보가 업데이트되었습니다.')
             res.redirect('back')
           }
@@ -31,8 +33,10 @@ router.post('/update_data', function(req, res) {
       MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.user.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', '${count_num}', '${req.body.code}', '${time_functions.Make_time()}', ${req.body.before_count} + ${count_num}, ((${req.body.average_bought_price} * ${req.body.before_count}) + (${req.body.price} * ${count_num})) / (${req.body.before_count} + ${count_num}), '${req.body.actural_earn}', '${status_price}', '${req.body.type}');`, (err, rows1) => {
         MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.user.id}_asset_status\` SET \`price\` = '${req.body.price}', average_bought_price = ((${req.body.average_bought_price} * count) + (${req.body.price} * ${count_num})) / (count + ${count_num}) , count = count + '${count_num}' , \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
-          if(err) {throw err}
-          else {
+          if(err) {
+            req.flash('red_alert','잘못된 정보가 입력되었습니다.')
+            res.redirect('back')
+          } else {
             req.flash('green_alert','자산 정보가 업데이트되었습니다.')
             res.redirect('back')
           }
@@ -44,8 +48,10 @@ router.post('/update_data', function(req, res) {
       MySqlHandler.myinvest_personal_DB.query(`INSERT INTO \`${req.user.id}_asset_recode\` (\`name\`, \`price\`, \`count\`, \`code\`, \`time\`, \`after_count\`, \`average_bought_price\`, \`actural_earn\`, \`status_price\`, \`status_count\`) VALUES ('${req.body.name}', '${req.body.price}', (${count_num} * ${req.body.type}) , '${req.body.code}', '${time_functions.Make_time()}', ${req.body.before_count} + (${count_num} * ${req.body.type}), '${req.body.average_bought_price}', ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, '${status_price}', '${req.body.type}');`, (err, rows1) => {
         MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.user.id}_asset_status\` SET \`price\` = '${req.body.price}', count = count + (${count_num} * ${req.body.type}) , \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${status_price}', \`status_count\` = '${req.body.type}', \`actural_earn\` = ${req.body.actural_earn} + (${req.body.price} - ${req.body.average_bought_price}) * ${count_num}, \`before_price\` = '${req.body.before_price}'
         WHERE \`name\`= '${req.body.name}'`, (err, rows2) => {
-          if(err) {throw err}
-          else {
+          if(err) {            
+            req.flash('red_alert','잘못된 정보가 입력되었습니다.')
+            res.redirect('back')
+          } else {
             req.flash('green_alert','자산 정보가 업데이트되었습니다.')
             res.redirect('back')
           }
@@ -87,10 +93,16 @@ router.post('/update_data', function(req, res) {
 
 // 새로운 종목 생성
 router.post('/create_data', function(req, res) {
-  MySqlHandler.myinvest_personal_DB.query(`
+  // 특수문자 정규식 변수(공백 미포함, 숫자 제외), req.body.name이 포함해서는 안되는 문자들
+  var replaceChar_can_num = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
+  // 특수문자 정규식 변수(공백 포함), req.body.unit이 포함해서는 안되는 문자들
+  var replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}\s]/gi;
+
+  if(replaceChar_can_num.test(req.body.name) == false && replaceChar.test(req.body.unit) == false){
+    MySqlHandler.myinvest_personal_DB.query(`
       INSERT INTO \`${req.user.id}_asset_status\` (name, price, count, unit, time, average_bought_price, status_price, status_count, before_price, actural_earn) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${time_functions.Make_time()}', '${req.body.price}', 0, 0, '${req.body.price}', 0);
       INSERT INTO \`${req.user.id}_asset_recode\` (name, price, count, code, time, after_count, average_bought_price, actural_earn, status_price, status_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${time_functions.Make_time()}', '${req.body.count}', '${req.body.price}', 0, 0, 0);
-    `, (err, rows) => {
+      `, (err, rows) => {
         if(err) {        
           req.flash('red_alert','중복되는 종목 이름이 존재하는지 확인해주세요.')
           res.redirect('back');
@@ -98,7 +110,11 @@ router.post('/create_data', function(req, res) {
         req.flash('green_alert','새 종목이 추가되었습니다.')
         res.redirect('back');
         }
-  })
+    })
+  } else {
+    req.flash('red_alert','잘못된 데이터가 입력되었습니다.')
+    res.redirect('back');
+  }
 });
 
 // 입력 기록 삭제 && 만약 마지막 입력기록일 경우 모든 데이터 삭제
