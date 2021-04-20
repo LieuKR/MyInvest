@@ -90,7 +90,7 @@ router.post('/sign_up', function(req, res) {
                             
                             CREATE TABLE \`myinvest_personal_data\`.\`${req.body.id}_asset_status\` (
                               \`code\` int AUTO_INCREMENT PRIMARY KEY,
-                              \`name\` varchar(30),
+                              \`name\` varchar(30) UNIQUE,
                               \`price\` float,
                               \`count\` float,
                               \`unit\` varchar(30),
@@ -200,9 +200,11 @@ router.post('/submit_info', function(req, res) {
 
 // 회원탈퇴 Form데이터 처리 페이지
 router.post('/sign_off', function(req, res) {
+  // 회원탈퇴 기능은 미구현할 예정
   // 입력받은 비밀번호(req.body.password가 일치하면 회원탈퇴 처리 후 로그아웃, 메인화면으로 리다이렉트)
   // 일치하지 않을 경우 req.flash('red_alert','비밀번호가 잘못되었습니다.') 출력 후 전 페이지로 리다이렉트
+  req.flash('red_alert','회원탈퇴 기능은 구현하지 않았습니다.')
+  res.redirect('/');
 });
-
 
 module.exports = router;

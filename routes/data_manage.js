@@ -91,8 +91,10 @@ router.post('/create_data', function(req, res) {
       INSERT INTO \`${req.user.id}_asset_status\` (name, price, count, unit, time, average_bought_price, status_price, status_count, before_price, actural_earn) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', '${req.body.unit}', '${time_functions.Make_time()}', '${req.body.price}', 0, 0, '${req.body.price}', 0);
       INSERT INTO \`${req.user.id}_asset_recode\` (name, price, count, code, time, after_count, average_bought_price, actural_earn, status_price, status_count) VALUES ('${req.body.name}', '${req.body.price}', '${req.body.count}', last_insert_id(), '${time_functions.Make_time()}', '${req.body.count}', '${req.body.price}', 0, 0, 0);
     `, (err, rows) => {
-        if(err) {throw err}
-        else { 
+        if(err) {        
+          req.flash('red_alert','중복되는 종목 이름이 존재하는지 확인해주세요.')
+          res.redirect('back');
+        } else { 
         req.flash('green_alert','새 종목이 추가되었습니다.')
         res.redirect('back');
         }
