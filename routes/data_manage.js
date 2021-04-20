@@ -123,7 +123,7 @@ router.post('/delete_data', function(req, res) {
   if(req.body.delete_all == 1){
     MySqlHandler.myinvest_personal_DB.query(`DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`code\`= ${req.body.code}; DELETE FROM \`${req.user.id}_asset_status\` WHERE \`code\`= ${req.body.code};`, (err, rows) => {
       req.flash('green_alert','종목 데이터가 모두 삭제되었습니다.')
-      res.redirect('back');
+      res.redirect('/');
     });
   // 그 외의 경우 : asset_status값을 역으로 수정해주어야함. + actural_earn 수정해주었음
   } else {
