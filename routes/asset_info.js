@@ -10,9 +10,10 @@ const time_functions = require('../serverside_functions/time_functions.js');
 router.get('/', function(req, res) {
   if(req.user){
     MySqlHandler.myinvest_personal_DB.query(`SELECT \`code\` FROM \`${req.user.id}_asset_status\` ORDER BY \`time\` DESC LIMIT 1`, (err, rows) => {
-      if(rows[0].code){
+      if(rows[0]){
         res.redirect(`/asset_info/${rows[0].code}`)
       } else{
+        req.flash('red_alert','데이터가 존재하지 않습니다.')
         res.redirect('/')
       }
     })
