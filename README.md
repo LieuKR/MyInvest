@@ -4,6 +4,8 @@
 
 [웹 주소](http://ec2-13-125-250-131.ap-northeast-2.compute.amazonaws.com/)
 
+Id : "guestid" / Password : "password1" 로 로그인이 가능합니다.
+
 ### 목표
 - 실제로 사용될 수 있을만한 서비스 제공
 - 깔끔한 인터페이스 제공
