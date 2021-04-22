@@ -119,34 +119,39 @@ router.post('/create_data', function(req, res) {
 
 // 입력 기록 삭제 && 만약 마지막 입력기록일 경우 모든 데이터 삭제
 router.post('/delete_data', function(req, res) {
-  // delete_all이 존재할 경우 : 그냥 전부 삭제
-  if(req.body.delete_all == 1){
-    MySqlHandler.myinvest_personal_DB.query(`DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`code\`= ${req.body.code}; DELETE FROM \`${req.user.id}_asset_status\` WHERE \`code\`= ${req.body.code};`, (err, rows) => {
-      req.flash('green_alert','종목 데이터가 모두 삭제되었습니다.')
-      res.redirect('/');
-    });
-  // 그 외의 경우 : asset_status값을 역으로 수정해주어야함. + actural_earn 수정해주었음
+  if(req.user.id == 'guestid1'){
+    req.flash('red_alert','게스트 아이디는 데이터를 삭제할 수 없습니다.')
+    res.redirect('back');
   } else {
-    // 구매기록 제거시
-    if(req.body.count > 0){
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.user.id}_asset_status\` SET average_bought_price = ((average_bought_price * count) - (price * ${req.body.count})) / (count - ${req.body.count}), \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
-      DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
-        if(err) {throw err}
-        else { 
-          req.flash('green_alert','기록 내용이 삭제되었습니다.')
-          res.redirect('back');
-        }
-      })
-      // 판매 or 갱신기록 제거시
+    // delete_all이 존재할 경우 : 그냥 전부 삭제
+    if(req.body.delete_all == 1){
+      MySqlHandler.myinvest_personal_DB.query(`DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`code\`= ${req.body.code}; DELETE FROM \`${req.user.id}_asset_status\` WHERE \`code\`= ${req.body.code};`, (err, rows) => {
+        req.flash('green_alert','종목 데이터가 모두 삭제되었습니다.')
+        res.redirect('/');
+      });
+    // 그 외의 경우 : asset_status값을 역으로 수정해주어야함. + actural_earn 수정해주었음
     } else {
-      MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.user.id}_asset_status\` SET \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${time_functions.Make_time()}', \`actural_earn\` = actural_earn - (${req.body.old_price} - average_bought_price) * ${req.body.count}, \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
-      DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
-        if(err) {throw err}
-        else { 
-          req.flash('green_alert','기록 내용이 삭제되었습니다.')
-          res.redirect('back');
-        }
-      })
+      // 구매기록 제거시
+      if(req.body.count > 0){
+        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.user.id}_asset_status\` SET average_bought_price = ((average_bought_price * count) - (price * ${req.body.count})) / (count - ${req.body.count}), \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${time_functions.Make_time()}', \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
+        DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
+          if(err) {throw err}
+          else { 
+            req.flash('green_alert','기록 내용이 삭제되었습니다.')
+            res.redirect('back');
+          }
+        })
+        // 판매 or 갱신기록 제거시
+      } else {
+        MySqlHandler.myinvest_personal_DB.query(`UPDATE \`${req.user.id}_asset_status\` SET \`price\` = '${req.body.old_price}' , count = count - '${req.body.count}' , \`time\` = '${time_functions.Make_time()}', \`actural_earn\` = actural_earn - (${req.body.old_price} - average_bought_price) * ${req.body.count}, \`status_price\` = '${req.body.status_price}', \`status_count\` = '${req.body.status_count}', \`before_price\` = '${req.body.before_price}', \`actural_earn\` = '${req.body.actural_earn}' WHERE \`code\`= '${req.body.code}';
+        DELETE FROM \`${req.user.id}_asset_recode\` WHERE \`no\`= ${req.body.no}`, (err, rows) => {
+          if(err) {throw err}
+          else { 
+            req.flash('green_alert','기록 내용이 삭제되었습니다.')
+            res.redirect('back');
+          }
+        })
+      }
     }
   }
 });

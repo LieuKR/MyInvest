@@ -181,12 +181,17 @@ router.post('/submit_info', function(req, res) {
       })
     }
     if(req.body.pass){
-      crypto.pbkdf2(req.body.pass, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
-        cryptoconfig.method, (err, derivedKey) => {
-          MySqlHandler.myinvest_mainDB.query(`UPDATE users SET \`password\` = '${derivedKey.toString('hex')}' WHERE \`id\`= '${logined_id}'`, 
-            (err, rows) => {
-            });
-        });
+      if(req.user.id == 'guestid1'){
+        req.flash('red_alert','게스트 아이디는 비밀번호를 수정할 수 없습니다.')
+        res.redirect('/');
+      } else {
+        crypto.pbkdf2(req.body.pass, cryptoconfig.salt, cryptoconfig.runnum, cryptoconfig.byte, 
+          cryptoconfig.method, (err, derivedKey) => {
+            MySqlHandler.myinvest_mainDB.query(`UPDATE users SET \`password\` = '${derivedKey.toString('hex')}' WHERE \`id\`= '${logined_id}'`, 
+              (err, rows) => {
+              });
+          });
+      }
     }
     callback()
   }
